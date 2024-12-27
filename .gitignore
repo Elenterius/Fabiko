@@ -1,11 +1,41 @@
-# Maven
-target/
+# Log file
+*.log
 
-# Eclipse
-.classpath
+### Gradle ###
+.gradle
+build/
+
+# Kotlin Gradle plugin data, see https://kotlinlang.org/docs/whatsnew20.html#new-directory-for-kotlin-data-in-gradle-projects
+.kotlin/
+
+### Java ###
+*.class
+*.jar
+
+# virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
+hs_err_pid*
+replay_pid*
+
+### IntelliJ IDEA ###
+.idea
+*.iml
+*.ipr
+*.iws
+out/
+
+### Eclipse ###
 .project
-.settings/
+.apt_generated
+.classpath
+.factorypath
+.settings
+.springBeans
+.sts4-cache
+bin/
+tmp/
 
-BUILD/
-RELEASE/
+### VS Code ###
+.vscode/
 
+### Mac OS ###
+.DS_Store
