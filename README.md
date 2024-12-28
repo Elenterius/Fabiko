@@ -1,7 +1,8 @@
 [![](https://jitpack.io/v/FedUni/caliko.svg)](https://jitpack.io/#FedUni/caliko)
 
 # Caliko
-The Caliko library is an implementation of the FABRIK inverse kinematics (IK) algorithm in the Java programming language, and is released under the MIT software license. See LICENSE.txt for further details.
+The Caliko library is an implementation of the FABRIK inverse kinematics (IK) algorithm in the Java programming language, 
+and is released under the MIT software license. See LICENSE.txt for further details.
 
 The FABRIK algorithm is explained in the following research paper:
 Aristidou, A., & Lasenby, J. (2011). FABRIK: a fast, iterative solver for the inverse kinematics problem. Graphical Models, 73(5), 243-260.
@@ -28,7 +29,7 @@ To build yourself:
 
 `git clone https://github.com/FedUni/caliko`
 
-`mvn clean package` or `mvn clean install`
+`gradlew build`
 
 Alternatively, download a release from: 
 [https://github.com/FedUni/caliko/releases](https://github.com/FedUni/caliko/releases)
@@ -79,13 +80,6 @@ To use the library in your own Maven project, declare the following dependencies
 
 ## TODO ##
 
-### High priority ##
-- Nil.
-
-### Medium priority ##
-- Nil.
-
-### Low priority ##
 - Refactor entire library to use quaternions.
 - Add parabolic constraint types.
 - Streamline Model class object copying.
