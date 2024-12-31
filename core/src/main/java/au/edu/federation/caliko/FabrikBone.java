@@ -1,6 +1,6 @@
 package au.edu.federation.caliko;
 
-import au.edu.federation.utils.Vectorf;
+import au.edu.federation.caliko.math.Vectorf;
 
 /**
  * Interface for a bone

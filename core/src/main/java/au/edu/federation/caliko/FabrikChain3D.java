@@ -7,11 +7,10 @@ import java.util.List;
 
 import au.edu.federation.caliko.FabrikChain3D.BaseboneConstraintType3D;
 import au.edu.federation.caliko.FabrikJoint3D.JointType;
-import au.edu.federation.utils.Colour4f;
-import au.edu.federation.utils.Mat3f;
-import au.edu.federation.utils.Utils;
-import au.edu.federation.utils.Vec2f;
-import au.edu.federation.utils.Vec3f;
+import au.edu.federation.caliko.utils.Colour4f;
+import au.edu.federation.caliko.math.Mat3f;
+import au.edu.federation.caliko.utils.Utils;
+import au.edu.federation.caliko.math.Vec3f;
 
 /** Class to represent a 3D Inverse Kinematics (IK) chain that can be solved for a given target using the FABRIK algorithm.
  * <p>

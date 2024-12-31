@@ -5,9 +5,9 @@ import java.nio.FloatBuffer;
 import au.edu.federation.caliko.FabrikBone3D;
 import au.edu.federation.caliko.FabrikChain3D;
 import au.edu.federation.caliko.FabrikStructure3D;
-import au.edu.federation.utils.Mat3f;
-import au.edu.federation.utils.Mat4f;
-import au.edu.federation.utils.Utils;
+import au.edu.federation.caliko.math.Mat3f;
+import au.edu.federation.caliko.math.Mat4f;
+import au.edu.federation.caliko.utils.Utils;
 
 import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.opengl.GL15.*;

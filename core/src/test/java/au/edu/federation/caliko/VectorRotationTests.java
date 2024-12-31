@@ -1,6 +1,6 @@
 package au.edu.federation.caliko;
 
-import au.edu.federation.utils.Vec3f;
+import au.edu.federation.caliko.math.Vec3f;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 

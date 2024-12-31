@@ -2,7 +2,7 @@ package au.edu.federation.caliko;
 
 import java.util.List;
 
-import au.edu.federation.utils.Vectorf;
+import au.edu.federation.caliko.math.Vectorf;
 
 @SuppressWarnings("rawtypes")
 public interface FabrikChain<B extends FabrikBone<V,J>, V extends Vectorf, J extends FabrikJoint, C extends BaseboneConstraintType> {

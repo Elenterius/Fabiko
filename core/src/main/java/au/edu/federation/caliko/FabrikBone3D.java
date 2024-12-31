@@ -3,10 +3,9 @@ package au.edu.federation.caliko;
 import java.io.Serializable;
 
 import au.edu.federation.caliko.FabrikJoint3D.JointType;
-import au.edu.federation.utils.Colour4f;
-import au.edu.federation.utils.Mat4f;
-import au.edu.federation.utils.Utils;
-import au.edu.federation.utils.Vec3f;
+import au.edu.federation.caliko.utils.Colour4f;
+import au.edu.federation.caliko.utils.Utils;
+import au.edu.federation.caliko.math.Vec3f;
 
 /**
  * A class to represent a FabrikBone3D object.

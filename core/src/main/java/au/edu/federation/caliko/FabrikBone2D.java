@@ -1,9 +1,9 @@
 package au.edu.federation.caliko;
 
-import au.edu.federation.utils.Colour4f;
-import au.edu.federation.utils.Mat4f;
-import au.edu.federation.utils.Utils;
-import au.edu.federation.utils.Vec2f;
+import au.edu.federation.caliko.utils.Colour4f;
+import au.edu.federation.caliko.math.Mat4f;
+import au.edu.federation.caliko.utils.Utils;
+import au.edu.federation.caliko.math.Vec2f;
 
 /**
  * A class to represent a FabrikBone2D object.

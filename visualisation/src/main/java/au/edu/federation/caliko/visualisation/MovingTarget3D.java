@@ -1,9 +1,9 @@
 package au.edu.federation.caliko.visualisation;
 
-import au.edu.federation.utils.Colour4f;
-import au.edu.federation.utils.Mat4f;
-import au.edu.federation.utils.Utils;
-import au.edu.federation.utils.Vec3f;
+import au.edu.federation.caliko.utils.Colour4f;
+import au.edu.federation.caliko.math.Mat4f;
+import au.edu.federation.caliko.utils.Utils;
+import au.edu.federation.caliko.math.Vec3f;
 
 /**
  * Class to move a target around in 3D.

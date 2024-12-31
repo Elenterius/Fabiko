@@ -3,6 +3,4 @@ package au.edu.federation.caliko;
 /**
  * @author jsalvo
  */
-public interface BaseboneConstraintType {
-
-}
+public interface BaseboneConstraintType {}

@@ -1,7 +1,7 @@
 package au.edu.federation.caliko.visualisation;
 
-import au.edu.federation.utils.Mat4f;
-import au.edu.federation.utils.Vec3f;
+import au.edu.federation.caliko.math.Mat4f;
+import au.edu.federation.caliko.math.Vec3f;
 
 import static org.lwjgl.glfw.GLFW.*;
 

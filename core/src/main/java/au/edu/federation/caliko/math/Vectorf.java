@@ -1,4 +1,4 @@
-package au.edu.federation.utils;
+package au.edu.federation.caliko.math;
 
 /**
  * Interface for a Vector

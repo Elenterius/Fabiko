@@ -1,8 +1,6 @@
 package au.edu.federation.caliko;
 
-import java.io.Serializable;
-
-import au.edu.federation.utils.Vectorf;
+import au.edu.federation.caliko.math.Vectorf;
 
 /**
  * Structure interface

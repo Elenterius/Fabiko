@@ -1,8 +1,8 @@
 package au.edu.federation.caliko;
 
-import au.edu.federation.utils.SerializationUtil;
-import au.edu.federation.utils.Utils;
-import au.edu.federation.utils.Vec3f;
+import au.edu.federation.caliko.utils.SerializationUtil;
+import au.edu.federation.caliko.utils.Utils;
+import au.edu.federation.caliko.math.Vec3f;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;

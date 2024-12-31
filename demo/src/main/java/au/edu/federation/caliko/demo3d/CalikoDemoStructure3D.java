@@ -2,7 +2,7 @@ package au.edu.federation.caliko.demo3d;
 
 import au.edu.federation.caliko.FabrikStructure3D;
 import au.edu.federation.caliko.demo.CalikoDemoStructure;
-import au.edu.federation.utils.Vec3f;
+import au.edu.federation.caliko.math.Vec3f;
 
 /**
  * @author jsalvo

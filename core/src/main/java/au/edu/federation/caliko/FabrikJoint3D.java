@@ -2,8 +2,8 @@ package au.edu.federation.caliko;
 
 import java.io.Serializable;
 
-import au.edu.federation.utils.Utils;
-import au.edu.federation.utils.Vec3f;
+import au.edu.federation.caliko.utils.Utils;
+import au.edu.federation.caliko.math.Vec3f;
 
 /** 
  * A joint used to constrain the relative angle between FabrikBone3D objects in an IK chain.
@@ -146,8 +146,8 @@ public class FabrikJoint3D implements FabrikJoint<FabrikJoint3D>, Serializable
 	 * <p>
 	 * By default, a FabrikJoint3D cannot be used until the type of joint that it represents has
 	 * been specified. This may be done via the {@link #setAsBallJoint(float)}, 
-	 * {@link #setAsGlobalHinge(au.edu.federation.utils.Vec3f, float, float, Vec3f)} or
-	 * {@link #setAsLocalHinge(au.edu.federation.utils.Vec3f, float, float, Vec3f)} methods.
+	 * {@link #setAsGlobalHinge(Vec3f, float, float, Vec3f)} or
+	 * {@link #setAsLocalHinge(Vec3f, float, float, Vec3f)} methods.
 	 */
 	public FabrikJoint3D() { }
 	

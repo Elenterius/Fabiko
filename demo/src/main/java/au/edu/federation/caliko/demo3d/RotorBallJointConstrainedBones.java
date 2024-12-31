@@ -3,10 +3,10 @@ package au.edu.federation.caliko.demo3d;
 import au.edu.federation.caliko.FabrikBone3D;
 import au.edu.federation.caliko.FabrikChain3D;
 import au.edu.federation.caliko.FabrikStructure3D;
-import au.edu.federation.utils.Colour4f;
-import au.edu.federation.utils.Mat4f;
-import au.edu.federation.utils.Utils;
-import au.edu.federation.utils.Vec3f;
+import au.edu.federation.caliko.utils.Colour4f;
+import au.edu.federation.caliko.math.Mat4f;
+import au.edu.federation.caliko.utils.Utils;
+import au.edu.federation.caliko.math.Vec3f;
 
 /**
  * @author jsalvo

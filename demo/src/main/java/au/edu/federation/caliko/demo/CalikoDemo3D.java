@@ -10,9 +10,9 @@ import au.edu.federation.caliko.visualisation.FabrikLine3D;
 import au.edu.federation.caliko.visualisation.FabrikModel3D;
 import au.edu.federation.caliko.visualisation.Grid;
 import au.edu.federation.caliko.visualisation.MovingTarget3D;
-import au.edu.federation.utils.Mat4f;
-import au.edu.federation.utils.Utils;
-import au.edu.federation.utils.Vec3f;
+import au.edu.federation.caliko.math.Mat4f;
+import au.edu.federation.caliko.utils.Utils;
+import au.edu.federation.caliko.math.Vec3f;
 
 /**
  * Class to demonstrate some of the features of the Caliko library in 3D.

@@ -5,10 +5,10 @@ import au.edu.federation.caliko.FabrikChain2D;
 import au.edu.federation.caliko.FabrikChain2D.BaseboneConstraintType2D;
 import au.edu.federation.caliko.FabrikJoint2D.ConstraintCoordinateSystem;
 import au.edu.federation.caliko.FabrikStructure2D;
-import au.edu.federation.utils.Colour4f;
-import au.edu.federation.utils.Mat4f;
-import au.edu.federation.utils.Utils;
-import au.edu.federation.utils.Vec2f;
+import au.edu.federation.caliko.utils.Colour4f;
+import au.edu.federation.caliko.math.Mat4f;
+import au.edu.federation.caliko.utils.Utils;
+import au.edu.federation.caliko.math.Vec2f;
 
 /**
  * A static class used to draw a 2D lines to represent FabrikBone2D, FabrikChain2D or FabrickStructure2D objects.

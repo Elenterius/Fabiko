@@ -1,6 +1,6 @@
 package au.edu.federation.caliko.demo;
 
-import au.edu.federation.utils.Mat4f;
+import au.edu.federation.caliko.math.Mat4f;
 
 /**
  * @author jsalvo

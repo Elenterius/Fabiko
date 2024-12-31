@@ -7,9 +7,9 @@ import java.util.List;
 
 import au.edu.federation.caliko.FabrikChain2D.BaseboneConstraintType2D;
 import au.edu.federation.caliko.FabrikJoint2D.ConstraintCoordinateSystem;
-import au.edu.federation.utils.Colour4f;
-import au.edu.federation.utils.Utils;
-import au.edu.federation.utils.Vec2f;
+import au.edu.federation.caliko.utils.Colour4f;
+import au.edu.federation.caliko.utils.Utils;
+import au.edu.federation.caliko.math.Vec2f;
 
 /**
  * Class to represent a 2D Inverse Kinematics (IK) chain that can be solved for a given target using the FABRIK algorithm.

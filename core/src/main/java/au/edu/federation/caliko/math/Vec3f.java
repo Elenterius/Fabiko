@@ -1,43 +1,30 @@
-package au.edu.federation.utils;
+package au.edu.federation.caliko.math;
 
-import au.edu.federation.caliko.FabrikJoint3D;
+import au.edu.federation.caliko.utils.Utils;
 
+import java.io.Serial;
 import java.io.Serializable;
 
 import java.text.DecimalFormat;
 
-//FIXME: Need to incorporate the following into Vec2f / FabrikChain2D:
-// - NORMALISE corrected constraint angle to stop jitter / flip-out
-// - Stop Vec2f dot product producing NAN by capping to -1..+1
-
 /**
- * Class  : Simple vec3 class with common operations and utility / helper methods.
+ * Class  : Simple mutable vec3 class with common operations and utility / helper methods.
  * <p>
- * Version: 0.9
+ * Version: 0.10.0
  * Date   : 19/06/2019
  */
-
 public class Vec3f implements Vectorf<Vec3f>, Serializable {
+
+	@Serial
 	private static final long serialVersionUID = 1L;
 
-	// ----- Static Properties -----
-	// Conversion constants to/from degrees and radians
-	private static final float DEGS_TO_RADS = (float) Math.PI / 180.0f;
-	private static final float RADS_TO_DEGS = 180.0f / (float) Math.PI;
-	// Define a DecimalFormat to be used by our toString() method.
-	// Note: '0' means put a 0 there if it's zero, '#' means omit if zero.
-	private static DecimalFormat df = new DecimalFormat("0.000");
 	// Cardinal axes
-	private static Vec3f X_AXIS = new Vec3f(1.0f, 0.0f, 0.0f);
-	private static Vec3f Y_AXIS = new Vec3f(0.0f, 1.0f, 0.0f);
-	private static Vec3f Z_AXIS = new Vec3f(0.0f, 0.0f, 1.0f);
-
-	// ----- Properties -----
+	private static final Vec3f X_AXIS = new Vec3f(1f, 0f, 0f);
+	private static final Vec3f Y_AXIS = new Vec3f(0f, 1f, 0f);
+	private static final Vec3f Z_AXIS = new Vec3f(0f, 0f, 1f);
 
 	// A Vec3 simply has three properties called x, y and z - these are public so we can access them directly for speed
 	public float x, y, z;
-
-	// ----- Methods -----
 
 	/**
 	 * Default constructor - x, y, and z are initialised to zero.
@@ -72,9 +59,9 @@ public class Vec3f implements Vectorf<Vec3f>, Serializable {
 	 * @param    source    The vector used to set component values on this newly created vector.
 	 */
 	public Vec3f(Vec3f source) {
-		this.x = source.x;
-		this.y = source.y;
-		this.z = source.z;
+		x = source.x;
+		y = source.y;
+		z = source.z;
 	}
 
 	/**
@@ -95,7 +82,7 @@ public class Vec3f implements Vectorf<Vec3f>, Serializable {
 	 * @return Whether the two provided vectors are perpendicular (true) or not (false).
 	 */
 	public static boolean perpendicular(Vec3f a, Vec3f b) {
-		return Utils.approximatelyEquals(Vec3f.dotProduct(a, b), 0.0f, 0.01f) ? true : false;
+		return Utils.approximatelyEquals(Vec3f.dotProduct(a, b), 0f, 0.01f);
 	}
 
 	/**
@@ -107,13 +94,9 @@ public class Vec3f implements Vectorf<Vec3f>, Serializable {
 	 * @return Whether the two provided vector arguments are approximately equal (true) or not (false).
 	 */
 	public static boolean approximatelyEqual(Vec3f a, Vec3f b, float tolerance) {
-		if ((Math.abs(a.x - b.x) < tolerance) &&
+		return (Math.abs(a.x - b.x) < tolerance) &&
 				(Math.abs(a.y - b.y) < tolerance) &&
-				(Math.abs(a.z - b.z) < tolerance)) {
-			return true;
-		}
-
-		return false;
+				(Math.abs(a.z - b.z) < tolerance);
 	}
 
 	/**
@@ -179,8 +162,8 @@ public class Vec3f implements Vectorf<Vec3f>, Serializable {
 	 * can be calculated faster than the exact distance.
 	 * <p>
 	 * Further reading:
-	 * http://en.wikipedia.org/wiki/floataxicab_geometry
-	 * http://stackoverflow.com/questions/3693514/very-fast-3d-distance-check
+	 * <a href="https://en.wikipedia.org/wiki/Taxicab_geometry">Taxicab Geometry</a>,
+	 * <a href="http://stackoverflow.com/questions/3693514/very-fast-3d-distance-check">Fast 3d Distance</a>
 	 *
 	 * @param    v1    The first point.
 	 * @param    v2    The second point.
@@ -201,19 +184,19 @@ public class Vec3f implements Vectorf<Vec3f>, Serializable {
 	public static Vec3f abs(Vec3f source) {
 		Vec3f absVector = new Vec3f();
 
-		if (source.x < 0.0f) {
+		if (source.x < 0f) {
 			absVector.x = -source.x;
 		}
 		else {
 			absVector.x = source.x;
 		}
-		if (source.y < 0.0f) {
+		if (source.y < 0f) {
 			absVector.y = -source.y;
 		}
 		else {
 			absVector.y = source.y;
 		}
-		if (source.z < 0.0f) {
+		if (source.z < 0f) {
 			absVector.z = -source.z;
 		}
 		else {
@@ -229,7 +212,7 @@ public class Vec3f implements Vectorf<Vec3f>, Serializable {
 	 * This is a very fast method of generating a perpendicular vector that works for any vector
 	 * which is 5 degrees or more from vertical 'up'.
 	 * <p>
-	 * The code in this method is adapted from: http://blog.selfshadow.com/2011/10/17/perp-vectors/
+	 * The code in this method is adapted from: <a href="http://blog.selfshadow.com/2011/10/17/perp-vectors/">Perpendicular Possibilities</a>
 	 *
 	 * @param    u    The vector to use as the basis for generating the perpendicular vector.
 	 * @return A normalised vector which is perpendicular to the provided vector argument.
@@ -238,10 +221,10 @@ public class Vec3f implements Vectorf<Vec3f>, Serializable {
 		Vec3f perp;
 
 		if (Math.abs(u.y) < 0.99f) {
-			perp = new Vec3f(-u.z, 0.0f, u.x); // cross(u, UP)
+			perp = new Vec3f(-u.z, 0f, u.x); // cross(u, UP)
 		}
 		else {
-			perp = new Vec3f(0.0f, u.z, -u.y); // cross(u, RIGHT)
+			perp = new Vec3f(0f, u.z, -u.y); // cross(u, RIGHT)
 		}
 
 		return perp.normalise();
@@ -252,7 +235,7 @@ public class Vec3f implements Vectorf<Vec3f>, Serializable {
 	 * <p>
 	 * The returned vector is normalised.
 	 * <p>
-	 * The code in this method is adapted from: http://blog.selfshadow.com/2011/10/17/perp-vectors/
+	 * The code in this method is adapted from: <a href="http://blog.selfshadow.com/2011/10/17/perp-vectors/">Perpendicular Possibilities</a>
 	 * <p>
 	 * Further reading: Hughes, J. F., Muller, T., "Building an Orthonormal Basis from a Unit Vector", Journal of Graphics Tools 4:4 (1999), 33-35.
 	 *
@@ -260,19 +243,35 @@ public class Vec3f implements Vectorf<Vec3f>, Serializable {
 	 * @return A normalised vector which is perpendicular to the provided vector argument.
 	 */
 	public static Vec3f genPerpendicularVectorHM(Vec3f u) {
-		// Get the absolute source vector
-		Vec3f a = Vec3f.abs(u);
+		Vec3f absolute = Vec3f.abs(u);
 
-		if (a.x <= a.y && a.x <= a.z) {
-			return new Vec3f(0.0f, -u.z, u.y).normalise();
+		if (absolute.x <= absolute.y && absolute.x <= absolute.z) {
+			return new Vec3f(0f, -u.z, u.y).normalise();
 		}
-		else if (a.y <= a.x && a.y <= a.z) {
-			return new Vec3f(-u.z, 0.0f, u.x).normalise();
+		else if (absolute.y <= absolute.x && absolute.y <= absolute.z) {
+			return new Vec3f(-u.z, 0f, u.x).normalise();
 		}
 		else {
-			return new Vec3f(-u.y, u.x, 0.0f).normalise();
+			return new Vec3f(-u.y, u.x, 0f).normalise();
 		}
 	}
+
+	// TODO: Fix up and document properly
+	// Further reading: Stark, M. M., "Efficient Construction of Perpendicular Vectors without Branching", Journal of Graphics Tools 14:1 (2009), 55-61.
+	// public static Vec3f genPerpendicularVectorStark(Vec3f u) {
+	//	    Vec3f a = Vec3f.abs(u);
+	//
+	//	    unsigned int = SIGNBIT(a.x - a.y);
+	//	    uint uzx = SIGNBIT(a.x - a.z);
+	//	    uint uzy = SIGNBIT(a.y - a.z);
+	//
+	//	    uint xm = uyx & uzx;
+	//	    uint ym = (1^xm) & uzy;
+	//	    uint zm = 1^(xm & ym);
+	//
+	//	    return cross(u, Vec3f(xm, ym, zm));
+	//	}
+	//TODO: Test if better than genPerpendicularVectorQuick version and document.
 
 	/**
 	 * Method to generate a vector perpendicular to another one using the Frisvad method.
@@ -283,17 +282,17 @@ public class Vec3f implements Vectorf<Vec3f>, Serializable {
 	 * @return A normalised vector which is perpendicular to the provided vector argument.
 	 */
 	public static Vec3f genPerpendicularVectorFrisvad(Vec3f u) {
-		if (u.z < -0.9999999f) // Handle the singularity
-		{
-			return new Vec3f(0.0f, -1.0f, 0.0f);
-			//b2 = Vec3f(-1.0f,  0.0f, 0.0f);
+		// Handle the singularity
+		if (u.z < -0.9999999f) {
+			return new Vec3f(0f, -1f, 0f);
+			//b2 = Vec3f(-1f,  0f, 0f);
 			//return;
 		}
 
-		float a = 1.0f / (1.0f + u.z);
+		float a = 1f / (1f + u.z);
 		//float b = -n.x*n.y*a;
-		return new Vec3f(1.0f - u.x * u.x * a, -u.x * u.y * a, -u.x).normalised();
-		//b2 = Vec3f(b, 1.0f - n.y*n.y*a, -n.y);
+		return new Vec3f(1f - u.x * u.x * a, -u.x * u.y * a, -u.x).normalised();
+		//b2 = Vec3f(b, 1f - n.y*n.y*a, -n.y);
 	}
 
 	/**
@@ -335,11 +334,11 @@ public class Vec3f implements Vectorf<Vec3f>, Serializable {
 	 * @return The angle between the vector in degrees.
 	 */
 	public static float getAngleBetweenDegs(Vec3f v1, Vec3f v2) {
-		return Vec3f.getAngleBetweenRads(v1, v2) * RADS_TO_DEGS;
+		return Vec3f.getAngleBetweenRads(v1, v2) * Utils.RAD_TO_DEG;
 	}
 
 	/**
-	 * Return a signed angle between two vectors within the range -179.9f..180.0f degrees.
+	 * Return a signed angle between two vectors within the range -179.9f..180f degrees.
 	 *
 	 * @param    referenceVector    The baseline vector which we consider to be at zero degrees.
 	 * @param    otherVector        The vector we will use to calculate the signed angle with respect to the reference vector.
@@ -354,34 +353,32 @@ public class Vec3f implements Vectorf<Vec3f>, Serializable {
 
 	/**
 	 * Return an angle limited vector with regard to another vector.
-	 * <p>
 	 *
 	 * @param    vecToLimit        The vector which we will limit to a given angle with regard to the the baseline vector.
 	 * @param    vecBaseline        The vector which will be used as the baseline / frame-of-reference when rotating the vecToLimit.
-	 * @param    angleLimitDegs    The maximum angle which the vecToLimit may be rotated away from the vecBaseline, in degrees.
+	 * @param    angleLimitDegrees    The maximum angle which the vecToLimit may be rotated away from the vecBaseline, in degrees.
 	 * @return The rotated vecToLimit, which is constraint to a maximum of the angleLimitDegs argument.
 	 */
-	public static Vec3f getAngleLimitedUnitVectorDegs(Vec3f vecToLimit, Vec3f vecBaseline, float angleLimitDegs) {
-		// Get the angle between the two vectors
+	public static Vec3f getAngleLimitedUnitVectorDegs(Vec3f vecToLimit, Vec3f vecBaseline, float angleLimitDegrees) {
 		// Note: This will ALWAYS be a positive value between 0 and 180 degrees.
-		float angleBetweenVectorsDegs = Vec3f.getAngleBetweenDegs(vecBaseline, vecToLimit);
+		float angleBetweenVectorsDegrees = Vec3f.getAngleBetweenDegs(vecBaseline, vecToLimit);
 
-		if (angleBetweenVectorsDegs > angleLimitDegs) {
+		if (angleBetweenVectorsDegrees > angleLimitDegrees) {
 			// The axis which we need to rotate around is the one perpendicular to the two vectors - so we're
 			// rotating around the vector which is the cross-product of our two vectors.
 			// Note: We do not have to worry about both vectors being the same or pointing in opposite directions
 			// because if they bones are the same direction they will not have an angle greater than the angle limit,
 			// and if they point opposite directions we will approach but not quite reach the precise max angle
-			// limit of 180.0f (I believe).
+			// limit of 180f (I believe).
 			Vec3f correctionAxis = Vec3f.crossProduct(vecBaseline.normalised(), vecToLimit.normalised()).normalise();
 
 			// Our new vector is the baseline vector rotated by the max allowable angle about the correction axis
-			return Vec3f.rotateAboutAxisDegs(vecBaseline, angleLimitDegs, correctionAxis).normalised();
+			return Vec3f.rotateAboutAxisDegs(vecBaseline, angleLimitDegrees, correctionAxis).normalised();
 		}
 		else // Angle not greater than limit? Just return a normalised version of the vecToLimit
 		{
-			// This may already BE normalised, but we have no way of knowing without calcing the length, so best be safe and normalise.
-			// TODO: If performance is an issue, then I could get the length, and if it's not approx. 1.0f THEN normalise otherwise just return as is.
+			// This may already BE normalised, but we have no way of knowing without calculating the length, so best be safe and normalise.
+			// TODO: If performance is an issue, then I could get the length, and if it's not approx. 1f THEN normalise otherwise just return as is.
 			return vecToLimit.normalised();
 		}
 	}
@@ -390,17 +387,17 @@ public class Vec3f implements Vectorf<Vec3f>, Serializable {
 	 * Rotate a Vec3f about the world-space X-axis by a given angle specified in radians.
 	 *
 	 * @param    source        The vector to rotate.
-	 * @param    angleRads    The angle to rotate the vector in radians.
+	 * @param    angleRadians    The angle to rotate the vector in radians.
 	 * @return A rotated version of the vector.
 	 */
-	public static Vec3f rotateXRads(Vec3f source, float angleRads) {
+	public static Vec3f rotateXRads(Vec3f source, float angleRadians) {
 		// Rotation about the x-axis:
 		// x' = x
 		// y' = y*cos q - z*sin q
 		// z' = y*sin q + z*cos q
 
-		float cosTheta = (float) Math.cos(angleRads);
-		float sinTheta = (float) Math.sin(angleRads);
+		float cosTheta = (float) Math.cos(angleRadians);
+		float sinTheta = (float) Math.sin(angleRadians);
 
 		return new Vec3f(source.x, source.y * cosTheta - source.z * sinTheta, source.y * sinTheta + source.z * cosTheta);
 	}
@@ -409,28 +406,28 @@ public class Vec3f implements Vectorf<Vec3f>, Serializable {
 	 * Rotate a Vec3f about the world-space X-axis by a given angle specified in degrees.
 	 *
 	 * @param    source        The vector to rotate.
-	 * @param    angleDegs    The angle to rotate the vector in degrees.
+	 * @param    angleDegrees    The angle to rotate the vector in degrees.
 	 * @return A rotated version of the vector.
 	 */
-	public static Vec3f rotateXDegs(Vec3f source, float angleDegs) {
-		return Vec3f.rotateXRads(source, angleDegs * DEGS_TO_RADS);
+	public static Vec3f rotateXDegs(Vec3f source, float angleDegrees) {
+		return Vec3f.rotateXRads(source, angleDegrees * Utils.DEG_TO_RAD);
 	}
 
 	/**
 	 * Rotate a Vec3f about the world-space Y-axis by a given angle specified in radians.
 	 *
 	 * @param    source        The vector to rotate.
-	 * @param    angleRads    The angle to rotate the vector in radians.
+	 * @param    angleRadians    The angle to rotate the vector in radians.
 	 * @return A rotated version of the vector.
 	 */
-	public static Vec3f rotateYRads(Vec3f source, float angleRads) {
+	public static Vec3f rotateYRads(Vec3f source, float angleRadians) {
 		// Rotation about the y axis:
 		// x' = z*sin q + x*cos q
 		// y' = y
 		// z' = z*cos q - x*sin q
 
-		float cosTheta = (float) Math.cos(angleRads);
-		float sinTheta = (float) Math.sin(angleRads);
+		float cosTheta = (float) Math.cos(angleRadians);
+		float sinTheta = (float) Math.sin(angleRadians);
 
 		return new Vec3f(source.z * sinTheta + source.x * cosTheta, source.y, source.z * cosTheta - source.x * sinTheta);
 	}
@@ -438,29 +435,29 @@ public class Vec3f implements Vectorf<Vec3f>, Serializable {
 	/**
 	 * Rotate a Vec3f about the world-space Y-axis by a given angle specified in degrees.
 	 *
-	 * @param    source        The vector to rotate.
-	 * @param    angleDegs    The angle to rotate the vector in degrees.
+	 * @param    source         The vector to rotate
+	 * @param    angleDegrees   The angle to rotate the vector
 	 * @return A rotated version of the vector.
 	 */
-	public static Vec3f rotateYDegs(Vec3f source, float angleDegs) {
-		return Vec3f.rotateYRads(source, angleDegs * DEGS_TO_RADS);
+	public static Vec3f rotateYDegs(Vec3f source, float angleDegrees) {
+		return Vec3f.rotateYRads(source, angleDegrees * Utils.DEG_TO_RAD);
 	}
 
 	/**
 	 * Rotate a Vec3f about the world-space Z-axis by a given angle specified in radians.
 	 *
-	 * @param    source        The vector to rotate.
-	 * @param    angleRads    The angle to rotate the vector in radians.
+	 * @param    source     The vector to rotate
+	 * @param    angleRadians  The angle to rotate the vector
 	 * @return A rotated version of the vector.
 	 */
-	public static Vec3f rotateZRads(Vec3f source, float angleRads) {
+	public static Vec3f rotateZRads(Vec3f source, float angleRadians) {
 		// Rotation about the z-axis:
 		// x' = x*cos q - y*sin q
 		// y' = x*sin q + y*cos q
 		// z' = z
 
-		float cosTheta = (float) Math.cos(angleRads);
-		float sinTheta = (float) Math.sin(angleRads);
+		float cosTheta = (float) Math.cos(angleRadians);
+		float sinTheta = (float) Math.sin(angleRadians);
 
 		return new Vec3f(source.x * cosTheta - source.y * sinTheta, source.x * sinTheta + source.y * cosTheta, source.z);
 	}
@@ -468,50 +465,28 @@ public class Vec3f implements Vectorf<Vec3f>, Serializable {
 	/**
 	 * Rotate a Vec3f about the world-space Z-axis by a given angle specified in degrees.
 	 *
-	 * @param    source        The vector to rotate.
-	 * @param    angleDegs    The angle to rotate the vector in degrees.
+	 * @param    source         The vector to rotate.
+	 * @param    angleDegrees   The angle to rotate the vector in degrees.
 	 * @return A rotated version of the vector.
 	 */
-	public static Vec3f rotateZDegs(Vec3f source, float angleDegs) {
-		return Vec3f.rotateZRads(source, angleDegs * DEGS_TO_RADS);
+	public static Vec3f rotateZDegs(Vec3f source, float angleDegrees) {
+		return Vec3f.rotateZRads(source, angleDegrees * Utils.DEG_TO_RAD);
 	}
-
-	// TODO: Fix up and document properly
-	// Further reading: Stark, M. M., "Efficient Construction of Perpendicular Vectors without Branching", Journal of Graphics Tools 14:1 (2009), 55-61.
-	//	Vec3f genPerpendicularVectorStark(Vec3f u)
-	//	{
-	//		// Get the absolute source vector
-	//	    Vec3f a = Vec3f.abs(u);
-	//
-	//	    unsigned int = SIGNBIT(a.x - a.y);
-	//	    uint uzx = SIGNBIT(a.x - a.z);
-	//	    uint uzy = SIGNBIT(a.y - a.z);
-	//
-	//	    uint xm = uyx & uzx;
-	//	    uint ym = (1^xm) & uzy;
-	//	    uint zm = 1^(xm & ym);
-	//
-	//	    float3 v = cross(u, float3(xm, ym, zm));
-	//	    return v;
-	//	}
-
-
-	//TODO: Test if better than Quick version and document.
 
 	/**
 	 * Rotate a source vector an amount in radians about an arbitrary axis.
 	 *
-	 * @param source       The vector to rotate.
-	 * @param angleRads    The amount of rotation to perform in radians.
-	 * @param rotationAxis The rotation axis.
+	 * @param source        The vector to rotate.
+	 * @param angleRadians  The amount of rotation to perform in radians.
+	 * @param rotationAxis  The rotation axis.
 	 * @return The source vector rotated about the rotation axis.
 	 */
-	public static Vec3f rotateAboutAxisRads(Vec3f source, float angleRads, Vec3f rotationAxis) {
+	public static Vec3f rotateAboutAxisRads(Vec3f source, float angleRadians, Vec3f rotationAxis) {
 		Mat3f rotationMatrix = new Mat3f();
 
-		float sinTheta = (float) Math.sin(angleRads);
-		float cosTheta = (float) Math.cos(angleRads);
-		float oneMinusCosTheta = 1.0f - cosTheta;
+		float sinTheta = (float) Math.sin(angleRadians);
+		float cosTheta = (float) Math.cos(angleRadians);
+		float oneMinusCosTheta = 1f - cosTheta;
 
 		// It's quicker to pre-calc these and reuse than calculate x * y, then y * x later (same thing).
 		float xyOne = rotationAxis.x * rotationAxis.y * oneMinusCosTheta;
@@ -540,13 +515,13 @@ public class Vec3f implements Vectorf<Vec3f>, Serializable {
 	/**
 	 * Rotate a source vector an amount in degrees about an arbitrary axis.
 	 *
-	 * @param source       The vector to rotate.
-	 * @param angleDegs    The amount of rotation to perform in degrees.
-	 * @param rotationAxis The rotation axis.
+	 * @param source        The vector to rotate.
+	 * @param angleDegrees  The amount of rotation to perform in degrees.
+	 * @param rotationAxis  The rotation axis.
 	 * @return The source vector rotated about the rotation axis.
 	 */
-	public static Vec3f rotateAboutAxisDegs(Vec3f source, float angleDegs, Vec3f rotationAxis) {
-		return Vec3f.rotateAboutAxisRads(source, angleDegs * DEGS_TO_RADS, rotationAxis);
+	public static Vec3f rotateAboutAxisDegs(Vec3f source, float angleDegrees, Vec3f rotationAxis) {
+		return Vec3f.rotateAboutAxisRads(source, angleDegrees * Utils.DEG_TO_RAD, rotationAxis);
 	}
 
 	/**
@@ -630,14 +605,14 @@ public class Vec3f implements Vectorf<Vec3f>, Serializable {
 	 */
 	@Override
 	public boolean approximatelyEquals(Vec3f v, float tolerance) {
-		if (tolerance < 0.0f) {
-			throw new IllegalArgumentException("Equality threshold must be greater than or equal to 0.0f");
+		if (tolerance < 0f) {
+			throw new IllegalArgumentException("Equality threshold must be greater than or equal to 0f");
 		}
 
 		// Get the absolute differences between the components
-		float xDiff = Math.abs(this.x - v.x);
-		float yDiff = Math.abs(this.y - v.y);
-		float zDiff = Math.abs(this.z - v.z);
+		float xDiff = Math.abs(x - v.x);
+		float yDiff = Math.abs(y - v.y);
+		float zDiff = Math.abs(z - v.z);
 
 		// Return true or false
 		return (xDiff < tolerance && yDiff < tolerance && zDiff < tolerance);
@@ -651,23 +626,18 @@ public class Vec3f implements Vectorf<Vec3f>, Serializable {
 	 * @return A boolean indicating whether the length of this vector is approximately the same as that of the provided value.
 	 */
 	public boolean lengthIsApproximately(float value, float tolerance) {
-		// Check for a valid tolerance
-		if (tolerance < 0.0f) {
+		if (tolerance < 0f) {
 			throw new IllegalArgumentException("Comparison tolerance cannot be less than zero.");
 		}
 
-		if (Math.abs(this.length() - value) < tolerance) {
-			return true;
-		}
-
-		return false;
+		return Math.abs(length() - value) < tolerance;
 	}
 
 	/**
-	 * Set all components of this vector to 0.0f
+	 * Set all components of this vector to 0f
 	 */
 	public void zero() {
-		x = y = z = 0.0f;
+		x = y = z = 0f;
 	}
 
 	/**
@@ -706,7 +676,7 @@ public class Vec3f implements Vectorf<Vec3f>, Serializable {
 		// magnitude to get the normalised value between -1 and +1.
 		// Note: If the vector has a magnitude of zero we simply return it - we
 		// could instead throw a RuntimeException here... but it's better to continue.
-		if (magnitude > 0.0f) {
+		if (magnitude > 0f) {
 			x /= magnitude;
 			y /= magnitude;
 			z /= magnitude;
@@ -751,10 +721,12 @@ public class Vec3f implements Vectorf<Vec3f>, Serializable {
 	 * @param    v2    The second location vector
 	 * @return boolean
 	 */
+	@SuppressWarnings("RedundantIfStatement")
 	boolean withinManhattanDistance(Vec3f v1, Vec3f v2, float distance) {
 		if (Math.abs(v2.x - v1.x) > distance) return false; // Too far in x direction
 		if (Math.abs(v2.y - v1.y) > distance) return false; // Too far in y direction
 		if (Math.abs(v2.z - v1.z) > distance) return false; // Too far in z direction
+
 		return true;
 	}
 
@@ -767,27 +739,27 @@ public class Vec3f implements Vectorf<Vec3f>, Serializable {
 	}
 
 	/**
-	 * Return the global pitch of this vector about the global X-Axis. The returned value is within the range -179.9f..180.0f
+	 * Return the global pitch of this vector about the global X-Axis. The returned value is within the range -179.9f..180f
 	 * degrees.
 	 *
 	 * @return The pitch of the vector in degrees.
 	 **/
 	public float getGlobalPitchDegs() {
-		Vec3f xProjected = this.projectOntoPlane(X_AXIS);
+		Vec3f xProjected = projectOntoPlane(X_AXIS);
 		float pitch = Vec3f.getAngleBetweenDegs(Z_AXIS.negated(), xProjected);
-		return xProjected.y < 0.0f ? -pitch : pitch;
+		return xProjected.y < 0f ? -pitch : pitch;
 	}
 
 	/**
-	 * Return the global yaw of this vector about the global Y-Axis. The returned value is within the range -179.9f..180.0f
+	 * Return the global yaw of this vector about the global Y-Axis. The returned value is within the range -179.9f..180f
 	 * degrees.
 	 *
 	 * @return The yaw of the vector in degrees.
 	 **/
 	public float getGlobalYawDegs() {
-		Vec3f yProjected = this.projectOntoPlane(Y_AXIS);
+		Vec3f yProjected = projectOntoPlane(Y_AXIS);
 		float yaw = Vec3f.getAngleBetweenDegs(Z_AXIS.negated(), yProjected);
-		return yProjected.x < 0.0f ? -yaw : yaw;
+		return yProjected.x < 0f ? -yaw : yaw;
 	}
 
 	/**
@@ -795,7 +767,7 @@ public class Vec3f implements Vectorf<Vec3f>, Serializable {
 	 */
 	@Override
 	public Vec3f plus(Vec3f v) {
-		return new Vec3f(this.x + v.x, this.y + v.y, this.z + v.z);
+		return new Vec3f(x + v.x, y + v.y, z + v.z);
 	}
 
 	/**
@@ -803,7 +775,7 @@ public class Vec3f implements Vectorf<Vec3f>, Serializable {
 	 */
 	@Override
 	public Vec3f minus(Vec3f v) {
-		return new Vec3f(this.x - v.x, this.y - v.y, this.z - v.z);
+		return new Vec3f(x - v.x, y - v.y, z - v.z);
 	}
 
 	/**
@@ -813,7 +785,7 @@ public class Vec3f implements Vectorf<Vec3f>, Serializable {
 	 * @return The result of multiplying this vector by the 'v' vector.
 	 **/
 	public Vec3f times(Vec3f v) {
-		return new Vec3f(this.x * v.x, this.y * v.y, this.z * v.z);
+		return new Vec3f(x * v.x, y * v.y, z * v.z);
 	}
 
 	/**
@@ -821,7 +793,7 @@ public class Vec3f implements Vectorf<Vec3f>, Serializable {
 	 */
 	@Override
 	public Vec3f times(float scale) {
-		return new Vec3f(this.x * scale, this.y * scale, this.z * scale);
+		return new Vec3f(x * scale, y * scale, z * scale);
 	}
 
 	/**
@@ -829,7 +801,7 @@ public class Vec3f implements Vectorf<Vec3f>, Serializable {
 	 */
 	@Override
 	public Vec3f dividedBy(float value) {
-		return new Vec3f(this.x / value, this.y / value, this.z / value);
+		return new Vec3f(x / value, y / value, z / value);
 	}
 
 	/**
@@ -843,21 +815,20 @@ public class Vec3f implements Vectorf<Vec3f>, Serializable {
 	 * @return A projected version of this vector.
 	 */
 	public Vec3f projectOntoPlane(Vec3f planeNormal) {
-		if (!(planeNormal.length() > 0.0f)) {
+		if (!(planeNormal.length() > 0f)) {
 			throw new IllegalArgumentException("Plane normal cannot be a zero vector.");
 		}
 
 		// Projection of vector b onto plane with normal n is defined as: b - ( b.n / ( |n| squared )) * n
 		// Note: |n| is length or magnitude of the vector n, NOT its (component-wise) absolute value
-		Vec3f b = this.normalised();
+		Vec3f b = normalised();
 		Vec3f n = planeNormal.normalised();
 		return b.minus(n.times(Vec3f.dotProduct(b, planeNormal))).normalise();
 
-		/** IMPORTANT: We have to be careful here - even code like the below (where dotProduct uses normalised
+		/* IMPORTANT: We have to be careful here - even code like the below (where dotProduct uses normalised
 		 *             versions of 'this' and planeNormal is off by enough to make the IK solutions oscillate:
 		 *
-		 *             return this.minus( planeNormal.times( Vec3f.dotProduct(this, planeNormal) ) ).normalised();
-		 *
+		 *             return minus(planeNormal.times(Vec3f.dotProduct(this, planeNormal))).normalised();
 		 */
 
 		// Note: For non-normalised plane vectors we can use:
@@ -872,9 +843,9 @@ public class Vec3f implements Vectorf<Vec3f>, Serializable {
 	 * @param    max    The maximum value for any given component (exclusive, i.e. a max of 5.0f will be assigned values up to 4.9999f or such).
 	 **/
 	public void randomise(float min, float max) {
-		this.x = Utils.randRange(min, max);
-		this.y = Utils.randRange(min, max);
-		this.z = Utils.randRange(min, max);
+		x = Utils.randRange(min, max);
+		y = Utils.randRange(min, max);
+		z = Utils.randRange(min, max);
 	}
 
 	@Override
@@ -895,7 +866,7 @@ public class Vec3f implements Vectorf<Vec3f>, Serializable {
 
 	@Override
 	public String toString() {
-		return "x: " + df.format(x) + ", y: " + df.format(y) + ", z: " + df.format(z);
+		return "x: " + Utils.df.format(x) + ", y: " + Utils.df.format(y) + ", z: " + Utils.df.format(z);
 	}
 
 }

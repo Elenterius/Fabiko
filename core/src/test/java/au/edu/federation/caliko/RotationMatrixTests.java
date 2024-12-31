@@ -2,8 +2,8 @@ package au.edu.federation.caliko;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-import au.edu.federation.utils.Mat3f;
-import au.edu.federation.utils.Vec3f;
+import au.edu.federation.caliko.math.Mat3f;
+import au.edu.federation.caliko.math.Vec3f;
 import org.junit.jupiter.api.Test;
 
 public class RotationMatrixTests {
