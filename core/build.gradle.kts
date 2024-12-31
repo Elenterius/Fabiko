@@ -3,6 +3,7 @@
 plugins {
     id("caliko-conventions")
     `java-library`
+    alias(libs.plugins.jmh)
 }
 
 base {
@@ -20,4 +21,12 @@ dependencies {
 
 tasks.named<Test>("test") {
     useJUnitPlatform()
+}
+
+jmh {
+//    humanOutputFile = project.layout.buildDirectory.file("reports/jmh/human.txt")
+//    resultsFile = project.layout.buildDirectory.file("reports/jmh/results.json")
+
+    //we pick json for displaying the results in the JMH Visualizer
+    resultFormat = "json" //text, csv, scsv, json, latex
 }

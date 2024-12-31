@@ -347,7 +347,9 @@ public class FabrikChain3D implements FabrikChain<FabrikBone3D, Vec3f, FabrikJoi
 	 * @param	length		The length of the new bone
 	 */
 	@Override
-	public void addConsecutiveBone(Vec3f directionUV, float length) { addConsecutiveBone(directionUV, length, new Colour4f() ); }
+	public void addConsecutiveBone(Vec3f directionUV, float length) {
+		addConsecutiveBone(directionUV, length, new Colour4f());
+	}
 	
 	/**
 	 * Add a consecutive bone to the end of this IK chain given the direction unit vector and length of the new bone to add.
@@ -1296,9 +1298,8 @@ public class FabrikChain3D implements FabrikChain<FabrikBone3D, Vec3f, FabrikJoi
 	 * @param	targetZ	The z location of the target
 	 * @return			The resulting distance between the end effector and the new target location after solving the IK chain.
 	 */
-	public float solveForTarget(float targetX, float targetY, float targetZ)
-	{
-		return solveForTarget( new Vec3f(targetX, targetY, targetZ) );
+	public float solveForTarget(float targetX, float targetY, float targetZ) {
+		return solveForTarget(new Vec3f(targetX, targetY, targetZ));
 	}
 
 	/**
@@ -2109,4 +2110,4 @@ public class FabrikChain3D implements FabrikChain<FabrikBone3D, Vec3f, FabrikJoi
     return true;
   }	
 
-} // End of FabrikChain3D class
+}

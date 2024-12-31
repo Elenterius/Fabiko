@@ -1,6 +1,7 @@
 package au.edu.federation.utils;
 
 import java.text.DecimalFormat;
+import java.util.Objects;
 
 /** 
  * A custom 3x3 matrix.
@@ -18,18 +19,18 @@ import java.text.DecimalFormat;
  * @version 0.4 - 28/10/2018
  */
 
-public class Mat3f
-{
+public class Mat3f {
+
 	private static final DecimalFormat df   = new DecimalFormat("0.000");
 	private static final String NEW_LINE    = System.lineSeparator();	
-	private static final float DEGS_TO_RADS = (float)Math.PI / 180.0f;
+	private static final float DEGS_TO_RADS = (float) Math.PI / 180f;
 
 	public float m00, m01, m02; // First  column - typically the direction of the positive X-axis
 	public float m10, m11, m12; // Second column - typically the direction of the positive Y-axis
 	public float m20, m21, m22; // Third  column - typically the direction of the positive Z-axis
 
 	/** Default constructor - all matrix elements are set to 0.0f. */
-	public Mat3f() { /* Java implicitly sets float primitives to 0.0f on creation */ }
+	public Mat3f() {}
 
 	/** 
 	 * Constructor which sets the given value across the diagonal and zeroes the rest of the matrix.
@@ -470,4 +471,25 @@ public class Mat3f
 		sb.append("Z Axis: " + df.format(m20) + ",\t" + df.format(m21) + ",\t" + df.format(m22) + NEW_LINE);
 		return sb.toString();
 	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (!(o instanceof Mat3f mat3f)) return false;
+
+		return Float.compare(m00, mat3f.m00) == 0
+				&& Float.compare(m01, mat3f.m01) == 0
+				&& Float.compare(m02, mat3f.m02) == 0
+				&& Float.compare(m10, mat3f.m10) == 0
+				&& Float.compare(m11, mat3f.m11) == 0
+				&& Float.compare(m12, mat3f.m12) == 0
+				&& Float.compare(m20, mat3f.m20) == 0
+				&& Float.compare(m21, mat3f.m21) == 0
+				&& Float.compare(m22, mat3f.m22) == 0;
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(m00, m01, m02, m10, m11, m12, m20, m21, m22);
+	}
+
 }
