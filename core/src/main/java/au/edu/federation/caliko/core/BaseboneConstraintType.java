@@ -1,4 +1,4 @@
-package au.edu.federation.caliko;
+package au.edu.federation.caliko.core;
 
 /**
  * @author jsalvo

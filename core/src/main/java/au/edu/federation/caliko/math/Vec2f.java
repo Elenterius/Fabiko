@@ -1,8 +1,7 @@
 package au.edu.federation.caliko.math;
 
+import au.edu.federation.caliko.utils.MathUtil;
 import au.edu.federation.caliko.utils.Utils;
-
-import java.text.DecimalFormat;
 
 //FIXME: Need to incorporate the following into Vec2f / FabrikChain2D:
 // - NORMALISE corrected constraint angle to stop jitter / flip-out
@@ -112,7 +111,7 @@ public class Vec2f implements Vectorf<Vec2f> {
 	 * @return float
 	 */
 	public static float getUnsignedAngleBetweenVectorsDegs(Vec2f v1, Vec2f v2) {
-		return (float) Math.acos(Vec2f.normalised(v1).dot(Vec2f.normalised(v2))) * Utils.RAD_TO_DEG;
+		return (float) Math.acos(Vec2f.normalised(v1).dot(Vec2f.normalised(v2))) * MathUtil.RAD_TO_DEG;
 	}
 
 	/**
@@ -199,7 +198,7 @@ public class Vec2f implements Vectorf<Vec2f> {
 		// z' = z
 
 		// Convert the rotation angle from degrees to radians
-		float angleRads = angleDegs * Utils.DEG_TO_RAD;
+		float angleRads = angleDegs * MathUtil.DEG_TO_RAD;
 
 		// Pre-calc any expensive calculations we use more than once
 		float cosTheta = (float) Math.cos(angleRads);
@@ -341,7 +340,7 @@ public class Vec2f implements Vectorf<Vec2f> {
 		Vec2f otherVectorUV = Vec2f.normalised(otherVector);
 
 		// Calculate the unsigned angle between the vectors as the arc-cosine of their dot product
-		float unsignedAngleDegs = (float) Math.acos(thisVectorUV.dot(otherVectorUV)) * Utils.RAD_TO_DEG;
+		float unsignedAngleDegs = (float) Math.acos(thisVectorUV.dot(otherVectorUV)) * MathUtil.RAD_TO_DEG;
 
 		// Calculate and return the signed angle between the two vectors using the zcross method
 		if (Vec2f.zcross(thisVectorUV, otherVectorUV) == 1) {

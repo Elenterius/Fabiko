@@ -1,9 +1,9 @@
 package au.edu.federation.caliko.utils;
 
-import java.io.*;
+import au.edu.federation.caliko.core.FabrikChain;
+import au.edu.federation.caliko.core.FabrikStructure;
 
-import au.edu.federation.caliko.FabrikChain;
-import au.edu.federation.caliko.FabrikStructure;
+import java.io.*;
 
 /**
  * Utility class to serialize and de-serialize IK structures and chains.

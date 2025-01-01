@@ -1,5 +1,6 @@
 package au.edu.federation.caliko.math;
 
+import au.edu.federation.caliko.utils.MathUtil;
 import au.edu.federation.caliko.utils.Utils;
 
 import java.text.DecimalFormat;
@@ -332,7 +333,7 @@ public class Mat4f {
 	 * @return A rotated version of the provided matrix.
 	 */
 	public static Mat4f rotateAboutWorldAxisDegs(Mat4f matrix, float angleDegs, Vec3f worldAxis) {
-		return rotateAboutWorldAxisRads(matrix, angleDegs * Utils.DEG_TO_RAD, worldAxis);
+		return rotateAboutWorldAxisRads(matrix, angleDegs * MathUtil.DEG_TO_RAD, worldAxis);
 	}
 
 	/**
@@ -364,7 +365,7 @@ public class Mat4f {
 	 * @return A rotated matrix.
 	 */
 	public static Mat4f rotateMatrixAboutLocalAxisDegs(Mat4f matrix, float angleDegs, Vec3f localAxis) {
-		return Mat4f.rotateMatrixAboutLocalAxisDegs(matrix, angleDegs * Utils.DEG_TO_RAD, localAxis);
+		return Mat4f.rotateMatrixAboutLocalAxisDegs(matrix, angleDegs * MathUtil.DEG_TO_RAD, localAxis);
 	}
 
 	/**
@@ -537,7 +538,7 @@ public class Mat4f {
 		float frustumLength = zFar - zNear;
 
 		// Calculate half the vertical field of view in radians
-		float halfVertFoVRads = (vertFoVDegs / 2.0f) * Utils.DEG_TO_RAD;
+		float halfVertFoVRads = (vertFoVDegs / 2.0f) * MathUtil.DEG_TO_RAD;
 
 		// There is no built in Math.cot() in Java, but co-tangent is simply 1 over tangent
 		float cotangent = 1.0f / (float) Math.tan(halfVertFoVRads);
@@ -1319,7 +1320,7 @@ public class Mat4f {
 	 * @return This rotated matrix
 	 */
 	public Mat4f rotateAboutLocalAxisDegs(float angleDegs, Vec3f localAxis) {
-		return rotateAboutLocalAxisRads(angleDegs * Utils.DEG_TO_RAD, localAxis);
+		return rotateAboutLocalAxisRads(angleDegs * MathUtil.DEG_TO_RAD, localAxis);
 	}
 
 	/**
@@ -1423,17 +1424,12 @@ public class Mat4f {
 	 */
 	@Override
 	public String toString() {
-		// Note: '0' means put a 0 there if it's zero, '#' means omit if zero
-		DecimalFormat df = new DecimalFormat("0.000");
+		DecimalFormat df = Utils.df;
 
-		StringBuilder sb = new StringBuilder();
-
-		sb.append("X-axis: (" + df.format(m00) + ", " + df.format(m01) + ", " + df.format(m02) + ", " + df.format(m03) + ")" + Utils.NEW_LINE);
-		sb.append("Y-axis: (" + df.format(m10) + ", " + df.format(m11) + ", " + df.format(m12) + ", " + df.format(m13) + ")" + Utils.NEW_LINE);
-		sb.append("Z-axis: (" + df.format(m20) + ", " + df.format(m21) + ", " + df.format(m22) + ", " + df.format(m23) + ")" + Utils.NEW_LINE);
-		sb.append("Origin: (" + df.format(m30) + ", " + df.format(m31) + ", " + df.format(m32) + ", " + df.format(m33) + ")" + Utils.NEW_LINE);
-
-		return sb.toString();
+		return "X-axis: (" + df.format(m00) + ", " + df.format(m01) + ", " + df.format(m02) + ", " + df.format(m03) + ")" + Utils.NEW_LINE +
+				"Y-axis: (" + df.format(m10) + ", " + df.format(m11) + ", " + df.format(m12) + ", " + df.format(m13) + ")" + Utils.NEW_LINE +
+				"Z-axis: (" + df.format(m20) + ", " + df.format(m21) + ", " + df.format(m22) + ", " + df.format(m23) + ")" + Utils.NEW_LINE +
+				"Origin: (" + df.format(m30) + ", " + df.format(m31) + ", " + df.format(m32) + ", " + df.format(m33) + ")" + Utils.NEW_LINE;
 	}
 
-} // End of Mat4f class
+}

@@ -1,16 +1,17 @@
 package au.edu.federation.caliko.visualisation;
 
-import java.nio.FloatBuffer;
-
-import au.edu.federation.caliko.utils.Colour4f;
 import au.edu.federation.caliko.math.Mat4f;
-import au.edu.federation.caliko.utils.Utils;
 import au.edu.federation.caliko.math.Vec3f;
+import au.edu.federation.caliko.utils.Colour4f;
+import au.edu.federation.caliko.utils.MathUtil;
+
+import java.nio.FloatBuffer;
 
 import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.opengl.GL15.*;
 import static org.lwjgl.opengl.GL20.*;
-import static org.lwjgl.opengl.GL30.*;
+import static org.lwjgl.opengl.GL30.glBindVertexArray;
+import static org.lwjgl.opengl.GL30.glGenVertexArrays;
 
 /**
  * Class to draw a point in 3D space.
@@ -74,14 +75,14 @@ public class Point3D
 		pointData = new float[NUM_VERTICES * COMPONENT_COUNT];
 
 		// Create the float buffer which will hold the geometry data to draw
-		vertexFloatBuffer = Utils.createFloatBuffer(NUM_VERTICES * COMPONENT_COUNT);
+		vertexFloatBuffer = MathUtil.createFloatBuffer(NUM_VERTICES * COMPONENT_COUNT);
 
 		// Create the float buffer which will hold the ModelViewProjection matrix
-		mvpMatrixFloatBuffer = Utils.createFloatBuffer(16);
+		mvpMatrixFloatBuffer = MathUtil.createFloatBuffer(16);
 
 		// Create the FloatBuffer to hold the current OpenGL GL_POINT_SIZE so we can restore it later
 		// Note: LWJGL minimum size to get OpenGL data is 16, even though we only want to store 1 float.
-		pointSizeFloatBuffer = Utils.createFloatBuffer(16);			
+		pointSizeFloatBuffer = MathUtil.createFloatBuffer(16);
 
 		// ----- Shader program setup -----
 

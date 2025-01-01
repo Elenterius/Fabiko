@@ -117,7 +117,7 @@ public class Colour4f implements Serializable {
 	}
 
 	private static float clamp(final float componentValue) {
-		return Utils.clamp(componentValue, MIN_COMPONENT_VALUE, MAX_COMPONENT_VALUE);
+		return MathUtil.clamp(componentValue, MIN_COMPONENT_VALUE, MAX_COMPONENT_VALUE);
 	}
 
 	/**

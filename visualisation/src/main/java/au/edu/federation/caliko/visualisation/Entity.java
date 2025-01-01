@@ -1,15 +1,17 @@
 package au.edu.federation.caliko.visualisation;
 
-import java.nio.FloatBuffer;
-
 import au.edu.federation.caliko.math.Mat3f;
 import au.edu.federation.caliko.math.Mat4f;
-import au.edu.federation.caliko.utils.Utils;
+import au.edu.federation.caliko.utils.MathUtil;
 
-import static org.lwjgl.opengl.GL11.*;
+import java.nio.FloatBuffer;
+
+import static org.lwjgl.opengl.GL11.GL_FLOAT;
+import static org.lwjgl.opengl.GL11.glDrawArrays;
 import static org.lwjgl.opengl.GL15.*;
 import static org.lwjgl.opengl.GL20.*;
-import static org.lwjgl.opengl.GL30.*;
+import static org.lwjgl.opengl.GL30.glBindVertexArray;
+import static org.lwjgl.opengl.GL30.glGenVertexArrays;
 
 /**
  * A wrapper class which takes a Model and a ShaderProgram, then performs Vertex Array Object setup in order to
@@ -80,10 +82,10 @@ public class Entity
 		// only instantiate them on first entity (they get overwritten per entity as and when required).
 		if (0 == numEntities)
 		{
-			projectionMatrixFB = Utils.createFloatBuffer(16);
-			viewMatrixFB       = Utils.createFloatBuffer(16);
-			modelMatrixFB      = Utils.createFloatBuffer(16);
-			normalMatrixFB     = Utils.createFloatBuffer(9);
+			projectionMatrixFB = MathUtil.createFloatBuffer(16);
+			viewMatrixFB = MathUtil.createFloatBuffer(16);
+			modelMatrixFB = MathUtil.createFloatBuffer(16);
+			normalMatrixFB = MathUtil.createFloatBuffer(9);
 
 			++numEntities;
 		}
@@ -108,7 +110,7 @@ public class Entity
 	private void setupModelFloatBuffers()
 	{
 		// Set up our vertex buffer. Note: The size is * 3 because there are 3 floats per vertex.
-		mVertexFloatBuffer = Utils.createFloatBuffer( mModel.getNumVertices() * 3);
+		mVertexFloatBuffer = MathUtil.createFloatBuffer(mModel.getNumVertices() * 3);
 
 		// Transfer the data into the float buffer and flip it ready for use
 		mVertexFloatBuffer.put( mModel.getVertexFloatArray() );
@@ -118,7 +120,7 @@ public class Entity
 		if ( mModel.hasNormals() )
 		{
 			// Do the same for our normal buffer. Note: The size is * 3 because there are 3 floats per normal.
-			mNormalFloatBuffer = Utils.createFloatBuffer( mModel.getNumNormals() * 3);
+			mNormalFloatBuffer = MathUtil.createFloatBuffer(mModel.getNumNormals() * 3);
 			mNormalFloatBuffer.put( mModel.getNormalFloatArray() );
 			mNormalFloatBuffer.flip();
 		}

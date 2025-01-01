@@ -1,14 +1,16 @@
 package au.edu.federation.caliko.visualisation;
 
-import java.nio.FloatBuffer;
-
 import au.edu.federation.caliko.math.Mat4f;
+import au.edu.federation.caliko.utils.MathUtil;
 import au.edu.federation.caliko.utils.Utils;
+
+import java.nio.FloatBuffer;
 
 import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.opengl.GL15.*;
 import static org.lwjgl.opengl.GL20.*;
-import static org.lwjgl.opengl.GL30.*;
+import static org.lwjgl.opengl.GL30.glBindVertexArray;
+import static org.lwjgl.opengl.GL30.glGenVertexArrays;
 
 public class Grid
 {
@@ -24,7 +26,7 @@ public class Grid
 	private static FloatBuffer mvpMatrixFB;
 	
 	/** The FloatBuffer used to get and restore the current line width. */
-	private static FloatBuffer currentLineWidthFB = Utils.createFloatBuffer(16);
+	private static FloatBuffer currentLineWidthFB = MathUtil.createFloatBuffer(16);
 
 	//Define our vertex shader source code
 	//Note: The R" notation is for raw strings and preserves all spaces, indentation,
@@ -56,7 +58,7 @@ public class Grid
 	
 	static {
 		// Create our MVP matrix float buffer
-		mvpMatrixFB = Utils.createFloatBuffer(16);
+		mvpMatrixFB = MathUtil.createFloatBuffer(16);
 
 		// Set up out shader
 		gridShaderProgram = new ShaderProgram();
@@ -145,7 +147,7 @@ public class Grid
 		}
 
 		// Transfer the data into the vertex float buffer
-		vertexFloatBuffer = Utils.createFloatBuffer(counter);
+		vertexFloatBuffer = MathUtil.createFloatBuffer(counter);
 		vertexFloatBuffer.put( gridArray );
 		vertexFloatBuffer.flip();
 

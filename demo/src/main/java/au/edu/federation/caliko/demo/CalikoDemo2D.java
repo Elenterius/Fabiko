@@ -1,11 +1,11 @@
 package au.edu.federation.caliko.demo;
 
-import au.edu.federation.caliko.FabrikStructure2D;
+import au.edu.federation.caliko.core.FabrikStructure2D;
 import au.edu.federation.caliko.demo2d.CalikoDemoStructure2D;
 import au.edu.federation.caliko.demo2d.CalikoDemoStructure2DFactory;
+import au.edu.federation.caliko.utils.Utils;
 import au.edu.federation.caliko.visualisation.FabrikLine2D;
 import au.edu.federation.caliko.visualisation.Point2D;
-import au.edu.federation.caliko.utils.Utils;
 
 /**
  * Class to demonstrate some of the features of the Caliko library in 2D.

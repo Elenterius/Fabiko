@@ -1,18 +1,12 @@
 package au.edu.federation.caliko.demo;
 
-import au.edu.federation.caliko.FabrikStructure3D;
+import au.edu.federation.caliko.core.FabrikStructure3D;
 import au.edu.federation.caliko.demo3d.CalikoDemoStructure3D;
 import au.edu.federation.caliko.demo3d.CalikoDemoStructure3DFactory;
-import au.edu.federation.caliko.visualisation.Axis;
-import au.edu.federation.caliko.visualisation.Camera;
-import au.edu.federation.caliko.visualisation.FabrikConstraint3D;
-import au.edu.federation.caliko.visualisation.FabrikLine3D;
-import au.edu.federation.caliko.visualisation.FabrikModel3D;
-import au.edu.federation.caliko.visualisation.Grid;
-import au.edu.federation.caliko.visualisation.MovingTarget3D;
 import au.edu.federation.caliko.math.Mat4f;
-import au.edu.federation.caliko.utils.Utils;
 import au.edu.federation.caliko.math.Vec3f;
+import au.edu.federation.caliko.utils.Utils;
+import au.edu.federation.caliko.visualisation.*;
 
 /**
  * Class to demonstrate some of the features of the Caliko library in 3D.

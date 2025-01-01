@@ -1,18 +1,12 @@
 package au.edu.federation.caliko.demo;
 
-import org.lwjgl.glfw.GLFWCursorPosCallback;
-import org.lwjgl.glfw.GLFWErrorCallback;
-import org.lwjgl.glfw.GLFWKeyCallback;
-import org.lwjgl.glfw.GLFWMouseButtonCallback;
-import org.lwjgl.glfw.GLFWVidMode;
-import org.lwjgl.glfw.GLFWWindowSizeCallback;
-import org.lwjgl.opengl.GL;
-
 import au.edu.federation.caliko.demo2d.CalikoDemoStructure2DFactory.CalikoDemoStructure2DEnum;
 import au.edu.federation.caliko.demo3d.CalikoDemoStructure3DFactory.CalikoDemoStructure3DEnum;
 import au.edu.federation.caliko.math.Mat4f;
-import au.edu.federation.caliko.utils.Utils;
 import au.edu.federation.caliko.math.Vec2f;
+import au.edu.federation.caliko.utils.MathUtil;
+import org.lwjgl.glfw.*;
+import org.lwjgl.opengl.GL;
 
 import static org.lwjgl.glfw.GLFW.*;
 import static org.lwjgl.opengl.GL11.*;
@@ -340,8 +334,8 @@ public class OpenGLWindow
         		else // ...while in the 2D demo we update the 2D target.
         		{	
         			// Convert the mouse position in screen-space coordinates to our orthographic world-space coordinates
-					worldSpaceMousePos.set(  Utils.convertRange(screenSpaceMousePos.x, 0.0f,  mWindowWidth, -mOrthoExtent, mOrthoExtent),
-                                             -Utils.convertRange(screenSpaceMousePos.y, 0.0f, mWindowHeight, -mOrthoExtent, mOrthoExtent) );
+			        worldSpaceMousePos.set(MathUtil.convertRange(screenSpaceMousePos.x, 0.0f, mWindowWidth, -mOrthoExtent, mOrthoExtent),
+					        -MathUtil.convertRange(screenSpaceMousePos.y, 0.0f, mWindowHeight, -mOrthoExtent, mOrthoExtent));
 					
 					CalikoDemo2D.mStructure.solveForTarget(worldSpaceMousePos);
         		}
@@ -381,8 +375,8 @@ public class OpenGLWindow
 				else
 				{	
         			// Convert the mouse position in screen-space coordinates to our orthographic world-space coordinates
-					worldSpaceMousePos.set(  Utils.convertRange(screenSpaceMousePos.x, 0.0f,  mWindowWidth, -mOrthoExtent, mOrthoExtent),
-                                             -Utils.convertRange(screenSpaceMousePos.y, 0.0f, mWindowHeight, -mOrthoExtent, mOrthoExtent) );
+					worldSpaceMousePos.set(MathUtil.convertRange(screenSpaceMousePos.x, 0.0f, mWindowWidth, -mOrthoExtent, mOrthoExtent),
+							-MathUtil.convertRange(screenSpaceMousePos.y, 0.0f, mWindowHeight, -mOrthoExtent, mOrthoExtent));
 					
 					CalikoDemo2D.mStructure.solveForTarget(worldSpaceMousePos);
 				}

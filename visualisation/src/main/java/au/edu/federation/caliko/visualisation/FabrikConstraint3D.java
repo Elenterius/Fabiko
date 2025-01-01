@@ -1,13 +1,13 @@
 package au.edu.federation.caliko.visualisation;
 
-import au.edu.federation.caliko.FabrikBone3D;
-import au.edu.federation.caliko.FabrikChain3D;
-import au.edu.federation.caliko.FabrikStructure3D;
-import au.edu.federation.caliko.utils.Colour4f;
+import au.edu.federation.caliko.core.FabrikBone3D;
+import au.edu.federation.caliko.core.FabrikChain3D;
+import au.edu.federation.caliko.core.FabrikStructure3D;
 import au.edu.federation.caliko.math.Mat3f;
 import au.edu.federation.caliko.math.Mat4f;
-import au.edu.federation.caliko.utils.Utils;
 import au.edu.federation.caliko.math.Vec3f;
+import au.edu.federation.caliko.utils.Colour4f;
+import au.edu.federation.caliko.utils.MathUtil;
 
 /**
  * A class to draw various constraints for ball and hinge joints on FabrikBone3D objects.
@@ -76,7 +76,9 @@ public class FabrikConstraint3D
 				float constraintAngleDegs = bone.getBallJointConstraintDegs();
 				
 				// If the ball joint constraint is 180 degrees then it's not really constrained, so we won't draw it
-				if ( Utils.approximatelyEquals(constraintAngleDegs, 180.0f, 0.01f) ) { return; }
+				if (MathUtil.approximatelyEquals(constraintAngleDegs, 180.0f, 0.01f)) {
+					return;
+				}
 				
 				// The constraint direction is the direction of the previous bone rotated about a perpendicular axis by the constraint angle of this bone
 				Vec3f constraintDirection = Vec3f.rotateAboutAxisDegs(referenceDirection, constraintAngleDegs, Vec3f.genPerpendicularVectorQuick(referenceDirection) ).normalised();
@@ -112,8 +114,8 @@ public class FabrikConstraint3D
 				
 				// If both the anticlockwise (positive) and clockwise (negative) constraint angles are not 180 degrees (i.e. we
 				// are constraining the hinge about a reference direction which lies in the plane of the hinge rotation axis)...
-				if ( !Utils.approximatelyEquals(anticlockwiseConstraintDegs, 180.0f, 0.01f) &&
-				     !Utils.approximatelyEquals(    clockwiseConstraintDegs, 180.0f,  0.01f) )
+				if (!MathUtil.approximatelyEquals(anticlockwiseConstraintDegs, 180.0f, 0.01f) &&
+						!MathUtil.approximatelyEquals(clockwiseConstraintDegs, 180.0f, 0.01f))
 				{	
 					Vec3f hingeReferenceAxis = bone.getJoint().getHingeReferenceAxis();
 					
@@ -143,9 +145,9 @@ public class FabrikConstraint3D
 															
 				// Draw the hinge reference and clockwise/anticlockwise constraints if necessary
 				float anticlockwiseConstraintDegs =  bone.getHingeJointAnticlockwiseConstraintDegs();
-				float clockwiseConstraintDegs     = -bone.getHingeJointClockwiseConstraintDegs(); 
-				if ( !Utils.approximatelyEquals(anticlockwiseConstraintDegs, 180.0f, 0.01f) &&
-				     !Utils.approximatelyEquals(    clockwiseConstraintDegs, 180.0f, 0.01f) )
+				float clockwiseConstraintDegs     = -bone.getHingeJointClockwiseConstraintDegs();
+				if (!MathUtil.approximatelyEquals(anticlockwiseConstraintDegs, 180.0f, 0.01f) &&
+						!MathUtil.approximatelyEquals(clockwiseConstraintDegs, 180.0f, 0.01f))
 				{	
 					// Get the relative hinge rotation axis and draw it...
 					bone.getJoint().getHingeReferenceAxis().projectOntoPlane(relativeHingeRotationAxis);

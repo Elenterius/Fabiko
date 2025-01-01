@@ -1,16 +1,18 @@
 package au.edu.federation.caliko.visualisation;
 
-import java.nio.FloatBuffer;
-
-import au.edu.federation.caliko.utils.Colour4f;
 import au.edu.federation.caliko.math.Mat4f;
-import au.edu.federation.caliko.utils.Utils;
 import au.edu.federation.caliko.math.Vec3f;
+import au.edu.federation.caliko.utils.Colour4f;
+import au.edu.federation.caliko.utils.MathUtil;
+import au.edu.federation.caliko.utils.Utils;
+
+import java.nio.FloatBuffer;
 
 import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.opengl.GL15.*;
 import static org.lwjgl.opengl.GL20.*;
-import static org.lwjgl.opengl.GL30.*;
+import static org.lwjgl.opengl.GL30.glBindVertexArray;
+import static org.lwjgl.opengl.GL30.glGenVertexArrays;
 
 /**
  * Class to draw a circle in 3D space.
@@ -71,10 +73,10 @@ public class Circle3D
 	static {
 		// Allocate memory for arrays and buffers
 		circleData         = new float[NUM_VERTICES * VERTEX_COMPONENTS];
-		vertexFB           = Utils.createFloatBuffer(NUM_VERTICES * VERTEX_COMPONENTS);
-		mvpMatrixFB        = Utils.createFloatBuffer(16);
-		colourFB           = Utils.createFloatBuffer(16); // Minimum size is 16, even though we only want to store 1 float
-		currentLineWidthFB = Utils.createFloatBuffer(16); // Minimum size is 16, even though we only want to store 1 float
+		vertexFB = MathUtil.createFloatBuffer(NUM_VERTICES * VERTEX_COMPONENTS);
+		mvpMatrixFB = MathUtil.createFloatBuffer(16);
+		colourFB = MathUtil.createFloatBuffer(16); // Minimum size is 16, even though we only want to store 1 float
+		currentLineWidthFB = MathUtil.createFloatBuffer(16); // Minimum size is 16, even though we only want to store 1 float
 
 		// ----- Shader program setup -----
 

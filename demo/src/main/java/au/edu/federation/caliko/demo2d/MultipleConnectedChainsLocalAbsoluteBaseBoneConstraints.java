@@ -1,13 +1,13 @@
 package au.edu.federation.caliko.demo2d;
 
-import au.edu.federation.caliko.BoneConnectionPoint;
-import au.edu.federation.caliko.FabrikBone2D;
-import au.edu.federation.caliko.FabrikChain2D;
-import au.edu.federation.caliko.FabrikChain2D.BaseboneConstraintType2D;
-import au.edu.federation.caliko.FabrikStructure2D;
+import au.edu.federation.caliko.core.BoneConnectionPoint;
+import au.edu.federation.caliko.core.FabrikBone2D;
+import au.edu.federation.caliko.core.FabrikChain2D;
+import au.edu.federation.caliko.core.FabrikChain2D.BaseboneConstraintType2D;
+import au.edu.federation.caliko.core.FabrikStructure2D;
 import au.edu.federation.caliko.math.Mat4f;
-import au.edu.federation.caliko.utils.Utils;
 import au.edu.federation.caliko.math.Vec2f;
+import au.edu.federation.caliko.utils.Utils;
 
 /**
  * @author jsalvo

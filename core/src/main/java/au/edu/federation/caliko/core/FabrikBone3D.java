@@ -1,11 +1,11 @@
-package au.edu.federation.caliko;
+package au.edu.federation.caliko.core;
 
-import java.io.Serializable;
-
-import au.edu.federation.caliko.FabrikJoint3D.JointType;
+import au.edu.federation.caliko.core.FabrikJoint3D.JointType;
+import au.edu.federation.caliko.math.Vec3f;
 import au.edu.federation.caliko.utils.Colour4f;
 import au.edu.federation.caliko.utils.Utils;
-import au.edu.federation.caliko.math.Vec3f;
+
+import java.io.Serializable;
 
 /**
  * A class to represent a FabrikBone3D object.
@@ -37,7 +37,7 @@ public class FabrikBone3D implements FabrikBone<Vec3f,FabrikJoint3D>, Serializab
 	 * The default is to connect to the end of the specified bone.
 	 * <p>
 	 * This property can be set via the {#link #setBoneConnectionPoint(BoneConnectionPoint)} method, or when attaching this chain
-	 * to another chain via the {@link au.edu.federation.caliko.FabrikStructure3D#connectChain(FabrikChain3D, int, int, BoneConnectionPoint)} method.
+	 * to another chain via the {@link FabrikStructure3D#connectChain(FabrikChain3D, int, int, BoneConnectionPoint)} method.
 	 */
 	private BoneConnectionPoint mBoneConnectionPoint = BoneConnectionPoint.END;
 	

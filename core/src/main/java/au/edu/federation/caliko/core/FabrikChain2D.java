@@ -1,15 +1,15 @@
-package au.edu.federation.caliko;
+package au.edu.federation.caliko.core;
+
+import au.edu.federation.caliko.core.FabrikChain2D.BaseboneConstraintType2D;
+import au.edu.federation.caliko.core.FabrikJoint2D.ConstraintCoordinateSystem;
+import au.edu.federation.caliko.math.Vec2f;
+import au.edu.federation.caliko.utils.Colour4f;
+import au.edu.federation.caliko.utils.MathUtil;
+import au.edu.federation.caliko.utils.Utils;
 
 import java.io.Serializable;
-
 import java.util.ArrayList;
 import java.util.List;
-
-import au.edu.federation.caliko.FabrikChain2D.BaseboneConstraintType2D;
-import au.edu.federation.caliko.FabrikJoint2D.ConstraintCoordinateSystem;
-import au.edu.federation.caliko.utils.Colour4f;
-import au.edu.federation.caliko.utils.Utils;
-import au.edu.federation.caliko.math.Vec2f;
 
 /**
  * Class to represent a 2D Inverse Kinematics (IK) chain that can be solved for a given target using the FABRIK algorithm.
@@ -50,9 +50,9 @@ public class FabrikChain2D implements FabrikChain<FabrikBone2D,Vec2f,FabrikJoint
 	 * <p>
 	 * Although entirely optional, it may be used to uniquely identify a specific FabrikChain2D in an an array/vector/map
 	 * or such.
-	 * 
-	 * See {@link au.edu.federation.caliko.FabrikChain#setName(String)}
-	 * See {@link au.edu.federation.caliko.FabrikChain#getName()}
+	 *
+	 * See {@link FabrikChain#setName(String)}
+	 * See {@link FabrikChain#getName()}
 	 */
 	private String mName;
 
@@ -369,10 +369,10 @@ public class FabrikChain2D implements FabrikChain<FabrikBone2D,Vec2f,FabrikJoint
 	public void addConsecutiveConstrainedBone(Vec2f directionUV, float length, float clockwiseDegs, float anticlockwiseDegs, Colour4f colour)
 	{
 		// Validate the direction unit vector - throws an IllegalArgumentException if it has a magnitude of zero
-		Utils.validateDirectionUV(directionUV);
+		MathUtil.validateDirectionUV(directionUV);
 		
 		// Validate the length of the bone - throws an IllegalArgumentException if it is not a positive value
-		Utils.validateLength(length);
+		MathUtil.validateLength(length);
 				
 		// If we have at least one bone already in the chain...
 		if (!this.mChain.isEmpty())
@@ -427,11 +427,11 @@ public class FabrikChain2D implements FabrikChain<FabrikBone2D,Vec2f,FabrikJoint
 	{
 		// Validate the direction unit vector - throws an IllegalArgumentException if it has a magnitude of zero
 		Vec2f dir = bone.getDirectionUV();
-		Utils.validateDirectionUV(dir);
+		MathUtil.validateDirectionUV(dir);
 		
 		// Validate the length of the bone - throws an IllegalArgumentException if it is not a positive value
 		float len = bone.length();
-		Utils.validateLength(len);
+		MathUtil.validateLength(len);
 				
 		// If we have at least one bone already in the chain...
 		if ( !this.mChain.isEmpty() )
@@ -663,14 +663,14 @@ public class FabrikChain2D implements FabrikChain<FabrikBone2D,Vec2f,FabrikJoint
 	 * 
 	 * @param  constraintUV  The direction unit vector to constrain the base bone to.
 	 * @see #setBaseboneConstraintType(BaseboneConstraintType2D)
-	 * @see au.edu.federation.caliko.FabrikJoint2D#setClockwiseConstraintDegs
-	 * @see au.edu.federation.caliko.FabrikJoint2D#setAnticlockwiseConstraintDegs
+	 * @see FabrikJoint2D#setClockwiseConstraintDegs
+	 * @see FabrikJoint2D#setAnticlockwiseConstraintDegs
 	 */
 	@Override
 	public void setBaseboneConstraintUV(Vec2f constraintUV)
 	{
 		// Sanity checking
-		Utils.validateDirectionUV(constraintUV);
+		MathUtil.validateDirectionUV(constraintUV);
 		
 		// All good? Then normalise the constraint direction and set it
 		mBaseboneConstraintUV.set( Vec2f.normalised(constraintUV) );

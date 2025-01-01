@@ -22,9 +22,9 @@ public class Vec3i {
 	/**
 	 * Three parameter constructor.
 	 *
-	 * @param    x    The x value to set.
-	 * @param    y    The y value to set.
-	 * @param    z    The z value to set.
+	 * @param x The x value to set.
+	 * @param y The y value to set.
+	 * @param z The z value to set.
 	 */
 	public Vec3i(int x, int y, int z) {
 		this.x = x;

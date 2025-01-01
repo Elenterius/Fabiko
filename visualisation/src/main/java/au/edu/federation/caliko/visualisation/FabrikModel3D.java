@@ -1,19 +1,21 @@
 package au.edu.federation.caliko.visualisation;
 
-import java.nio.FloatBuffer;
-
-import au.edu.federation.caliko.FabrikBone3D;
-import au.edu.federation.caliko.FabrikChain3D;
-import au.edu.federation.caliko.FabrikStructure3D;
-import au.edu.federation.caliko.utils.Colour4f;
+import au.edu.federation.caliko.core.FabrikBone3D;
+import au.edu.federation.caliko.core.FabrikChain3D;
+import au.edu.federation.caliko.core.FabrikStructure3D;
 import au.edu.federation.caliko.math.Mat3f;
 import au.edu.federation.caliko.math.Mat4f;
+import au.edu.federation.caliko.utils.Colour4f;
+import au.edu.federation.caliko.utils.MathUtil;
 import au.edu.federation.caliko.utils.Utils;
+
+import java.nio.FloatBuffer;
 
 import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.opengl.GL15.*;
 import static org.lwjgl.opengl.GL20.*;
-import static org.lwjgl.opengl.GL30.*;
+import static org.lwjgl.opengl.GL30.glBindVertexArray;
+import static org.lwjgl.opengl.GL30.glGenVertexArrays;
 
 /**
  * A class to represent a 3D model that can easily be attached to a FabrikBone3D object.
@@ -78,9 +80,9 @@ public class FabrikModel3D
 	private float mLineWidth = 1.0f;
 	
 	static {
-		mvpMatrixFB        = Utils.createFloatBuffer(16);
-		colourFB           = Utils.createFloatBuffer(16);
-		currentLineWidthFB = Utils.createFloatBuffer(16);
+		mvpMatrixFB = MathUtil.createFloatBuffer(16);
+		colourFB = MathUtil.createFloatBuffer(16);
+		currentLineWidthFB = MathUtil.createFloatBuffer(16);
 
 		// ----- Grid shader program setup -----
 
@@ -139,7 +141,7 @@ public class FabrikModel3D
 		// Load the model, get the vertex data and put it into our vertex FloatBuffer
 		model = new Model(modelFilename);
 		modelData = model.getVertexFloatArray();
-		vertexFB = Utils.createFloatBuffer(model.getNumVertices() * VERTEX_COMPONENTS);
+		vertexFB = MathUtil.createFloatBuffer(model.getNumVertices() * VERTEX_COMPONENTS);
 		
 		mLineWidth = lineWidth;
 		
@@ -308,7 +310,7 @@ public class FabrikModel3D
 	 */
 	void setLineWidth(float lineWidth)
 	{
-		Utils.validateLineWidth(lineWidth);
+		MathUtil.validateLineWidth(lineWidth);
 		mLineWidth = lineWidth;
 	}
 	

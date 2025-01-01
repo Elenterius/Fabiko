@@ -1,15 +1,17 @@
 package au.edu.federation.caliko;
 
+import au.edu.federation.caliko.core.FabrikBone3D;
+import au.edu.federation.caliko.core.FabrikChain3D;
+import au.edu.federation.caliko.math.Vec3f;
 import au.edu.federation.caliko.utils.SerializationUtil;
 import au.edu.federation.caliko.utils.Utils;
-import au.edu.federation.caliko.math.Vec3f;
-
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
-import java.io.*;
+import java.io.File;
+import java.io.InputStream;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class FabrikChain3DTests {
 

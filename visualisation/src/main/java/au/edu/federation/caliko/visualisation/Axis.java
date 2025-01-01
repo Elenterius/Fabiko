@@ -1,18 +1,20 @@
 package au.edu.federation.caliko.visualisation;
 
-import java.nio.FloatBuffer;
-
-import au.edu.federation.caliko.FabrikBone3D;
-import au.edu.federation.caliko.FabrikChain3D;
-import au.edu.federation.caliko.FabrikStructure3D;
+import au.edu.federation.caliko.core.FabrikBone3D;
+import au.edu.federation.caliko.core.FabrikChain3D;
+import au.edu.federation.caliko.core.FabrikStructure3D;
 import au.edu.federation.caliko.math.Mat3f;
 import au.edu.federation.caliko.math.Mat4f;
+import au.edu.federation.caliko.utils.MathUtil;
 import au.edu.federation.caliko.utils.Utils;
+
+import java.nio.FloatBuffer;
 
 import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.opengl.GL15.*;
 import static org.lwjgl.opengl.GL20.*;
-import static org.lwjgl.opengl.GL30.*;
+import static org.lwjgl.opengl.GL30.glBindVertexArray;
+import static org.lwjgl.opengl.GL30.glGenVertexArrays;
 
 /**
  * A class to represent a 3D axis which consists of three drawn lines, one each in the +x, +y and +z directions.
@@ -86,9 +88,9 @@ public class Axis
 	private float mAxisLineWidth = 1.0f;
 	
 	static {
-		vertexFloatBuffer  = Utils.createFloatBuffer(NUM_VERTICES * COMPONENT_COUNT);
-		mvpMatrixFB        = Utils.createFloatBuffer(16);
-		currentLineWidthFB = Utils.createFloatBuffer(16);
+		vertexFloatBuffer = MathUtil.createFloatBuffer(NUM_VERTICES * COMPONENT_COUNT);
+		mvpMatrixFB = MathUtil.createFloatBuffer(16);
+		currentLineWidthFB = MathUtil.createFloatBuffer(16);
 
 		// ----- Grid shader program setup -----
 

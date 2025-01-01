@@ -1,5 +1,6 @@
 package au.edu.federation.caliko.math;
 
+import au.edu.federation.caliko.utils.MathUtil;
 import au.edu.federation.caliko.utils.Utils;
 
 import java.util.Objects;
@@ -104,19 +105,19 @@ public class Mat3f {
 		return new Mat3f(m.m00, m.m10, m.m20, m.m01, m.m11, m.m21, m.m02, m.m12, m.m22);
 	}
 
-	/**
-	 * Create a rotation matrix from a given direction.
-	 * <p>
-	 * The reference direction is aligned to the Z-Axis, and the X-Axis is generated via the
-	 * genPerpendicularVectorQuick() method. The Y-Axis is then the cross-product of those two axes.
-	 * <p>
-	 * This method uses the <a href="https://gist.github.com/roxlu/3082114">Frisvad technique</a> for generating perpendicular axes.
-	 *
-	 * @param    referenceDirection    The vector to use as the Z-Axis
-	 * @return The created rotation matrix.
-	 *
-	 * @see Vec3f#genPerpendicularVectorQuick(Vec3f)
-	 */
+	//	/**
+	//	 * Create a rotation matrix from a given direction.
+	//	 * <p>
+	//	 * The reference direction is aligned to the Z-Axis, and the X-Axis is generated via the
+	//	 * genPerpendicularVectorQuick() method. The Y-Axis is then the cross-product of those two axes.
+	//	 * <p>
+	//	 * This method uses the <a href="https://gist.github.com/roxlu/3082114">Frisvad technique</a> for generating perpendicular axes.
+	//	 *
+	//	 * @param    referenceDirection    The vector to use as the Z-Axis
+	//	 * @return The created rotation matrix.
+	//	 *
+	//	 * @see Vec3f#genPerpendicularVectorQuick(Vec3f)
+	//	 */
 	//	public static Mat3f createRotationMatrix(Vec3f referenceDirection) {
 	//	    Vec3f zAxis = referenceDirection.normalised();
 	//	    Vec3f xAxis = Vec3f.genPerpendicularVectorQuick(referenceDirection); // This is returned normalised
@@ -229,7 +230,6 @@ public class Mat3f {
 		}
 
 		return rotMat;
-
 	}
 
 	/**
@@ -282,9 +282,9 @@ public class Mat3f {
 		float xCrossZDot = Vec3f.dotProduct(this.getXBasis(), this.getZBasis());
 		float yCrossZDot = Vec3f.dotProduct(this.getYBasis(), this.getZBasis());
 
-		return Utils.approximatelyEquals(xCrossYDot, 0f, 0.01f)
-				&& Utils.approximatelyEquals(xCrossZDot, 0f, 0.01f)
-				&& Utils.approximatelyEquals(yCrossZDot, 0f, 0.01f);
+		return MathUtil.approximatelyEquals(xCrossYDot, 0f, 0.01f)
+				&& MathUtil.approximatelyEquals(xCrossZDot, 0f, 0.01f)
+				&& MathUtil.approximatelyEquals(yCrossZDot, 0f, 0.01f);
 	}
 
 	/**
@@ -406,7 +406,7 @@ public class Mat3f {
 	 * @return The rotated version of this matrix.
 	 */
 	public Mat3f rotateDegs(float angleDegs, Vec3f localAxis) {
-		return rotateRads(localAxis, angleDegs * Utils.DEG_TO_RAD);
+		return rotateRads(localAxis, angleDegs * MathUtil.DEG_TO_RAD);
 	}
 
 	/**

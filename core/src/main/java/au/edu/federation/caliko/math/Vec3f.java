@@ -1,11 +1,10 @@
 package au.edu.federation.caliko.math;
 
+import au.edu.federation.caliko.utils.MathUtil;
 import au.edu.federation.caliko.utils.Utils;
 
 import java.io.Serial;
 import java.io.Serializable;
-
-import java.text.DecimalFormat;
 
 /**
  * Class  : Simple mutable vec3 class with common operations and utility / helper methods.
@@ -82,7 +81,7 @@ public class Vec3f implements Vectorf<Vec3f>, Serializable {
 	 * @return Whether the two provided vectors are perpendicular (true) or not (false).
 	 */
 	public static boolean perpendicular(Vec3f a, Vec3f b) {
-		return Utils.approximatelyEquals(Vec3f.dotProduct(a, b), 0f, 0.01f);
+		return MathUtil.approximatelyEquals(Vec3f.dotProduct(a, b), 0f, 0.01f);
 	}
 
 	/**
@@ -334,7 +333,7 @@ public class Vec3f implements Vectorf<Vec3f>, Serializable {
 	 * @return The angle between the vector in degrees.
 	 */
 	public static float getAngleBetweenDegs(Vec3f v1, Vec3f v2) {
-		return Vec3f.getAngleBetweenRads(v1, v2) * Utils.RAD_TO_DEG;
+		return Vec3f.getAngleBetweenRads(v1, v2) * MathUtil.RAD_TO_DEG;
 	}
 
 	/**
@@ -347,7 +346,7 @@ public class Vec3f implements Vectorf<Vec3f>, Serializable {
 	 **/
 	public static float getSignedAngleBetweenDegs(Vec3f referenceVector, Vec3f otherVector, Vec3f normalVector) {
 		float unsignedAngle = Vec3f.getAngleBetweenDegs(referenceVector, otherVector);
-		float sign = Utils.sign(Vec3f.dotProduct(Vec3f.crossProduct(referenceVector, otherVector), normalVector));
+		float sign = MathUtil.sign(Vec3f.dotProduct(Vec3f.crossProduct(referenceVector, otherVector), normalVector));
 		return unsignedAngle * sign;
 	}
 
@@ -410,7 +409,7 @@ public class Vec3f implements Vectorf<Vec3f>, Serializable {
 	 * @return A rotated version of the vector.
 	 */
 	public static Vec3f rotateXDegs(Vec3f source, float angleDegrees) {
-		return Vec3f.rotateXRads(source, angleDegrees * Utils.DEG_TO_RAD);
+		return Vec3f.rotateXRads(source, angleDegrees * MathUtil.DEG_TO_RAD);
 	}
 
 	/**
@@ -440,7 +439,7 @@ public class Vec3f implements Vectorf<Vec3f>, Serializable {
 	 * @return A rotated version of the vector.
 	 */
 	public static Vec3f rotateYDegs(Vec3f source, float angleDegrees) {
-		return Vec3f.rotateYRads(source, angleDegrees * Utils.DEG_TO_RAD);
+		return Vec3f.rotateYRads(source, angleDegrees * MathUtil.DEG_TO_RAD);
 	}
 
 	/**
@@ -470,7 +469,7 @@ public class Vec3f implements Vectorf<Vec3f>, Serializable {
 	 * @return A rotated version of the vector.
 	 */
 	public static Vec3f rotateZDegs(Vec3f source, float angleDegrees) {
-		return Vec3f.rotateZRads(source, angleDegrees * Utils.DEG_TO_RAD);
+		return Vec3f.rotateZRads(source, angleDegrees * MathUtil.DEG_TO_RAD);
 	}
 
 	/**
@@ -521,7 +520,7 @@ public class Vec3f implements Vectorf<Vec3f>, Serializable {
 	 * @return The source vector rotated about the rotation axis.
 	 */
 	public static Vec3f rotateAboutAxisDegs(Vec3f source, float angleDegrees, Vec3f rotationAxis) {
-		return Vec3f.rotateAboutAxisRads(source, angleDegrees * Utils.DEG_TO_RAD, rotationAxis);
+		return Vec3f.rotateAboutAxisRads(source, angleDegrees * MathUtil.DEG_TO_RAD, rotationAxis);
 	}
 
 	/**
@@ -714,8 +713,8 @@ public class Vec3f implements Vectorf<Vec3f>, Serializable {
 	 * can be calculated faster than the exact distance.
 	 * <p>
 	 * Further reading:
-	 * http://en.wikipedia.org/wiki/floataxicab_geometry
-	 * http://stackoverflow.com/questions/3693514/very-fast-3d-distance-check
+	 * <a href="https://en.wikipedia.org/wiki/Taxicab_geometry">Taxicab Geometry</a>
+	 * <a href="https://stackoverflow.com/questions/3693514/very-fast-3d-distance-check">Stackoverflow Fast 3d distance</a>
 	 *
 	 * @param    v1    The first location vector
 	 * @param    v2    The second location vector

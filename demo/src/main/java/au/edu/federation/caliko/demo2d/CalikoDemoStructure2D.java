@@ -1,6 +1,6 @@
 package au.edu.federation.caliko.demo2d;
 
-import au.edu.federation.caliko.FabrikStructure2D;
+import au.edu.federation.caliko.core.FabrikStructure2D;
 import au.edu.federation.caliko.demo.CalikoDemoStructure;
 import au.edu.federation.caliko.math.Vec2f;
 

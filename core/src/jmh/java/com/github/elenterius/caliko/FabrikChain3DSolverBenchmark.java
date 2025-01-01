@@ -1,7 +1,7 @@
 package com.github.elenterius.caliko;
 
-import au.edu.federation.caliko.FabrikBone3D;
-import au.edu.federation.caliko.FabrikChain3D;
+import au.edu.federation.caliko.core.FabrikBone3D;
+import au.edu.federation.caliko.core.FabrikChain3D;
 import au.edu.federation.caliko.math.Vec3f;
 import org.openjdk.jmh.annotations.*;
 

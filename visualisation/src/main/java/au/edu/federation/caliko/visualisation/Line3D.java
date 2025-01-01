@@ -1,16 +1,18 @@
 package au.edu.federation.caliko.visualisation;
 
-import java.nio.FloatBuffer;
-
-import au.edu.federation.caliko.utils.Colour4f;
 import au.edu.federation.caliko.math.Mat4f;
-import au.edu.federation.caliko.utils.Utils;
 import au.edu.federation.caliko.math.Vec3f;
+import au.edu.federation.caliko.utils.Colour4f;
+import au.edu.federation.caliko.utils.MathUtil;
+import au.edu.federation.caliko.utils.Utils;
+
+import java.nio.FloatBuffer;
 
 import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.opengl.GL15.*;
 import static org.lwjgl.opengl.GL20.*;
-import static org.lwjgl.opengl.GL30.*;
+import static org.lwjgl.opengl.GL30.glBindVertexArray;
+import static org.lwjgl.opengl.GL30.glGenVertexArrays;
 
 /**
  * Class to draw a lines as well as circles and cones made from lines in 3D space.
@@ -60,10 +62,10 @@ public class Line3D
 	static {
 		// Allocate memory for arrays and buffers
 		lineData = new float[NUM_VERTICES * VERTEX_COMPONENTS];
-		vertexFloatBuffer    = Utils.createFloatBuffer(NUM_VERTICES * VERTEX_COMPONENTS);
-		mvpMatrixFloatBuffer = Utils.createFloatBuffer(16);
-		lineWidthFloatBuffer = Utils.createFloatBuffer(16); // Minimum size is 16, even though we only want to store 1 float
-		colourFloatBuffer    = Utils.createFloatBuffer(16); // Minimum size is 16, even though we only want to store 4 floats
+		vertexFloatBuffer = MathUtil.createFloatBuffer(NUM_VERTICES * VERTEX_COMPONENTS);
+		mvpMatrixFloatBuffer = MathUtil.createFloatBuffer(16);
+		lineWidthFloatBuffer = MathUtil.createFloatBuffer(16); // Minimum size is 16, even though we only want to store 1 float
+		colourFloatBuffer = MathUtil.createFloatBuffer(16); // Minimum size is 16, even though we only want to store 4 floats
 
 		// ----- Shader program setup -----
 
