@@ -6,6 +6,7 @@ junit-bom = "5.11.4"
 lwjgl-bom = "3.3.5"
 
 plugin-jmh = "0.7.2"
+plugin-jmhreport = "0.9.6"
 
 [libraries]
 jspecify-annotations = { module = "org.jspecify:jspecify", version.ref = "jspecify-annotations" }
@@ -21,3 +22,4 @@ lwjgl-opengl = { module = "org.lwjgl:lwjgl-opengl" }
 
 [plugins]
 jmh = { id = "me.champeau.jmh", version.ref = "plugin-jmh" }
+jmhreport = { id = "io.morethan.jmhreport", version.ref = "plugin-jmhreport" }

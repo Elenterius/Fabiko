@@ -4,6 +4,7 @@ plugins {
     id("caliko-conventions")
     `java-library`
     alias(libs.plugins.jmh)
+    alias(libs.plugins.jmhreport)
 }
 
 base {
@@ -24,9 +25,19 @@ tasks.named<Test>("test") {
 }
 
 jmh {
-//    humanOutputFile = project.layout.buildDirectory.file("reports/jmh/human.txt")
-//    resultsFile = project.layout.buildDirectory.file("reports/jmh/results.json")
-
-    //we pick json for displaying the results in the JMH Visualizer
+    //we pick json for displaying the results with JMH Visualizer
     resultFormat = "json" //text, csv, scsv, json, latex
+    //resultsFile = project.layout.buildDirectory.file("results/jmh/${time}-results.json")
+    humanOutputFile = project.layout.buildDirectory.file("reports/jmh/text/${System.currentTimeMillis()}-human.txt")
+}
+
+tasks.jmh {
+    finalizedBy(tasks.jmhReport)
+}
+
+jmhReport {
+    project.layout.buildDirectory.file("reports/jmh/visualizer").get().asFile.mkdirs()
+
+    jmhResultPath = project.layout.buildDirectory.file("results/jmh/results.json").get().asFile.path
+    jmhReportOutput = project.layout.buildDirectory.file("reports/jmh/visualizer").get().asFile.path
 }

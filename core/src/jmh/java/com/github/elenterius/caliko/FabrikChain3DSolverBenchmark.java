@@ -9,8 +9,8 @@ import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
 @BenchmarkMode(Mode.AverageTime)
-@Warmup(iterations = 10, time = 100, timeUnit = TimeUnit.MILLISECONDS)
-@Measurement(iterations = 50, time = 10, timeUnit = TimeUnit.MILLISECONDS)
+@Warmup(iterations = 10, time = 10, timeUnit = TimeUnit.MILLISECONDS)
+@Measurement(iterations = 50, time = 1, timeUnit = TimeUnit.MILLISECONDS)
 @OutputTimeUnit(TimeUnit.MILLISECONDS)
 @State(Scope.Thread)
 @Threads(Threads.MAX)
