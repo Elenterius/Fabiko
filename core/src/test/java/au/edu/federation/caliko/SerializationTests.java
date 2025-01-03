@@ -54,7 +54,7 @@ public class SerializationTests {
 	 */
 	@Test
 	public void deserializeFabrikChain3DFromBinaryFile() throws Exception {
-		InputStream inputStream = SerializationUtil.class.getResourceAsStream("/serialized/fabrikchain-1.bin");
+		InputStream inputStream = SerializationUtil.class.getResourceAsStream("/assets/serialized/fabrikchain-1.bin");
 
 		if (inputStream == null) {
 			System.out.println("is IS NULL =///");

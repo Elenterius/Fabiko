@@ -15,21 +15,16 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class FabrikChain3DTests {
 
-    // We'll run this many cycles
     static int totalCycles = 10;
-
-    // Each run will solve the chain for a pseudo-random location this many times
     static int iterationsPerCycle = 50;
-
-    // Number of bones to add per cycle
-    static int bonesToAdd = 100;
+    static int bonesToAddPerCycle = 100;
 
     @TempDir
     File tempDir;
 
     @Test
-    public void solveLocalHingeChainWith1Bone() {
-        //verify that forward pass with local hinges works
+    public void solveChainWith1Bone_LocalHingeConstrained() {
+        //verify that forward pass for 1 bone chains with local hinges works
 
         float boneLength = 10f;
         Vec3f RIGHT = new Vec3f(1f, 0f, 0f);
@@ -44,42 +39,42 @@ public class FabrikChain3DTests {
     }
 
     @Test
-    public void solveUnconstrainedChain() throws Exception {
+    public void solveChain_Unconstrained() throws Exception {
         FabrikChain3D chain = solveChain(1);
 
         File file = new File("out/serialized/fabrikchain-" + 1 + ".bin");
         file.getParentFile().mkdirs();
         SerializationUtil.serializeChain(chain, file);
 
-        InputStream is = FabrikChain3DTests.class.getResourceAsStream("/serialized/fabrikchain-" + 1 + ".bin");
+        InputStream is = FabrikChain3DTests.class.getResourceAsStream("/assets/serialized/fabrikchain-" + 1 + ".bin");
         FabrikChain3D expectedChain = SerializationUtil.deserializeChain(is, FabrikChain3D.class);
 
         assertEquals(expectedChain, chain);
     }
 
     @Test
-    public void solveRotor45degConstrained3dChain() throws Exception {
+    public void solveChain_RotorConstrained_45deg() throws Exception {
         FabrikChain3D chain = solveChain(2);
 
         File file = new File("out/serialized/fabrikchain-" + 2 + ".bin");
         file.getParentFile().mkdirs();
         SerializationUtil.serializeChain(chain, file);
 
-        InputStream is = FabrikChain3DTests.class.getResourceAsStream("/serialized/fabrikchain-" + 2 + ".bin");
+        InputStream is = FabrikChain3DTests.class.getResourceAsStream("/assets/serialized/fabrikchain-" + 2 + ".bin");
         FabrikChain3D expectedChain = SerializationUtil.deserializeChain(is, FabrikChain3D.class);
 
         assertEquals(expectedChain, chain);
     }
 
     @Test
-    public void solveRotor90degConstrained3dChain() throws Exception {
+    public void solveChain_RotorConstrained_90deg() throws Exception {
         FabrikChain3D chain = solveChain(3);
 
         File file = new File("out/serialized/fabrikchain-" + 3 + ".bin");
         file.getParentFile().mkdirs();
         SerializationUtil.serializeChain(chain, file);
 
-        InputStream is = FabrikChain3DTests.class.getResourceAsStream("/serialized/fabrikchain-" + 3 + ".bin");
+        InputStream is = FabrikChain3DTests.class.getResourceAsStream("/assets/serialized/fabrikchain-" + 3 + ".bin");
         FabrikChain3D expectedChain = SerializationUtil.deserializeChain(is, FabrikChain3D.class);
 
         assertEquals(expectedChain, chain);
@@ -106,7 +101,7 @@ public class FabrikChain3DTests {
         FabrikBone3D baseBone = new FabrikBone3D(new Vec3f(), new Vec3f(boneLength, 0f, 0f));
         chain.addBone(baseBone);
 
-        for (int i = 1; i < bonesToAdd; i++) {
+        for (int i = 1; i < bonesToAddPerCycle; i++) {
             switch (testNumber) {
                 case 1:
                     chain.addConsecutiveBone(RIGHT, boneLength);
@@ -119,13 +114,13 @@ public class FabrikChain3DTests {
                     break;
             }
         }
-        System.out.println("Cycle 1 - " + chain.getNumBones() + " bones.");
-        double averageMS = solveChain(chain, iterationsPerCycle);
-        System.out.println("Average solve duration (Milliseconds): " + averageMS);
 
-        // Cycles 1 onward...
+        System.out.printf("Cycle 1 - %d bones...%n", chain.getNumBones());
+        double averageMS = solveChain(chain, iterationsPerCycle);
+        System.out.printf("Average solve duration: %s ms%n", averageMS);
+
         for (int cycle = 1; cycle < totalCycles; cycle++) {
-            for (int i = 0; i < bonesToAdd; i++) {
+            for (int i = 0; i < bonesToAddPerCycle; i++) {
                 switch (testNumber) {
                     case 1:
                         chain.addConsecutiveBone(RIGHT, boneLength);
@@ -139,10 +134,9 @@ public class FabrikChain3DTests {
                 }
             }
 
-            // Run test
-            System.out.println("Cycle " + (cycle + 1) + " - " + chain.getNumBones() + " bones.");
+            System.out.printf("Cycle %d - %d bones...%n", cycle + 1, chain.getNumBones());
             averageMS = solveChain(chain, iterationsPerCycle);
-            System.out.println("Average solve duration (Milliseconds): " + averageMS);
+            System.out.printf("Average solve duration: %s ms%n", averageMS);
         }
 
 	    return chain;
@@ -152,29 +146,26 @@ public class FabrikChain3DTests {
         float averageSolveDistance = 0f;
 
         // Get half the length of the chain (to ensure target can be reached)
-        float length = chain.getChainLength() / 2f;
+        float halfLength = chain.getChainLength() / 2f;
 
         Vec3f target = new Vec3f();
 
         long totalMicroseconds = 0L;
-        double averageMilliseconds;
 
         for (int i = 0; i < iterations; i++) {
-            target.set(Utils.randRange(-length, length), Utils.randRange(-length, length), Utils.randRange(-length, length));
+            target.set(Utils.randRange(-halfLength, halfLength), Utils.randRange(-halfLength, halfLength), Utils.randRange(-halfLength, halfLength));
 
             long startTime = System.nanoTime();
 
             averageSolveDistance += chain.solveForTarget(target);
 
             long elapsedTime = System.nanoTime() - startTime;
-
-            // Increment total time for this cycle
-            totalMicroseconds += elapsedTime / 1000;
+            totalMicroseconds += elapsedTime / 1000L;
         }
 
         // Calculate and display average solve duration for this chain across all iterations
         long averageMicrosecondsPerIteration = totalMicroseconds / (long) iterations;
-        averageMilliseconds = (double) averageMicrosecondsPerIteration / 1000f;
+        double averageMilliseconds = averageMicrosecondsPerIteration / 1000d;
 
         averageSolveDistance /= iterations;
         System.out.println("Average solve distance: " + averageSolveDistance);
