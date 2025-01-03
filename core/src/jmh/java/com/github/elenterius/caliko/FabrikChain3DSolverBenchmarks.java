@@ -15,7 +15,7 @@ import java.util.concurrent.TimeUnit;
 @State(Scope.Thread)
 @Threads(Threads.MAX)
 @Fork(2)
-public class FabrikChain3DSolverBenchmark {
+public class FabrikChain3DSolverBenchmarks {
 
 	@Param({"100", "200", "300", "400", "500", "600", "700", "800", "900", "1000"})
 	public int numberOfBones = 100;
