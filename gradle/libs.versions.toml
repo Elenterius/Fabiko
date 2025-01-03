@@ -3,6 +3,7 @@ jspecify-annotations = "1.0.0"
 
 junit-bom = "5.11.4"
 
+joml = "1.10.7"
 lwjgl-bom = "3.3.5"
 
 plugin-jmh = "0.7.2"
@@ -14,6 +15,8 @@ jspecify-annotations = { module = "org.jspecify:jspecify", version.ref = "jspeci
 junit-bom = { module = "org.junit:junit-bom", version.ref = "junit-bom" }
 junit-engine = { module = "org.junit.jupiter:junit-jupiter" }
 junit-platform = { module = "org.junit.platform:junit-platform-launcher" }
+
+joml = { module = "org.joml:joml", version.ref = "joml" }
 
 lwjgl-bom = { module = "org.lwjgl:lwjgl-bom", version.ref = "lwjgl-bom" }
 lwjgl-core = { module = "org.lwjgl:lwjgl" }

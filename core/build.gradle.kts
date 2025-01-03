@@ -14,6 +14,7 @@ base {
 
 dependencies {
     api(libs.jspecify.annotations)
+    api(libs.joml)
 
     testImplementation(platform(libs.junit.bom))
     testImplementation(libs.junit.engine)
