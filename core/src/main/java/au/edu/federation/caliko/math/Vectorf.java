@@ -27,7 +27,7 @@ public interface Vectorf<T> {
 	T dividedBy(float value);
 
 	/**
-	 * Return the length of this vector.
+	 * Return the length (magnitude) of this vector.
 	 *
 	 * @return The length of this vector.
 	 */

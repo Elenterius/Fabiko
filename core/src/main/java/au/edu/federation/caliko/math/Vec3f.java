@@ -811,7 +811,7 @@ public class Vec3f implements Vectorf<Vec3f>, Serializable {
 	 * If the plane surface normal has a magnitude of zero then an IllegalArgumentException is thrown.
 	 *
 	 * @param    planeNormal    The normal that describes the plane onto which we will project this vector.
-	 * @return A projected version of this vector.
+	 * @return A projected version of this vector (normalised)
 	 */
 	public Vec3f projectOntoPlane(Vec3f planeNormal) {
 		if (!(planeNormal.length() > 0f)) {
