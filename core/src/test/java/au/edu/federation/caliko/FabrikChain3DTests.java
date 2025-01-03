@@ -28,6 +28,22 @@ public class FabrikChain3DTests {
     File tempDir;
 
     @Test
+    public void solveLocalHingeChainWith1Bone() {
+        //verify that forward pass with local hinges works
+
+        float boneLength = 10f;
+        Vec3f RIGHT = new Vec3f(1f, 0f, 0f);
+
+        FabrikChain3D chain = new FabrikChain3D();
+        FabrikBone3D baseBone = new FabrikBone3D(new Vec3f(), new Vec3f(boneLength, 0f, 0f));
+        chain.addBone(baseBone);
+        chain.setFreelyRotatingLocalHingedBasebone(RIGHT);
+
+        double averageMS = solveChain(chain, iterationsPerCycle);
+        System.out.printf("Average solve duration: %s ms%n", averageMS);
+    }
+
+    @Test
     public void solveUnconstrainedChain() throws Exception {
         FabrikChain3D chain = solveChain(1);
 
