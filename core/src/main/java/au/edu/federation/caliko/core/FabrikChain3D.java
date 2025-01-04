@@ -1011,6 +1011,7 @@ public class FabrikChain3D implements FabrikChain<FabrikBone3D, Vec3f, FabrikJoi
 		// Set the constraint type, axis and angle
 		mBaseboneConstraintType = hingeType;
 		mBaseboneConstraintUV.set(hingeRotationAxis.normalised());
+		mBaseboneRelativeConstraintUV.set(mBaseboneConstraintUV);
 
 		FabrikJoint3D hinge = new FabrikJoint3D();
 
@@ -1349,20 +1350,20 @@ public class FabrikChain3D implements FabrikChain<FabrikBone3D, Vec3f, FabrikJoi
 					// NOTE: Constraining about the hinge reference axis on this forward pass leads to poor solutions... so we won't.
 				}
 				else if (thisBoneJointType == JointType.LOCAL_HINGE) {
-					// Not a basebone? Then construct a rotation matrix based on the previous bones inner-to-to-inner direction...
 					Mat3f m;
 					Vec3f relativeHingeRotationAxis;
 					if (loop > 0) {
+						// Not a base bone
+						// Then construct a rotation matrix based on the previous bones inner-to-to-inner direction...
+						// ...and transform the hinge rotation axis into the previous bones frame of reference.
 						m = Mat3f.createRotationMatrix(mChain.get(loop - 1).getDirectionUV());
 						relativeHingeRotationAxis = m.times(thisBoneJoint.getHingeRotationAxis()).normalise();
 					}
-					else // ...basebone? Need to construct matrix from the relative constraint UV.
-					{
+					else {
+						//base bone
+						//Need to construct matrix from the relative constraint UV.
 						relativeHingeRotationAxis = mBaseboneRelativeConstraintUV;
 					}
-
-					// ...and transform the hinge rotation axis into the previous bones frame of reference.
-					//Vec3f
 
 					// Project this bone's outer-to-inner direction onto the plane described by the relative hinge rotation axis
 					// Note: The returned vector is normalised.
@@ -1406,12 +1407,18 @@ public class FabrikChain3D implements FabrikChain<FabrikBone3D, Vec3f, FabrikJoi
 						break;
 					case LOCAL_HINGE:
 						// Local hinges get constrained to the hinge rotation axis, but not the reference axis within the hinge plane
+						Vec3f relativeHingeRotationAxis = null;
 
-						// Construct a rotation matrix based on the previous bones inner-to-to-inner direction...
-						Mat3f m = Mat3f.createRotationMatrix(mChain.get(loop - 1).getDirectionUV());
-
-						// ...and transform the hinge rotation axis into the previous bones frame of reference.
-						Vec3f relativeHingeRotationAxis = m.times(thisBoneJoint.getHingeRotationAxis()).normalise();
+						if (loop > 0) {
+							// Construct a rotation matrix based on the previous bones inner-to-to-inner direction...
+							// ...and transform the hinge rotation axis into the previous bones frame of reference.
+							Mat3f m = Mat3f.createRotationMatrix(mChain.get(loop - 1).getDirectionUV());
+							relativeHingeRotationAxis = m.times(thisBoneJoint.getHingeRotationAxis()).normalise();
+						}
+						else {
+							// end effector == base bone
+							relativeHingeRotationAxis = mBaseboneRelativeConstraintUV;
+						}
 
 						// Project this bone's outer-to-inner direction onto the plane described by the relative hinge rotation axis
 						// Note: The returned vector is normalised.
