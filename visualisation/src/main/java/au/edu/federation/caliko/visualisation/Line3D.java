@@ -16,49 +16,56 @@ import static org.lwjgl.opengl.GL30.glGenVertexArrays;
 
 /**
  * Class to draw a lines as well as circles and cones made from lines in 3D space.
- * 
+ *
  * @author Al Lansley
  * @version 0.7.1 - 20/07/2016
  */
-public class Line3D
-{
-	// ----- Static Properties -----
+public class Line3D {
+	/**
+	 * The minimum valid line width with which to draw a bone as a line is 1.0f pixels wide.
+	 */
+	private static final float MIN_LINE_WIDTH = 1f;
+
+	/**
+	 * The maximum valid line width with which to draw a bone as a line is 64.0f pixels wide.
+	 */
+	private static final float MAX_LINE_WIDTH = 64f;
+
+	// A line has 2 vertices. Each vertex has 3 location components (x/y/z) and 4 colour components (r/g/b/a)
+	private static final int NUM_VERTICES = 2;
+
+	private static final int VERTEX_COMPONENTS = 3;
+
+	//Define our vertex and fragment shader GLSL source code
+	private static final String VERTEX_SHADER_SOURCE =
+			"#version 330" + Utils.NEW_LINE +
+					"in vec4 vertexLocation; // Incoming vertex attribute" + Utils.NEW_LINE +
+					"out vec4 fragColour;    // Outgoing colour value" + Utils.NEW_LINE +
+					"uniform mat4 mvpMatrix; // Combined Model/View/Projection matrix" + Utils.NEW_LINE +
+					"void main(void) {" + Utils.NEW_LINE +
+					"	gl_Position = mvpMatrix * vertexLocation; // Project our geometry" + Utils.NEW_LINE +
+					"}";
+	private static final String FRAGMENT_SHADER_SOURCE =
+			"#version 330" + Utils.NEW_LINE +
+					"out vec4 vOutputColour; // Outgoing colour value" + Utils.NEW_LINE +
+					"uniform vec4 colour;" + Utils.NEW_LINE +
+					"void main() {" + Utils.NEW_LINE +
+					"	vOutputColour = colour;" + Utils.NEW_LINE +
+					"}";
 
 	private static Colour4f white = new Colour4f(1.0f, 1.0f, 1.0f, 0.3f);
-	
-	// A line has 2 vertices. Each vertex has 3 location components (x/y/z) and 4 colour components (r/g/b/a)
-	private static final int NUM_VERTICES      = 2;
-	private static final int VERTEX_COMPONENTS = 3;
 
 	// Declare our shader program and the float buffer for our MVP matrix
 	private static ShaderProgram shaderProgram;
 	private static FloatBuffer mvpMatrixFloatBuffer;
 	private static FloatBuffer colourFloatBuffer;
 
-	//Define our vertex and fragement shader GLSL source code
-	private static final String VERTEX_SHADER_SOURCE =
-			"#version 330"                                                         + Utils.NEW_LINE +
-			"in vec4 vertexLocation; // Incoming vertex attribute"                 + Utils.NEW_LINE +
-			"out vec4 fragColour;    // Outgoing colour value"                     + Utils.NEW_LINE +
-			"uniform mat4 mvpMatrix; // Combined Model/View/Projection matrix"     + Utils.NEW_LINE +
-			"void main(void) {"                                                    + Utils.NEW_LINE +
-			"	gl_Position = mvpMatrix * vertexLocation; // Project our geometry" + Utils.NEW_LINE +
-			"}";
-
-	private static final String FRAGMENT_SHADER_SOURCE =
-			"#version 330"                                     + Utils.NEW_LINE +
-			"out vec4 vOutputColour; // Outgoing colour value" + Utils.NEW_LINE +
-			"uniform vec4 colour;"                             + Utils.NEW_LINE +
-			"void main() {"                                    + Utils.NEW_LINE +
-			"	vOutputColour = colour;"                       + Utils.NEW_LINE +
-			"}";
-
-	private static int         vaoId;                // The Vertex Array Object ID which holds our shader attributes
-	private static int         vboId;                // The id of the vertex buffer containing the grid vertex data
-	private static float[]     lineData;             // Array of floats used to draw the line
+	private static int vaoId;                // The Vertex Array Object ID which holds our shader attributes
+	private static int vboId;                // The id of the vertex buffer containing the grid vertex data
+	private static float[] lineData;             // Array of floats used to draw the line
 	private static FloatBuffer vertexFloatBuffer;    // Vertex buffer to hold the gridArray vertex data
 	private static FloatBuffer lineWidthFloatBuffer; // Vertex buffer to hold the gridArray vertex data
-	
+
 	static {
 		// Allocate memory for arrays and buffers
 		lineData = new float[NUM_VERTICES * VERTEX_COMPONENTS];
@@ -90,13 +97,13 @@ public class Line3D
 
 		// ...and specify the data format.
 		glVertexAttribPointer(shaderProgram.attribute("vertexLocation"), // Vertex location attribute index
-				                                      VERTEX_COMPONENTS, // Number of normal components per vertex
-				                                               GL_FLOAT, // Data type
-				                                                  false, // Normalised?
-				                        VERTEX_COMPONENTS * Float.BYTES, // Stride
-				                                                     0); // Offset
-			
-	
+				VERTEX_COMPONENTS, // Number of normal components per vertex
+				GL_FLOAT, // Data type
+				false, // Normalised?
+				VERTEX_COMPONENTS * Float.BYTES, // Stride
+				0); // Offset
+
+
 		// Unbind VBO
 		glBindBuffer(GL_ARRAY_BUFFER, 0);
 
@@ -105,34 +112,45 @@ public class Line3D
 
 		// Unbind our from our VAO, saving all settings
 		glBindVertexArray(0);
-		
 	}
 
-	/** Constructor */
-	public Line3D()
-	{
-		//
+	/**
+	 * Constructor
+	 */
+	public Line3D() {
+	}
+
+	private static void setLineData(Vec3f p1, Vec3f p2) {
+		// Point 1 x/y/z
+		lineData[0] = p1.x;
+		lineData[1] = p1.y;
+		lineData[2] = p1.z;
+
+		// Point 2 x/y/z
+		lineData[3] = p2.x;
+		lineData[4] = p2.y;
+		lineData[5] = p2.z;
 	}
 
 	/**
 	 * Draw a line with interpolated colours from the first to second vertices.
 	 * <p>
-	 * @param	p1			The first point.
-	 * @param	p2			The second point.
-	 * @param 	colour		The colour to draw the line.
-	 * @param	lineWidth	The width of the line in pixels.
-	 * @param	mvpMatrix	The ModelViewProjection matrix with which to draw the line.
+	 *
+	 * @param colour The colour to draw the line.
+	 * @param    p1            The first point.
+	 * @param    p2            The second point.
+	 * @param    lineWidth    The width of the line in pixels.
+	 * @param    mvpMatrix    The ModelViewProjection matrix with which to draw the line.
 	 */
-	public void draw(Vec3f p1, Vec3f p2, Colour4f colour, float lineWidth, Mat4f mvpMatrix)
-	{
+	public void draw(Vec3f p1, Vec3f p2, Colour4f colour, float lineWidth, Mat4f mvpMatrix) {
 		setLineData(p1, p2);
-		
+
 		// Transfer the line, matrix and colour data into the float buffers
-		vertexFloatBuffer.put( lineData );
+		vertexFloatBuffer.put(lineData);
 		vertexFloatBuffer.flip();
-		mvpMatrixFloatBuffer.put( mvpMatrix.toArray() );
+		mvpMatrixFloatBuffer.put(mvpMatrix.toArray());
 		mvpMatrixFloatBuffer.flip();
-		colourFloatBuffer.put( colour.toArray() );
+		colourFloatBuffer.put(colour.toArray());
 		colourFloatBuffer.flip();
 
 		// Enable our shader program and bind to our VAO
@@ -154,43 +172,29 @@ public class Line3D
 
 		/// Set the line width to be the width requested
 		glLineWidth(lineWidth);
-		
+
 		// 	Draw the line
 		glDrawArrays(GL_LINES, 0, NUM_VERTICES);
 
 		// Restore the previous GL_LINE_WIDTH
-		glLineWidth( lineWidthFloatBuffer.get(0) );
+		glLineWidth(lineWidthFloatBuffer.get(0));
 
 		// Unbind from VBO & VAO, then disable our shader
 		glBindBuffer(GL_ARRAY_BUFFER, 0);
 		glBindVertexArray(0);
 		shaderProgram.disable();
-	
-	} // End of draw method
-	
+	}
+
 	/**
 	 * Draw a line in a single colour.
-	 * <p>
-	 * @param	p1			The first point.
-	 * @param	p2			The second point.
-	 * @param	lineWidth	The width of the line in pixels.
-	 * @param	mvpMatrix	The ModelViewProjection matrix with which to draw the line.
+	 *
+	 * @param    p1            The first point.
+	 * @param    p2            The second point.
+	 * @param    lineWidth    The width of the line in pixels.
+	 * @param    mvpMatrix    The ModelViewProjection matrix with which to draw the line.
 	 */
-	public void draw(Vec3f p1, Vec3f p2, float lineWidth, Mat4f mvpMatrix)
-	{
+	public void draw(Vec3f p1, Vec3f p2, float lineWidth, Mat4f mvpMatrix) {
 		draw(p1, p2, Line3D.white, lineWidth, mvpMatrix);
 	}
-	
-	private static void setLineData(Vec3f p1, Vec3f p2) {
-		// Point 1 x/y/z
-		lineData[0] = p1.x;
-		lineData[1] = p1.y;
-		lineData[2] = p1.z;
-		
-		// Point 2 x/y/z
-		lineData[3] = p2.x;
-		lineData[4] = p2.y;
-		lineData[5] = p2.z;
-	}
-	
-} // End of Line3D class
+
+}

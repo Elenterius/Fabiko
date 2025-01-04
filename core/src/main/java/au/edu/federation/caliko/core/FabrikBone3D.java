@@ -23,16 +23,6 @@ public class FabrikBone3D implements FabrikBone<Vec3f, FabrikJoint3D>, Serializa
 	private static final long serialVersionUID = 2L;
 
 	/**
-	 * The minimum valid line width with which to draw a bone as a line is 1.0f pixels wide.
-	 */
-	private static final float MIN_LINE_WIDTH = 1f;
-
-	/**
-	 * The maximum valid line width with which to draw a bone as a line is 64.0f pixels wide.
-	 */
-	private static final float MAX_LINE_WIDTH = 64f;
-
-	/**
 	 * If this chain is connected to a bone in another chain, should this chain connect to the start or the end of that bone?
 	 * <p>
 	 * The default is to connect to the end of the specified bone.
@@ -117,21 +107,6 @@ public class FabrikBone3D implements FabrikBone<Vec3f, FabrikJoint3D>, Serializa
 	 * The default colour to draw a bone is white at full opacity i.e. Colour4f(1.0f, 1.0f, 1.0f, 1.0f).
 	 */
 	private final Colour4f colour = new Colour4f();
-
-	/**
-	 * The width of the line drawn to represent this bone, specified in pixels.
-	 * <p>
-	 * The default line width is 1.0f, which is the only value guaranteed to render correctly for
-	 * any given hardware/driver combination. The maximum line width that can be drawn depends on
-	 * the graphics hardware and drivers on the host machine, but is typically up to 64.0f (pixels)
-	 * on modern hardware.
-	 * <p>
-	 * The default value is 1.0f.
-	 *
-	 * @see        #setLineWidth(float)
-	 * @see        <a href="https://www.opengl.org/sdk/docs/man3/xhtml/glLineWidth.xml">glLineWidth(float)</a>
-	 */
-	private float lineWidth = 1f;
 
 	/**
 	 * Default constructor
@@ -254,7 +229,6 @@ public class FabrikBone3D implements FabrikBone<Vec3f, FabrikJoint3D>, Serializa
 
 		name = source.name;
 		length = source.length;
-		lineWidth = source.lineWidth;
 		boneConnectionPoint = source.boneConnectionPoint;
 	}
 
@@ -264,6 +238,23 @@ public class FabrikBone3D implements FabrikBone<Vec3f, FabrikJoint3D>, Serializa
 	@Override
 	public float length() {
 		return length;
+	}
+
+	/**
+	 * Set the length of the bone.
+	 * <p>
+	 * This method validates the length argument to ensure that it is greater than zero.
+	 * <p>
+	 * If the length argument is not a positive value then an {@link IllegalArgumentException} is thrown.
+	 *
+	 * @param length The value to set on the {@link #length} property.
+	 */
+	private void setLength(float length) {
+		if (length <= 0.0f) {
+			throw new IllegalArgumentException("Bone length must be a positive value.");
+		}
+
+		this.length = length;
 	}
 
 	/**
@@ -299,49 +290,6 @@ public class FabrikBone3D implements FabrikBone<Vec3f, FabrikJoint3D>, Serializa
 	 */
 	public void setBoneConnectionPoint(BoneConnectionPoint bcp) {
 		boneConnectionPoint = bcp;
-	}
-
-	/**
-	 * Return the colour of this bone.
-	 *
-	 * @return The colour to draw this bone, as stored in the mColour property.
-	 */
-	public Colour4f getColour() {
-		return colour;
-	}
-
-	/**
-	 * Set the colour used to draw this bone.
-	 *
-	 * @param    colour    The colour (used to draw this bone) to set on the mColour property.
-	 */
-	public void setColour(Colour4f colour) {
-		this.colour.set(colour);
-	}
-
-	/**
-	 * Return the line width in pixels used to draw this bone.
-	 *
-	 * @return The line width in pixels used to draw this bone.
-	 */
-	public float getLineWidth() {
-		return lineWidth;
-	}
-
-	/**
-	 * Set the line width with which to draw this bone.
-	 * <p>
-	 * If the provided parameter is outside the valid range of 1.0f to 64.0f inclusive then an
-	 * IllegalArgumentException is thrown.
-	 *
-	 * @param lineWidth The value to set on the mLineWidth property.
-	 */
-	public void setLineWidth(float lineWidth) {
-		if (lineWidth < FabrikBone3D.MIN_LINE_WIDTH || lineWidth > FabrikBone3D.MAX_LINE_WIDTH) {
-			throw new IllegalArgumentException("Line width must be between %s and %s inclusive.".formatted(FabrikBone3D.MIN_LINE_WIDTH, FabrikBone3D.MAX_LINE_WIDTH));
-		}
-
-		this.lineWidth = lineWidth;
 	}
 
 	/**
@@ -513,20 +461,21 @@ public class FabrikBone3D implements FabrikBone<Vec3f, FabrikJoint3D>, Serializa
 	}
 
 	/**
-	 * Set the length of the bone.
-	 * <p>
-	 * This method validates the length argument to ensure that it is greater than zero.
-	 * <p>
-	 * If the length argument is not a positive value then an {@link IllegalArgumentException} is thrown.
+	 * Return the colour of this bone.
 	 *
-	 * @param    length    The value to set on the {@link #length} property.
+	 * @return The colour to draw this bone, as stored in the mColour property.
 	 */
-	private void setLength(float length) {
-		if (length <= 0.0f) {
-			throw new IllegalArgumentException("Bone length must be a positive value.");
-		}
+	public Colour4f getColour() {
+		return colour;
+	}
 
-		this.length = length;
+	/**
+	 * Set the colour used to draw this bone.
+	 *
+	 * @param colour The colour (used to draw this bone) to set on the mColour property.
+	 */
+	public void setColour(Colour4f colour) {
+		this.colour.set(colour);
 	}
 
 	/**
@@ -549,7 +498,6 @@ public class FabrikBone3D implements FabrikBone<Vec3f, FabrikJoint3D>, Serializa
 		result = prime * result + endLocation.hashCode();
 		result = prime * result + joint.hashCode();
 		result = prime * result + Float.floatToIntBits(length);
-		result = prime * result + Float.floatToIntBits(lineWidth);
 		result = prime * result + ((name == null) ? 0 : name.hashCode());
 		result = prime * result + startLocation.hashCode();
 		return result;
@@ -580,9 +528,6 @@ public class FabrikBone3D implements FabrikBone<Vec3f, FabrikJoint3D>, Serializa
 			return false;
 		}
 		if (Float.floatToIntBits(length) != Float.floatToIntBits(other.length)) {
-			return false;
-		}
-		if (Float.floatToIntBits(lineWidth) != Float.floatToIntBits(other.lineWidth)) {
 			return false;
 		}
 		if (name == null) {
