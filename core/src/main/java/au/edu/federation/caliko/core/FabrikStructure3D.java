@@ -25,16 +25,15 @@ import java.util.List;
  * @author Al Lansley
  * @version 0.5 - 19/06/2019
  **/
-
 public class FabrikStructure3D implements FabrikStructure<FabrikChain3D, Vec3f>, Serializable {
 
 	@Serial
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 2L;
 
 	/**
 	 * The string name of this FabrikStructure3D - can be used for creating Maps, if required.
 	 */
-	private String mName;
+	private String name;
 
 	/**
 	 * The main substance of a FabrikStructure3D is a List of FabrikChain3D objects.
@@ -42,7 +41,7 @@ public class FabrikStructure3D implements FabrikStructure<FabrikChain3D, Vec3f>,
 	 * Each FabrikChain3D in the mChains vector is independent of all others, but shares the same target location as any/all other chains
 	 * which exist in this structure.
 	 */
-	private List<FabrikChain3D> mChains = new ArrayList<>();
+	private final List<FabrikChain3D> ikChains = new ArrayList<>();
 
 	/**
 	 * Default constructor.
@@ -58,7 +57,7 @@ public class FabrikStructure3D implements FabrikStructure<FabrikChain3D, Vec3f>,
 	 * @param    name    The name you wish to call the structure.
 	 */
 	public FabrikStructure3D(String name) {
-		mName = Utils.getValidatedName(name);
+		this.name = Utils.getValidatedName(name);
 	}
 
 	/**
@@ -73,13 +72,13 @@ public class FabrikStructure3D implements FabrikStructure<FabrikChain3D, Vec3f>,
 	 */
 	@Override
 	public void solveForTarget(Vec3f newTargetLocation) {
-		int numChains = mChains.size();
+		int numChains = ikChains.size();
 		int connectedChainNumber;
 
 		// Loop over all chains in this structure...
 		for (int loop = 0; loop < numChains; ++loop) {
 			// Get this chain, and get the number of the chain in this structure it's connected to (if any)
-			FabrikChain3D thisChain = mChains.get(loop);
+			FabrikChain3D thisChain = ikChains.get(loop);
 			connectedChainNumber = thisChain.getConnectedChainNumber();
 
 			// If this chain isn't connected to another chain then update as normal...
@@ -89,7 +88,7 @@ public class FabrikStructure3D implements FabrikStructure<FabrikChain3D, Vec3f>,
 			else // ...however, if this chain IS connected to another chain...
 			{
 				// ... get the host chain and bone which this chain is connected to
-				FabrikChain3D hostChain = mChains.get(connectedChainNumber);
+				FabrikChain3D hostChain = ikChains.get(connectedChainNumber);
 				FabrikBone3D hostBone = hostChain.getBone(thisChain.getConnectedBoneNumber());
 				if (hostBone.getBoneConnectionPoint() == BoneConnectionPoint.START) {
 					thisChain.setBaseLocation(hostBone.getStartLocation());
@@ -168,7 +167,7 @@ public class FabrikStructure3D implements FabrikStructure<FabrikChain3D, Vec3f>,
 	 **/
 	@Override
 	public void addChain(FabrikChain3D chain) {
-		mChains.add(chain);
+		ikChains.add(chain);
 	}
 
 	/**
@@ -179,7 +178,7 @@ public class FabrikStructure3D implements FabrikStructure<FabrikChain3D, Vec3f>,
 	 * @param    chainIndex    The index of the chain to remove from the mChains list of FabrikChain3D objects.
 	 **/
 	public void removeChain(int chainIndex) {
-		mChains.remove(chainIndex);
+		ikChains.remove(chainIndex);
 	}
 
 	/**
@@ -197,12 +196,12 @@ public class FabrikStructure3D implements FabrikStructure<FabrikChain3D, Vec3f>,
 	@Override
 	public void connectChain(FabrikChain3D newChain, int existingChainNumber, int existingBoneNumber) {
 		// Does this chain exist? If not throw an IllegalArgumentException
-		if (existingChainNumber > mChains.size()) {
+		if (existingChainNumber > ikChains.size()) {
 			throw new IllegalArgumentException("Cannot connect to chain " + existingChainNumber + " - no such chain (remember that chains are zero indexed).");
 		}
 
 		// Do we have this bone in the specified chain? If not throw an IllegalArgumentException
-		if (existingBoneNumber > mChains.get(existingChainNumber).getNumBones()) {
+		if (existingBoneNumber > ikChains.get(existingChainNumber).getNumBones()) {
 			throw new IllegalArgumentException("Cannot connect to bone " + existingBoneNumber + " of chain " + existingChainNumber + " - no such bone (remember that bones are zero indexed).");
 		}
 
@@ -219,11 +218,11 @@ public class FabrikStructure3D implements FabrikStructure<FabrikChain3D, Vec3f>,
 		BoneConnectionPoint connectionPoint = getChain(existingChainNumber).getBone(existingBoneNumber).getBoneConnectionPoint();
 		Vec3f connectionLocation;
 		if (connectionPoint == BoneConnectionPoint.START) {
-			connectionLocation = mChains.get(existingChainNumber).getBone(existingBoneNumber).getStartLocation();
+			connectionLocation = ikChains.get(existingChainNumber).getBone(existingBoneNumber).getStartLocation();
 		}
 		else // If it's BoneConnectionPoint.END then we set the connection point to be the end location of the bone we're connecting to
 		{
-			connectionLocation = mChains.get(existingChainNumber).getBone(existingBoneNumber).getEndLocation();
+			connectionLocation = ikChains.get(existingChainNumber).getBone(existingBoneNumber).getEndLocation();
 		}
 		relativeChain.setBaseLocation(connectionLocation);
 
@@ -265,12 +264,12 @@ public class FabrikStructure3D implements FabrikStructure<FabrikChain3D, Vec3f>,
 	@Override
 	public void connectChain(FabrikChain3D newChain, int existingChainNumber, int existingBoneNumber, BoneConnectionPoint boneConnectionPoint) {
 		// Does this chain exist? If not throw an IllegalArgumentException
-		if (existingChainNumber > mChains.size()) {
+		if (existingChainNumber > ikChains.size()) {
 			throw new IllegalArgumentException("Cannot connect to chain " + existingChainNumber + " - no such chain (remember that chains are zero indexed).");
 		}
 
 		// Do we have this bone in the specified chain? If not throw an IllegalArgumentException
-		if (existingBoneNumber > mChains.get(existingChainNumber).getNumBones()) {
+		if (existingBoneNumber > ikChains.get(existingChainNumber).getNumBones()) {
 			throw new IllegalArgumentException("Cannot connect to bone " + existingBoneNumber + " of chain " + existingChainNumber + " - no such bone (remember that bones are zero indexed).");
 		}
 
@@ -288,11 +287,11 @@ public class FabrikStructure3D implements FabrikStructure<FabrikChain3D, Vec3f>,
 		getChain(existingChainNumber).getBone(existingBoneNumber).setBoneConnectionPoint(boneConnectionPoint);
 		Vec3f connectionLocation;
 		if (boneConnectionPoint == BoneConnectionPoint.START) {
-			connectionLocation = mChains.get(existingChainNumber).getBone(existingBoneNumber).getStartLocation();
+			connectionLocation = ikChains.get(existingChainNumber).getBone(existingBoneNumber).getStartLocation();
 		}
 		else // If it's BoneConnectionPoint.END then we set the connection point to be the end location of the bone we're connecting to
 		{
-			connectionLocation = mChains.get(existingChainNumber).getBone(existingBoneNumber).getEndLocation();
+			connectionLocation = ikChains.get(existingChainNumber).getBone(existingBoneNumber).getEndLocation();
 		}
 		relativeChain.setBaseLocation(connectionLocation);
 
@@ -323,7 +322,7 @@ public class FabrikStructure3D implements FabrikStructure<FabrikChain3D, Vec3f>,
 	 */
 	@Override
 	public int getNumChains() {
-		return mChains.size();
+		return ikChains.size();
 	}
 
 	/**
@@ -337,7 +336,7 @@ public class FabrikStructure3D implements FabrikStructure<FabrikChain3D, Vec3f>,
 	 */
 	@Override
 	public FabrikChain3D getChain(int chainNumber) {
-		return mChains.get(chainNumber);
+		return ikChains.get(chainNumber);
 	}
 
 	/**
@@ -346,14 +345,14 @@ public class FabrikStructure3D implements FabrikStructure<FabrikChain3D, Vec3f>,
 	 * @param    fixedBaseMode    Whether all chains should operate in fixed base mode (true) or not (false).
 	 */
 	public void setFixedBaseMode(boolean fixedBaseMode) {
-		for (FabrikChain3D mChain : mChains) {
+		for (FabrikChain3D mChain : ikChains) {
 			mChain.setFixedBaseMode(fixedBaseMode);
 		}
 	}
 
 	@Override
 	public String getName() {
-		return mName;
+		return name;
 	}
 
 	/**
@@ -363,7 +362,7 @@ public class FabrikStructure3D implements FabrikStructure<FabrikChain3D, Vec3f>,
 	 */
 	@Override
 	public void setName(String name) {
-		mName = Utils.getValidatedName(name);
+		this.name = Utils.getValidatedName(name);
 	}
 
 	/**
@@ -376,11 +375,11 @@ public class FabrikStructure3D implements FabrikStructure<FabrikChain3D, Vec3f>,
 	@Override
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
-		sb.append("----- FabrikStructure3D: ").append(mName).append(" -----").append(Utils.NEW_LINE);
+		sb.append("----- FabrikStructure3D: ").append(name).append(" -----").append(Utils.NEW_LINE);
 
-		sb.append("Number of chains: ").append(mChains.size()).append(Utils.NEW_LINE);
+		sb.append("Number of chains: ").append(ikChains.size()).append(Utils.NEW_LINE);
 
-		for (FabrikChain3D mChain : mChains) {
+		for (FabrikChain3D mChain : ikChains) {
 			sb.append(mChain.toString());
 		}
 
@@ -391,8 +390,8 @@ public class FabrikStructure3D implements FabrikStructure<FabrikChain3D, Vec3f>,
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((mChains == null) ? 0 : mChains.hashCode());
-		result = prime * result + ((mName == null) ? 0 : mName.hashCode());
+		result = prime * result + ikChains.hashCode();
+		result = prime * result + ((name == null) ? 0 : name.hashCode());
 		return result;
 	}
 
@@ -408,18 +407,13 @@ public class FabrikStructure3D implements FabrikStructure<FabrikChain3D, Vec3f>,
 			return false;
 		}
 		FabrikStructure3D other = (FabrikStructure3D) obj;
-		if (mChains == null) {
-			if (other.mChains != null) {
-				return false;
-			}
-		}
-		else if (!mChains.equals(other.mChains)) {
+		if (!ikChains.equals(other.ikChains)) {
 			return false;
 		}
-		if (mName == null) {
-			return other.mName == null;
+		if (name == null) {
+			return other.name == null;
 		}
-		else return mName.equals(other.mName);
+		else return name.equals(other.name);
 	}
 
 }

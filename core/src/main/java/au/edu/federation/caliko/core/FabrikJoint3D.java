@@ -45,21 +45,20 @@ import java.io.Serializable;
  *
  * @version 0.4.2 - 19/06/2019
  */
-
 public class FabrikJoint3D implements FabrikJoint<FabrikJoint3D>, Serializable {
 
 	/**
 	 * The minimum valid constraint angle for a joint is 0 degrees - this will fully constrain the bone.
 	 */
-	public static final float MIN_CONSTRAINT_ANGLE_DEGS = 0.0f;
+	public static final float MIN_CONSTRAINT_ANGLE_DEGREES = 0f;
 
 	/**
 	 * The maximum valid constraint angle for a joint is 180 degrees - this will allow the bone complete freedom to rotate.
 	 */
-	public static final float MAX_CONSTRAINT_ANGLE_DEGS = 180.0f;
+	public static final float MAX_CONSTRAINT_ANGLE_DEGREES = 180f;
 
 	@Serial
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 2L;
 
 	/**
 	 * The angle (specified in degrees) up to which this FabrikJoint3D is allowed to
@@ -72,7 +71,7 @@ public class FabrikJoint3D implements FabrikJoint<FabrikJoint3D>, Serializable {
 	 * <p>
 	 * The default 180.0f.
 	 */
-	private float mRotorConstraintDegs = MAX_CONSTRAINT_ANGLE_DEGS;
+	private float rotorConstraintDegs = MAX_CONSTRAINT_ANGLE_DEGREES;
 
 	/**
 	 * The angle (specified in degrees) up to which this FabrikJoint3D is allowed to rotate
@@ -84,7 +83,7 @@ public class FabrikJoint3D implements FabrikJoint<FabrikJoint3D>, Serializable {
 	 * <p>
 	 * The default is 180.0f (no constraint).
 	 */
-	private float mHingeClockwiseConstraintDegs = MAX_CONSTRAINT_ANGLE_DEGS;
+	private float hingeClockwiseConstraintDegs = MAX_CONSTRAINT_ANGLE_DEGREES;
 
 	/**
 	 * The angle (specified in degrees) up to which this FabrikJoint3D is allowed to rotate
@@ -96,17 +95,17 @@ public class FabrikJoint3D implements FabrikJoint<FabrikJoint3D>, Serializable {
 	 * <p>
 	 * The default is 180.0f.
 	 */
-	private float mHingeAnticlockwiseConstraintDegs = MAX_CONSTRAINT_ANGLE_DEGS;
+	private float hingeAnticlockwiseConstraintDegs = MAX_CONSTRAINT_ANGLE_DEGREES;
 
 	/**
 	 * The unit vector axis about which a hinged joint may rotate.
 	 */
-	private Vec3f mRotationAxisUV = new Vec3f();
+	private final Vec3f rotationAxisUV = new Vec3f();
 
 	/**
 	 * For a hinged joint, this is the axis used as a point of reference for rotation (it is NOT the axis about which the hinge rotates).
 	 */
-	private Vec3f mReferenceAxisUV = new Vec3f();
+	private final Vec3f referenceAxisUV = new Vec3f();
 
 	/**
 	 * The type of this joint.
@@ -115,7 +114,7 @@ public class FabrikJoint3D implements FabrikJoint<FabrikJoint3D>, Serializable {
 	 * <p>
 	 * The default is JointType.BALL.
 	 */
-	private JointType mJointType = JointType.BALL;
+	private JointType jointType = JointType.BALL;
 
 	/**
 	 * Default constructor.
@@ -141,8 +140,8 @@ public class FabrikJoint3D implements FabrikJoint<FabrikJoint3D>, Serializable {
 	}
 
 	private static void validateConstraintAngleDegs(float angleDegs) {
-		if (angleDegs < MIN_CONSTRAINT_ANGLE_DEGS || angleDegs > MAX_CONSTRAINT_ANGLE_DEGS) {
-			throw new IllegalArgumentException("Constraint angles must be within the range " + MIN_CONSTRAINT_ANGLE_DEGS + " to " + MAX_CONSTRAINT_ANGLE_DEGS + " inclusive.");
+		if (angleDegs < MIN_CONSTRAINT_ANGLE_DEGREES || angleDegs > MAX_CONSTRAINT_ANGLE_DEGREES) {
+			throw new IllegalArgumentException("Constraint angles must be within the range " + MIN_CONSTRAINT_ANGLE_DEGREES + " to " + MAX_CONSTRAINT_ANGLE_DEGREES + " inclusive.");
 		}
 	}
 
@@ -172,15 +171,13 @@ public class FabrikJoint3D implements FabrikJoint<FabrikJoint3D>, Serializable {
 	 */
 	@Override
 	public void set(FabrikJoint3D source) {
-		// Copy by value
-		mJointType = source.mJointType;
-		mRotorConstraintDegs = source.mRotorConstraintDegs;
-		mHingeClockwiseConstraintDegs = source.mHingeClockwiseConstraintDegs;
-		mHingeAnticlockwiseConstraintDegs = source.mHingeAnticlockwiseConstraintDegs;
+		jointType = source.jointType;
+		rotorConstraintDegs = source.rotorConstraintDegs;
+		hingeClockwiseConstraintDegs = source.hingeClockwiseConstraintDegs;
+		hingeAnticlockwiseConstraintDegs = source.hingeAnticlockwiseConstraintDegs;
 
-		// Copy by value via setter method
-		mRotationAxisUV.set(source.mRotationAxisUV);
-		mReferenceAxisUV.set(source.mReferenceAxisUV);
+		rotationAxisUV.set(source.rotationAxisUV);
+		referenceAxisUV.set(source.referenceAxisUV);
 	}
 
 	/**
@@ -193,8 +190,8 @@ public class FabrikJoint3D implements FabrikJoint<FabrikJoint3D>, Serializable {
 		FabrikJoint3D.validateConstraintAngleDegs(constraintAngleDegs);
 
 		// Set the rotor constraint angle and the joint type to be BALL.
-		mRotorConstraintDegs = constraintAngleDegs;
-		mJointType = JointType.BALL;
+		rotorConstraintDegs = constraintAngleDegs;
+		jointType = JointType.BALL;
 	}
 
 	/**
@@ -219,12 +216,11 @@ public class FabrikJoint3D implements FabrikJoint<FabrikJoint3D>, Serializable {
 		FabrikJoint3D.validateAxis(rotationAxis);
 		FabrikJoint3D.validateAxis(referenceAxis);
 
-		// Set params
-		mHingeClockwiseConstraintDegs = clockwiseConstraintDegs;
-		mHingeAnticlockwiseConstraintDegs = anticlockwiseConstraintDegs;
-		mJointType = jointType;
-		mRotationAxisUV.set(rotationAxis.normalised());
-		mReferenceAxisUV.set(referenceAxis.normalised());
+		hingeClockwiseConstraintDegs = clockwiseConstraintDegs;
+		hingeAnticlockwiseConstraintDegs = anticlockwiseConstraintDegs;
+		this.jointType = jointType;
+		rotationAxisUV.set(rotationAxis.normalised());
+		referenceAxisUV.set(referenceAxis.normalised());
 	}
 
 	/**
@@ -267,12 +263,11 @@ public class FabrikJoint3D implements FabrikJoint<FabrikJoint3D>, Serializable {
 	 * @return The clockwise constraint angle in degrees.
 	 */
 	public float getHingeClockwiseConstraintDegs() {
-		if (mJointType != JointType.BALL) {
-			return mHingeClockwiseConstraintDegs;
-		}
-		else {
+		if (jointType == JointType.BALL) {
 			throw new RuntimeException("Joint type is JointType.BALL - it does not have hinge constraint angles.");
 		}
+
+		return hingeClockwiseConstraintDegs;
 	}
 
 	/**
@@ -283,12 +278,11 @@ public class FabrikJoint3D implements FabrikJoint<FabrikJoint3D>, Serializable {
 	 * @return The anti-clockwise constraint angle in degrees.
 	 */
 	public float getHingeAnticlockwiseConstraintDegs() {
-		if (mJointType != JointType.BALL) {
-			return mHingeAnticlockwiseConstraintDegs;
-		}
-		else {
+		if (jointType == JointType.BALL) {
 			throw new RuntimeException("Joint type is JointType.BALL - it does not have hinge constraint angles.");
 		}
+
+		return hingeAnticlockwiseConstraintDegs;
 	}
 
 	/**
@@ -299,12 +293,11 @@ public class FabrikJoint3D implements FabrikJoint<FabrikJoint3D>, Serializable {
 	 * @return The rotor constraint angle in degrees.
 	 */
 	public float getBallJointConstraintDegs() {
-		if (mJointType == JointType.BALL) {
-			return mRotorConstraintDegs;
-		}
-		else {
+		if (jointType != JointType.BALL) {
 			throw new RuntimeException("This joint is not of type JointType.BALL - it does not have a ball joint constraint angle.");
 		}
+
+		return rotorConstraintDegs;
 	}
 
 	/**
@@ -318,12 +311,11 @@ public class FabrikJoint3D implements FabrikJoint<FabrikJoint3D>, Serializable {
 	public void setBallJointConstraintDegs(float angleDegs) {
 		FabrikJoint3D.validateConstraintAngleDegs(angleDegs);
 
-		if (mJointType == JointType.BALL) {
-			mRotorConstraintDegs = angleDegs;
+		if (jointType != JointType.BALL) {
+			throw new RuntimeException("This joint is of type: " + jointType + " - only joints of type JointType.BALL have a ball joint constraint angle.");
 		}
-		else {
-			throw new RuntimeException("This joint is of type: " + mJointType + " - only joints of type JointType.BALL have a ball joint constraint angle.");
-		}
+
+		rotorConstraintDegs = angleDegs;
 	}
 
 	/**
@@ -337,12 +329,11 @@ public class FabrikJoint3D implements FabrikJoint<FabrikJoint3D>, Serializable {
 	public void setHingeJointClockwiseConstraintDegs(float angleDegs) {
 		FabrikJoint3D.validateConstraintAngleDegs(angleDegs);
 
-		if (mJointType != JointType.BALL) {
-			mHingeClockwiseConstraintDegs = angleDegs;
-		}
-		else {
+		if (jointType == JointType.BALL) {
 			throw new RuntimeException("Joint type is JointType.BALL - it does not have hinge constraint angles.");
 		}
+
+		hingeClockwiseConstraintDegs = angleDegs;
 	}
 
 	/**
@@ -356,12 +347,11 @@ public class FabrikJoint3D implements FabrikJoint<FabrikJoint3D>, Serializable {
 	public void setHingeJointAnticlockwiseConstraintDegs(float angleDegs) {
 		FabrikJoint3D.validateConstraintAngleDegs(angleDegs);
 
-		if (mJointType != JointType.BALL) {
-			mHingeAnticlockwiseConstraintDegs = angleDegs;
-		}
-		else {
+		if (jointType == JointType.BALL) {
 			throw new RuntimeException("Joint type is JointType.BALL - it does not have hinge constraint angles.");
 		}
+
+		hingeAnticlockwiseConstraintDegs = angleDegs;
 	}
 
 	/**
@@ -372,12 +362,11 @@ public class FabrikJoint3D implements FabrikJoint<FabrikJoint3D>, Serializable {
 	 * @return The hinge reference axis vector.
 	 */
 	public Vec3f getHingeReferenceAxis() {
-		if (mJointType != JointType.BALL) {
-			return mReferenceAxisUV;
-		}
-		else {
+		if (jointType == JointType.BALL) {
 			throw new RuntimeException("Joint type is JointType.BALL - it does not have a hinge reference axis.");
 		}
+
+		return referenceAxisUV;
 	}
 
 	/**
@@ -391,12 +380,11 @@ public class FabrikJoint3D implements FabrikJoint<FabrikJoint3D>, Serializable {
 	public void setHingeReferenceAxis(Vec3f referenceAxis) {
 		FabrikJoint3D.validateAxis(referenceAxis);
 
-		if (mJointType != JointType.BALL) {
-			mReferenceAxisUV.set(referenceAxis.normalised());
-		}
-		else {
+		if (jointType == JointType.BALL) {
 			throw new RuntimeException("Joint type is JointType.BALL - it does not have a hinge reference axis.");
 		}
+
+		referenceAxisUV.set(referenceAxis.normalised());
 	}
 
 	/**
@@ -407,12 +395,11 @@ public class FabrikJoint3D implements FabrikJoint<FabrikJoint3D>, Serializable {
 	 * @return The hinge rotation axis vector.
 	 */
 	public Vec3f getHingeRotationAxis() {
-		if (mJointType != JointType.BALL) {
-			return mRotationAxisUV;
-		}
-		else {
+		if (jointType == JointType.BALL) {
 			throw new RuntimeException("Joint type is JointType.BALL - it does not have a hinge rotation axis.");
 		}
+
+		return rotationAxisUV;
 	}
 
 	/**
@@ -426,12 +413,11 @@ public class FabrikJoint3D implements FabrikJoint<FabrikJoint3D>, Serializable {
 	public void setHingeRotationAxis(Vec3f axis) {
 		FabrikJoint3D.validateAxis(axis);
 
-		if (mJointType != JointType.BALL) {
-			mRotationAxisUV.set(axis.normalised());
-		}
-		else {
+		if (jointType == JointType.BALL) {
 			throw new RuntimeException("Joint type is JointType.BALL - it does not have a hinge rotation axis.");
 		}
+
+		rotationAxisUV.set(axis.normalised());
 	}
 
 	/**
@@ -442,10 +428,8 @@ public class FabrikJoint3D implements FabrikJoint<FabrikJoint3D>, Serializable {
 	 * @return The type of this joint.
 	 */
 	public JointType getJointType() {
-		return mJointType;
+		return jointType;
 	}
-
-	// ---------- Private Methods ----------
 
 	/**
 	 * Return a concise, human-readable description of this FebrikJoint3D object.
@@ -454,22 +438,22 @@ public class FabrikJoint3D implements FabrikJoint<FabrikJoint3D>, Serializable {
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
 
-		switch (mJointType) {
+		switch (jointType) {
 			case BALL -> {
 				sb.append("Joint type: Ball").append(Utils.NEW_LINE);
-				sb.append("Constraint angle: ").append(mRotorConstraintDegs).append(Utils.NEW_LINE);
+				sb.append("Constraint angle: ").append(rotorConstraintDegs).append(Utils.NEW_LINE);
 			}
 			case GLOBAL_HINGE, LOCAL_HINGE -> {
-				if (mJointType == JointType.GLOBAL_HINGE) {
+				if (jointType == JointType.GLOBAL_HINGE) {
 					sb.append("Joint type                    : Global hinge").append(Utils.NEW_LINE);
 				}
 				else {
 					sb.append("Joint type                    : Local hinge").append(Utils.NEW_LINE);
 				}
-				sb.append("Rotation axis                 : ").append(mRotationAxisUV).append(Utils.NEW_LINE);
-				sb.append("Reference axis                : ").append(mReferenceAxisUV).append(Utils.NEW_LINE);
-				sb.append("Anticlockwise constraint angle: ").append(mHingeClockwiseConstraintDegs).append(Utils.NEW_LINE);
-				sb.append("Clockwise constraint angle    : ").append(mHingeClockwiseConstraintDegs).append(Utils.NEW_LINE);
+				sb.append("Rotation axis                 : ").append(rotationAxisUV).append(Utils.NEW_LINE);
+				sb.append("Reference axis                : ").append(referenceAxisUV).append(Utils.NEW_LINE);
+				sb.append("Anticlockwise constraint angle: ").append(hingeClockwiseConstraintDegs).append(Utils.NEW_LINE);
+				sb.append("Clockwise constraint angle    : ").append(hingeClockwiseConstraintDegs).append(Utils.NEW_LINE);
 			}
 		}
 
@@ -480,12 +464,12 @@ public class FabrikJoint3D implements FabrikJoint<FabrikJoint3D>, Serializable {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + Float.floatToIntBits(mHingeAnticlockwiseConstraintDegs);
-		result = prime * result + Float.floatToIntBits(mHingeClockwiseConstraintDegs);
-		result = prime * result + ((mJointType == null) ? 0 : mJointType.hashCode());
-		result = prime * result + ((mReferenceAxisUV == null) ? 0 : mReferenceAxisUV.hashCode());
-		result = prime * result + ((mRotationAxisUV == null) ? 0 : mRotationAxisUV.hashCode());
-		result = prime * result + Float.floatToIntBits(mRotorConstraintDegs);
+		result = prime * result + Float.floatToIntBits(hingeAnticlockwiseConstraintDegs);
+		result = prime * result + Float.floatToIntBits(hingeClockwiseConstraintDegs);
+		result = prime * result + ((jointType == null) ? 0 : jointType.hashCode());
+		result = prime * result + referenceAxisUV.hashCode();
+		result = prime * result + rotationAxisUV.hashCode();
+		result = prime * result + Float.floatToIntBits(rotorConstraintDegs);
 		return result;
 	}
 
@@ -501,37 +485,24 @@ public class FabrikJoint3D implements FabrikJoint<FabrikJoint3D>, Serializable {
 			return false;
 		}
 		FabrikJoint3D other = (FabrikJoint3D) obj;
-		if (Float.floatToIntBits(mHingeAnticlockwiseConstraintDegs) != Float
-				.floatToIntBits(other.mHingeAnticlockwiseConstraintDegs)) {
+		if (Float.floatToIntBits(hingeAnticlockwiseConstraintDegs) != Float
+				.floatToIntBits(other.hingeAnticlockwiseConstraintDegs)) {
 			return false;
 		}
-		if (Float.floatToIntBits(mHingeClockwiseConstraintDegs) != Float
-				.floatToIntBits(other.mHingeClockwiseConstraintDegs)) {
+		if (Float.floatToIntBits(hingeClockwiseConstraintDegs) != Float
+				.floatToIntBits(other.hingeClockwiseConstraintDegs)) {
 			return false;
 		}
-		if (mJointType != other.mJointType) {
+		if (jointType != other.jointType) {
 			return false;
 		}
-		if (mReferenceAxisUV == null) {
-			if (other.mReferenceAxisUV != null) {
-				return false;
-			}
-		}
-		else if (!mReferenceAxisUV.equals(other.mReferenceAxisUV)) {
+		if (!referenceAxisUV.equals(other.referenceAxisUV)) {
 			return false;
 		}
-		if (mRotationAxisUV == null) {
-			if (other.mRotationAxisUV != null) {
-				return false;
-			}
-		}
-		else if (!mRotationAxisUV.equals(other.mRotationAxisUV)) {
+		if (!rotationAxisUV.equals(other.rotationAxisUV)) {
 			return false;
 		}
-		if (Float.floatToIntBits(mRotorConstraintDegs) != Float.floatToIntBits(other.mRotorConstraintDegs)) {
-			return false;
-		}
-		return true;
+		return Float.floatToIntBits(rotorConstraintDegs) == Float.floatToIntBits(other.rotorConstraintDegs);
 	}
 
 	/**
@@ -563,4 +534,4 @@ public class FabrikJoint3D implements FabrikJoint<FabrikJoint3D>, Serializable {
 		LOCAL_HINGE
 	}
 
-} // End of FabrikJoint3D class
+}

@@ -33,7 +33,7 @@ public class Vec3f implements Vectorf<Vec3f>, Serializable {
 	/**
 	 * Single parameter constructor sets the same value across all three components.
 	 *
-	 * @param    value    The value to set on the x, y and z components of this vector.
+	 * @param value The value to set on the x, y and z components of this vector.
 	 */
 	public Vec3f(float value) {
 		x = y = z = value;
@@ -42,9 +42,9 @@ public class Vec3f implements Vectorf<Vec3f>, Serializable {
 	/**
 	 * Three parameter constructor.
 	 *
-	 * @param    x    The x component value to set.
-	 * @param    y    The y component value to set.
-	 * @param    z    The z component value to set.
+	 * @param x The x component value to set.
+	 * @param y The y component value to set.
+	 * @param z The z component value to set.
 	 */
 	public Vec3f(float x, float y, float z) {
 		this.x = x;
@@ -55,7 +55,7 @@ public class Vec3f implements Vectorf<Vec3f>, Serializable {
 	/**
 	 * Copy constructor.
 	 *
-	 * @param    source    The vector used to set component values on this newly created vector.
+	 * @param source The vector used to set component values on this newly created vector.
 	 */
 	public Vec3f(Vec3f source) {
 		x = source.x;
@@ -66,7 +66,7 @@ public class Vec3f implements Vectorf<Vec3f>, Serializable {
 	/**
 	 * Return an identical copy of the provided Vec3f.
 	 *
-	 * @param    source    The vector to clone.
+	 * @param source The vector to clone.
 	 * @return An identical copy of the provided Vec3f.
 	 */
 	public static Vec3f clone(Vec3f source) {
@@ -76,8 +76,8 @@ public class Vec3f implements Vectorf<Vec3f>, Serializable {
 	/**
 	 * Return whether the two provided vectors are perpendicular (to a dot-product tolerance of 0.01f).
 	 *
-	 * @param    a    The first vector.
-	 * @param    b    The second vector.
+	 * @param a The first vector.
+	 * @param b The second vector.
 	 * @return Whether the two provided vectors are perpendicular (true) or not (false).
 	 */
 	public static boolean perpendicular(Vec3f a, Vec3f b) {
@@ -87,9 +87,9 @@ public class Vec3f implements Vectorf<Vec3f>, Serializable {
 	/**
 	 * Return whether two vectors are approximately equal to within a given tolerance.
 	 *
-	 * @param    a        The first vector.
-	 * @param    b        The second vector.
-	 * @param    tolerance    The value which each component of each vector must be within to be considered approximately equal.
+	 * @param a         The first vector.
+	 * @param b         The second vector.
+	 * @param tolerance The value which each component of each vector must be within to be considered approximately equal.
 	 * @return Whether the two provided vector arguments are approximately equal (true) or not (false).
 	 */
 	public static boolean approximatelyEqual(Vec3f a, Vec3f b, float tolerance) {
@@ -103,8 +103,8 @@ public class Vec3f implements Vectorf<Vec3f>, Serializable {
 	 * <p>
 	 * If the provided vectors are normalised then this will be the same as the dot product.
 	 *
-	 * @param    v1    The first vector.
-	 * @param    v2    The second vector.
+	 * @param v1 The first vector.
+	 * @param v2 The second vector.
 	 * @return The scalar product of the two vectors.
 	 */
 	public static float scalarProduct(Vec3f v1, Vec3f v2) {
@@ -116,8 +116,8 @@ public class Vec3f implements Vectorf<Vec3f>, Serializable {
 	 * <p>
 	 * Normalised versions of the provided vectors are used in the dot product operation.
 	 *
-	 * @param    v1    The first vector.
-	 * @param    v2    The second vector.
+	 * @param v1 The first vector.
+	 * @param v2 The second vector.
 	 * @return The dot product of the two vectors.
 	 */
 	public static float dotProduct(Vec3f v1, Vec3f v2) {
@@ -132,8 +132,8 @@ public class Vec3f implements Vectorf<Vec3f>, Serializable {
 	 * <p>
 	 * The returned vector is not normalised.
 	 *
-	 * @param    v1    The first vector.
-	 * @param    v2    The second vector.
+	 * @param v1 The first vector.
+	 * @param v2 The second vector.
 	 * @return The non-normalised cross-product of the two vectors v1-cross-v2.
 	 */
 	public static Vec3f crossProduct(Vec3f v1, Vec3f v2) {
@@ -143,8 +143,8 @@ public class Vec3f implements Vectorf<Vec3f>, Serializable {
 	/**
 	 * Calculate and return the distance between two points in 3D space.
 	 *
-	 * @param    v1    The first point.
-	 * @param    v2    The second point.
+	 * @param v1 The first point.
+	 * @param v2 The second point.
 	 * @return The distance between the two points.
 	 */
 	public static float distanceBetween(Vec3f v1, Vec3f v2) {
@@ -164,8 +164,8 @@ public class Vec3f implements Vectorf<Vec3f>, Serializable {
 	 * <a href="https://en.wikipedia.org/wiki/Taxicab_geometry">Taxicab Geometry</a>,
 	 * <a href="http://stackoverflow.com/questions/3693514/very-fast-3d-distance-check">Fast 3d Distance</a>
 	 *
-	 * @param    v1    The first point.
-	 * @param    v2    The second point.
+	 * @param v1 The first point.
+	 * @param v2 The second point.
 	 * @return The Manhattan distance between the two points.
 	 */
 	public static float manhattanDistanceBetween(Vec3f v1, Vec3f v2) {
@@ -177,7 +177,7 @@ public class Vec3f implements Vectorf<Vec3f>, Serializable {
 	 * <p>
 	 * Note: This vector itself is not modified - a new vector is created, each component is made positive, and the new vector is returned.
 	 *
-	 * @param    source    The vector to make absolute.
+	 * @param source The vector to make absolute.
 	 * @return A component-wise absolute version of this vector.
 	 */
 	public static Vec3f abs(Vec3f source) {
@@ -213,7 +213,7 @@ public class Vec3f implements Vectorf<Vec3f>, Serializable {
 	 * <p>
 	 * The code in this method is adapted from: <a href="http://blog.selfshadow.com/2011/10/17/perp-vectors/">Perpendicular Possibilities</a>
 	 *
-	 * @param    u    The vector to use as the basis for generating the perpendicular vector.
+	 * @param u The vector to use as the basis for generating the perpendicular vector.
 	 * @return A normalised vector which is perpendicular to the provided vector argument.
 	 */
 	public static Vec3f genPerpendicularVectorQuick(Vec3f u) {
@@ -238,7 +238,7 @@ public class Vec3f implements Vectorf<Vec3f>, Serializable {
 	 * <p>
 	 * Further reading: Hughes, J. F., Muller, T., "Building an Orthonormal Basis from a Unit Vector", Journal of Graphics Tools 4:4 (1999), 33-35.
 	 *
-	 * @param    u    The vector with regard to which we will generate a perpendicular unit vector.
+	 * @param u The vector with regard to which we will generate a perpendicular unit vector.
 	 * @return A normalised vector which is perpendicular to the provided vector argument.
 	 */
 	public static Vec3f genPerpendicularVectorHM(Vec3f u) {
@@ -277,7 +277,7 @@ public class Vec3f implements Vectorf<Vec3f>, Serializable {
 	 * <p>
 	 * The returned vector is normalised.
 	 *
-	 * @param    u    The vector with regard to which we will generate a perpendicular unit vector.
+	 * @param u The vector with regard to which we will generate a perpendicular unit vector.
 	 * @return A normalised vector which is perpendicular to the provided vector argument.
 	 */
 	public static Vec3f genPerpendicularVectorFrisvad(Vec3f u) {
@@ -297,8 +297,8 @@ public class Vec3f implements Vectorf<Vec3f>, Serializable {
 	/**
 	 * Return the unit vector between two provided vectors.
 	 *
-	 * @param    v1    The first vector.
-	 * @param    v2    The second vector.
+	 * @param v1 The first vector.
+	 * @param v2 The second vector.
 	 * @return The unit vector between the two provided vector arguments.
 	 */
 	public static Vec3f getUvBetween(Vec3f v1, Vec3f v2) {
@@ -312,8 +312,8 @@ public class Vec3f implements Vectorf<Vec3f>, Serializable {
 	 * <p>
 	 * This method does not modify the provided vectors, but does use normalised versions of them in the calculations.
 	 *
-	 * @param    v1    The first vector.
-	 * @param    v2    The second vector.
+	 * @param v1 The first vector.
+	 * @param v2 The second vector.
 	 * @return The angle between the vector in radians.
 	 */
 	public static float getAngleBetweenRads(Vec3f v1, Vec3f v2) {
@@ -328,8 +328,8 @@ public class Vec3f implements Vectorf<Vec3f>, Serializable {
 	 * <p>
 	 * This method does not modify the provided vectors, but does use normalised versions of them in the calculations.
 	 *
-	 * @param    v1    The first vector.
-	 * @param    v2    The second vector.
+	 * @param v1 The first vector.
+	 * @param v2 The second vector.
 	 * @return The angle between the vector in degrees.
 	 */
 	public static float getAngleBetweenDegs(Vec3f v1, Vec3f v2) {
@@ -339,9 +339,9 @@ public class Vec3f implements Vectorf<Vec3f>, Serializable {
 	/**
 	 * Return a signed angle between two vectors within the range -179.9f..180f degrees.
 	 *
-	 * @param    referenceVector    The baseline vector which we consider to be at zero degrees.
-	 * @param    otherVector        The vector we will use to calculate the signed angle with respect to the reference vector.
-	 * @param    normalVector    The normal vector (i.e. vector perpendicular to) both the reference and 'other' vectors.
+	 * @param referenceVector The baseline vector which we consider to be at zero degrees.
+	 * @param otherVector     The vector we will use to calculate the signed angle with respect to the reference vector.
+	 * @param normalVector    The normal vector (i.e. vector perpendicular to) both the reference and 'other' vectors.
 	 * @return The signed angle from the reference vector to the other vector in degrees.
 	 **/
 	public static float getSignedAngleBetweenDegs(Vec3f referenceVector, Vec3f otherVector, Vec3f normalVector) {
@@ -353,9 +353,9 @@ public class Vec3f implements Vectorf<Vec3f>, Serializable {
 	/**
 	 * Return an angle limited vector with regard to another vector.
 	 *
-	 * @param    vecToLimit        The vector which we will limit to a given angle with regard to the the baseline vector.
-	 * @param    vecBaseline        The vector which will be used as the baseline / frame-of-reference when rotating the vecToLimit.
-	 * @param    angleLimitDegrees    The maximum angle which the vecToLimit may be rotated away from the vecBaseline, in degrees.
+	 * @param vecToLimit        The vector which we will limit to a given angle with regard to the the baseline vector.
+	 * @param vecBaseline       The vector which will be used as the baseline / frame-of-reference when rotating the vecToLimit.
+	 * @param angleLimitDegrees The maximum angle which the vecToLimit may be rotated away from the vecBaseline, in degrees.
 	 * @return The rotated vecToLimit, which is constraint to a maximum of the angleLimitDegs argument.
 	 */
 	public static Vec3f getAngleLimitedUnitVectorDegs(Vec3f vecToLimit, Vec3f vecBaseline, float angleLimitDegrees) {
@@ -385,8 +385,8 @@ public class Vec3f implements Vectorf<Vec3f>, Serializable {
 	/**
 	 * Rotate a Vec3f about the world-space X-axis by a given angle specified in radians.
 	 *
-	 * @param    source        The vector to rotate.
-	 * @param    angleRadians    The angle to rotate the vector in radians.
+	 * @param source       The vector to rotate.
+	 * @param angleRadians The angle to rotate the vector in radians.
 	 * @return A rotated version of the vector.
 	 */
 	public static Vec3f rotateXRads(Vec3f source, float angleRadians) {
@@ -404,8 +404,8 @@ public class Vec3f implements Vectorf<Vec3f>, Serializable {
 	/**
 	 * Rotate a Vec3f about the world-space X-axis by a given angle specified in degrees.
 	 *
-	 * @param    source        The vector to rotate.
-	 * @param    angleDegrees    The angle to rotate the vector in degrees.
+	 * @param source       The vector to rotate.
+	 * @param angleDegrees The angle to rotate the vector in degrees.
 	 * @return A rotated version of the vector.
 	 */
 	public static Vec3f rotateXDegs(Vec3f source, float angleDegrees) {
@@ -415,8 +415,8 @@ public class Vec3f implements Vectorf<Vec3f>, Serializable {
 	/**
 	 * Rotate a Vec3f about the world-space Y-axis by a given angle specified in radians.
 	 *
-	 * @param    source        The vector to rotate.
-	 * @param    angleRadians    The angle to rotate the vector in radians.
+	 * @param source       The vector to rotate.
+	 * @param angleRadians The angle to rotate the vector in radians.
 	 * @return A rotated version of the vector.
 	 */
 	public static Vec3f rotateYRads(Vec3f source, float angleRadians) {
@@ -434,8 +434,8 @@ public class Vec3f implements Vectorf<Vec3f>, Serializable {
 	/**
 	 * Rotate a Vec3f about the world-space Y-axis by a given angle specified in degrees.
 	 *
-	 * @param    source         The vector to rotate
-	 * @param    angleDegrees   The angle to rotate the vector
+	 * @param source       The vector to rotate
+	 * @param angleDegrees The angle to rotate the vector
 	 * @return A rotated version of the vector.
 	 */
 	public static Vec3f rotateYDegs(Vec3f source, float angleDegrees) {
@@ -445,8 +445,8 @@ public class Vec3f implements Vectorf<Vec3f>, Serializable {
 	/**
 	 * Rotate a Vec3f about the world-space Z-axis by a given angle specified in radians.
 	 *
-	 * @param    source     The vector to rotate
-	 * @param    angleRadians  The angle to rotate the vector
+	 * @param source       The vector to rotate
+	 * @param angleRadians The angle to rotate the vector
 	 * @return A rotated version of the vector.
 	 */
 	public static Vec3f rotateZRads(Vec3f source, float angleRadians) {
@@ -464,8 +464,8 @@ public class Vec3f implements Vectorf<Vec3f>, Serializable {
 	/**
 	 * Rotate a Vec3f about the world-space Z-axis by a given angle specified in degrees.
 	 *
-	 * @param    source         The vector to rotate.
-	 * @param    angleDegrees   The angle to rotate the vector in degrees.
+	 * @param source       The vector to rotate.
+	 * @param angleDegrees The angle to rotate the vector in degrees.
 	 * @return A rotated version of the vector.
 	 */
 	public static Vec3f rotateZDegs(Vec3f source, float angleDegrees) {
@@ -475,9 +475,9 @@ public class Vec3f implements Vectorf<Vec3f>, Serializable {
 	/**
 	 * Rotate a source vector an amount in radians about an arbitrary axis.
 	 *
-	 * @param source        The vector to rotate.
-	 * @param angleRadians  The amount of rotation to perform in radians.
-	 * @param rotationAxis  The rotation axis.
+	 * @param source       The vector to rotate.
+	 * @param angleRadians The amount of rotation to perform in radians.
+	 * @param rotationAxis The rotation axis.
 	 * @return The source vector rotated about the rotation axis.
 	 */
 	public static Vec3f rotateAboutAxisRads(Vec3f source, float angleRadians, Vec3f rotationAxis) {
@@ -514,9 +514,9 @@ public class Vec3f implements Vectorf<Vec3f>, Serializable {
 	/**
 	 * Rotate a source vector an amount in degrees about an arbitrary axis.
 	 *
-	 * @param source        The vector to rotate.
-	 * @param angleDegrees  The amount of rotation to perform in degrees.
-	 * @param rotationAxis  The rotation axis.
+	 * @param source       The vector to rotate.
+	 * @param angleDegrees The amount of rotation to perform in degrees.
+	 * @param rotationAxis The rotation axis.
 	 * @return The source vector rotated about the rotation axis.
 	 */
 	public static Vec3f rotateAboutAxisDegs(Vec3f source, float angleDegrees, Vec3f rotationAxis) {
@@ -526,8 +526,8 @@ public class Vec3f implements Vectorf<Vec3f>, Serializable {
 	/**
 	 * Multiply the value of a Vec3f in place by a given scaling factor.
 	 *
-	 * @param    v        The vector to scale.
-	 * @param    scale    The value used to scale each component of the 'v' vector.
+	 * @param v     The vector to scale.
+	 * @param scale The value used to scale each component of the 'v' vector.
 	 **/
 	public static void times(Vec3f v, float scale) {
 		v.x *= scale;
@@ -540,8 +540,8 @@ public class Vec3f implements Vectorf<Vec3f>, Serializable {
 	 * <p>
 	 * This method does not perform any memory allocations - it merely adds 'other' to 'source'.
 	 *
-	 * @param    source    The vector to which we will add a vector.
-	 * @param    other    The vector we will add to the 'source' vector.
+	 * @param source The vector to which we will add a vector.
+	 * @param other  The vector we will add to the 'source' vector.
 	 */
 	public static void add(Vec3f source, Vec3f other) {
 		source.x += other.x;
@@ -554,8 +554,8 @@ public class Vec3f implements Vectorf<Vec3f>, Serializable {
 	 * <p>
 	 * This method does not perform any memory allocations - it merely subtracts 'other' from 'source'.
 	 *
-	 * @param    source    The vector to which we will subtract a vector.
-	 * @param    other    The vector we will suctract from the 'source' vector.
+	 * @param source The vector to which we will subtract a vector.
+	 * @param other  The vector we will suctract from the 'source' vector.
 	 */
 	public static void subtract(Vec3f source, Vec3f other) {
 		source.x -= other.x;
@@ -568,8 +568,8 @@ public class Vec3f implements Vectorf<Vec3f>, Serializable {
 	 * <p>
 	 * If the opposite direction is required then the argument order can be swapped or the the result can simply be negated.
 	 *
-	 * @param    v1    The first location.
-	 * @param    v2    The second location.
+	 * @param v1 The first location.
+	 * @param v2 The second location.
 	 * @return The normalised direction unit vector between point v1 and point v2.
 	 */
 	public static Vec3f getDirectionUV(Vec3f v1, Vec3f v2) {
@@ -579,9 +579,9 @@ public class Vec3f implements Vectorf<Vec3f>, Serializable {
 	/**
 	 * Float setter for convenience. Note: x/y/z properties are public.
 	 *
-	 * @param    x    The x value to set.
-	 * @param    y    The y value to set.
-	 * @param    z    The z value to set.
+	 * @param x The x value to set.
+	 * @param y The y value to set.
+	 * @param z The z value to set.
 	 */
 	public void set(float x, float y, float z) {
 		this.x = x;
@@ -620,8 +620,8 @@ public class Vec3f implements Vectorf<Vec3f>, Serializable {
 	/**
 	 * Return whether the length of this Vec3f is approximately equal to a given value to within a given tolerance.
 	 *
-	 * @param    value        The value to compare the length of this vector to.
-	 * @param    tolerance    The tolerance within which the values must be to return true.
+	 * @param value     The value to compare the length of this vector to.
+	 * @param tolerance The tolerance within which the values must be to return true.
 	 * @return A boolean indicating whether the length of this vector is approximately the same as that of the provided value.
 	 */
 	public boolean lengthIsApproximately(float value, float tolerance) {
@@ -699,7 +699,7 @@ public class Vec3f implements Vectorf<Vec3f>, Serializable {
 	 * <p>
 	 * The returned vector is not normalised.
 	 *
-	 * @param    v    The Vec3f with which we will cross product this Vec3f.
+	 * @param v The Vec3f with which we will cross product this Vec3f.
 	 * @return The non-normalised cross product if the two vectors this-cross-v.
 	 */
 	public Vec3f cross(Vec3f v) {
@@ -716,8 +716,8 @@ public class Vec3f implements Vectorf<Vec3f>, Serializable {
 	 * <a href="https://en.wikipedia.org/wiki/Taxicab_geometry">Taxicab Geometry</a>
 	 * <a href="https://stackoverflow.com/questions/3693514/very-fast-3d-distance-check">Stackoverflow Fast 3d distance</a>
 	 *
-	 * @param    v1    The first location vector
-	 * @param    v2    The second location vector
+	 * @param v1 The first location vector
+	 * @param v2 The second location vector
 	 * @return boolean
 	 */
 	@SuppressWarnings("RedundantIfStatement")
@@ -780,7 +780,7 @@ public class Vec3f implements Vectorf<Vec3f>, Serializable {
 	/**
 	 * Return a vector which is the result of multiplying this vector by another vector. This vector remains unchanged.
 	 *
-	 * @param    v    The vector to multiply this vector by.
+	 * @param v The vector to multiply this vector by.
 	 * @return The result of multiplying this vector by the 'v' vector.
 	 **/
 	public Vec3f times(Vec3f v) {
@@ -810,7 +810,7 @@ public class Vec3f implements Vectorf<Vec3f>, Serializable {
 	 * <p>
 	 * If the plane surface normal has a magnitude of zero then an IllegalArgumentException is thrown.
 	 *
-	 * @param    planeNormal    The normal that describes the plane onto which we will project this vector.
+	 * @param planeNormal The normal that describes the plane onto which we will project this vector.
 	 * @return A projected version of this vector (normalised)
 	 */
 	public Vec3f projectOntoPlane(Vec3f planeNormal) {
@@ -838,13 +838,17 @@ public class Vec3f implements Vectorf<Vec3f>, Serializable {
 	/**
 	 * Randomise the components of this vector to be random values between the provided half-open range as described by the minimum and maximum value arguments.
 	 *
-	 * @param    min    The minimum value for any given component (inclusive).
-	 * @param    max    The maximum value for any given component (exclusive, i.e. a max of 5.0f will be assigned values up to 4.9999f or such).
+	 * @param min The minimum value for any given component (inclusive).
+	 * @param max The maximum value for any given component (exclusive, i.e. a max of 5.0f will be assigned values up to 4.9999f or such).
 	 **/
 	public void randomise(float min, float max) {
 		x = Utils.randRange(min, max);
 		y = Utils.randRange(min, max);
 		z = Utils.randRange(min, max);
+	}
+
+	public float[] toArray() {
+		return new float[]{x, y, z};
 	}
 
 	@Override
