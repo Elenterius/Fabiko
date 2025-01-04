@@ -123,7 +123,7 @@ public class FabrikStructure3D implements FabrikStructure<FabrikChain3D, Vec3f>,
 						// Update our basebone relative constraint UV property
 						thisChain.setBaseboneRelativeConstraintUV(relativeBaseboneConstraintUV);
 
-						// Updat the relative reference constraint UV if we hav a local hinge
+						// Update the relative reference constraint UV if we have a local hinge
 						if (constraintType == BaseboneConstraintType3D.LOCAL_HINGE) {
 							thisChain.setBaseboneRelativeReferenceConstraintUV(connectionBoneMatrix.times(thisChain.getBone(0).getJoint().getHingeReferenceAxis()));
 						}

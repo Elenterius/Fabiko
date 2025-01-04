@@ -220,13 +220,14 @@ public class Mat3f {
 		// Singularity fix provided by meaten - see: https://github.com/FedUni/caliko/issues/19
 		if (Math.abs(referenceDirection.y) > 0.9999f) {
 			rotMat.setZBasis(referenceDirection);
-			rotMat.setXBasis(new Vec3f(1.0f, 0.0f, 0.0f));
-			rotMat.setYBasis(Vec3f.crossProduct(rotMat.getXBasis(), rotMat.getZBasis()).normalised());
+			rotMat.m00 = 1f; // == rotMat.setXBasis(1f, 0f, 0f);
+			rotMat.setYBasis(Vec3f.crossProduct(1f, 0f, 0f, referenceDirection).normalise()); // xBasis cross referenceDirection
 		}
 		else {
 			rotMat.setZBasis(referenceDirection);
-			rotMat.setXBasis(Vec3f.crossProduct(referenceDirection, new Vec3f(0.0f, 1.0f, 0.0f)).normalised());
-			rotMat.setYBasis(Vec3f.crossProduct(rotMat.getXBasis(), rotMat.getZBasis()).normalised());
+			Vec3f xBasis = Vec3f.crossProduct(referenceDirection, 0f, 1f, 0f).normalise();
+			rotMat.setXBasis(xBasis);
+			rotMat.setYBasis(Vec3f.crossProduct(xBasis, referenceDirection).normalise());
 		}
 
 		return rotMat;
@@ -278,9 +279,9 @@ public class Mat3f {
 	 * @return Whether or not this matrix is orthogonal.
 	 */
 	public boolean isOrthogonal() {
-		float xCrossYDot = Vec3f.dotProduct(this.getXBasis(), this.getYBasis());
-		float xCrossZDot = Vec3f.dotProduct(this.getXBasis(), this.getZBasis());
-		float yCrossZDot = Vec3f.dotProduct(this.getYBasis(), this.getZBasis());
+		float xCrossYDot = Vec3f.dotProduct(getXBasis(), getYBasis());
+		float xCrossZDot = Vec3f.dotProduct(getXBasis(), getZBasis());
+		float yCrossZDot = Vec3f.dotProduct(getYBasis(), getZBasis());
 
 		return MathUtil.approximatelyEquals(xCrossYDot, 0f, 0.01f)
 				&& MathUtil.approximatelyEquals(xCrossZDot, 0f, 0.01f)
@@ -430,6 +431,15 @@ public class Mat3f {
 	}
 
 	/**
+	 * Set the X basis of this matrix.
+	 */
+	public void setXBasis(float x, float y, float z) {
+		m00 = x;
+		m01 = y;
+		m02 = z;
+	}
+
+	/**
 	 * Get the Y basis of this matrix.
 	 *
 	 * @return The Y basis of this matrix as a Vec3f
@@ -450,9 +460,18 @@ public class Mat3f {
 	}
 
 	/**
+	 * Set the Y basis of this matrix.
+	 */
+	public void setYBasis(float x, float y, float z) {
+		m10 = x;
+		m11 = y;
+		m12 = z;
+	}
+
+	/**
 	 * Get the Z basis of this matrix.
 	 *
-	 * @return The Z basis of this matrix as a Vec3f
+	 * @return The Z basis of this matrix as a new Vec3f
 	 **/
 	public Vec3f getZBasis() {
 		return new Vec3f(m20, m21, m22);
@@ -467,6 +486,15 @@ public class Mat3f {
 		m20 = v.x;
 		m21 = v.y;
 		m22 = v.z;
+	}
+
+	/**
+	 * Set the Z basis of this matrix.
+	 */
+	public void setZBasis(float x, float y, float z) {
+		m20 = x;
+		m21 = y;
+		m22 = z;
 	}
 
 	/**

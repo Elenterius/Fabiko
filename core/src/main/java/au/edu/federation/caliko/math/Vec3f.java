@@ -141,6 +141,36 @@ public class Vec3f implements Vectorf<Vec3f>, Serializable {
 	}
 
 	/**
+	 * Calculate and return a vector which is the cross product of the two provided vectors.
+	 * <p>
+	 * The returned vector is not normalised.
+	 *
+	 * @param v1 The first vector.
+	 * @param x2 x of the second vector.
+	 * @param y2 x of the second vector.
+	 * @param z2 x of the second vector.
+	 * @return The non-normalised cross-product of the two vectors v1-cross-v2.
+	 */
+	public static Vec3f crossProduct(Vec3f v1, float x2, float y2, float z2) {
+		return new Vec3f(v1.y * z2 - v1.z * y2, v1.z * x2 - v1.x * z2, v1.x * y2 - v1.y * x2);
+	}
+
+	/**
+	 * Calculate and return a vector which is the cross product of the two provided vectors.
+	 * <p>
+	 * The returned vector is not normalised.
+	 *
+	 * @param x1 x of the first vector.
+	 * @param y1 y of the first vector.
+	 * @param z1 z of the first vector.
+	 * @param v2 The second vector.
+	 * @return The non-normalised cross-product of the two vectors v1-cross-v2.
+	 */
+	public static Vec3f crossProduct(float x1, float y1, float z1, Vec3f v2) {
+		return new Vec3f(y1 * v2.z - z1 * v2.y, z1 * v2.x - x1 * v2.z, x1 * v2.y - y1 * v2.x);
+	}
+
+	/**
 	 * Calculate and return the distance between two points in 3D space.
 	 *
 	 * @param v1 The first point.

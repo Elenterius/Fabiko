@@ -29,7 +29,8 @@ val buildDirectory = project.layout.buildDirectory
 val timestamp = System.currentTimeMillis()
 
 jmh {
-    profilers.add("stack")
+//    profilers.add("stack")
+    includes.add("com.github.elenterius.caliko.FabrikChain3DSolverBenchmarks.*")
 
     //we pick json for displaying the results with JMH Visualizer
     resultFormat = "json" //text, csv, scsv, json, latex
