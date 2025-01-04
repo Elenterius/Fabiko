@@ -29,9 +29,10 @@ val buildDirectory = project.layout.buildDirectory
 val timestamp = System.currentTimeMillis()
 
 jmh {
+    profilers.add("stack")
+
     //we pick json for displaying the results with JMH Visualizer
     resultFormat = "json" //text, csv, scsv, json, latex
-    //resultsFile = project.layout.buildDirectory.file("results/jmh/${time}-results.json")
     humanOutputFile = buildDirectory.file("reports/jmh/text/${timestamp}-human.txt")
 }
 
@@ -45,6 +46,7 @@ jmhReport {
 }
 
 tasks.jmhReport {
+    group = "jmh"
     doFirst {
         buildDirectory.file("reports/jmh/visualizer").get().asFile.mkdirs()
     }
