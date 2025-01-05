@@ -11,7 +11,7 @@ import au.edu.federation.caliko.utils.Utils;
 import java.io.Serial;
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Collections;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -1196,8 +1196,7 @@ public class FabrikChain3D implements FabrikChain<FabrikBone3D, Vec3f, FabrikJoi
 		}
 
 		// If we have both the same target and base location as the last run then do not solve
-		if (lastTargetLocation.approximatelyEquals(newTarget, 0.001f) &&
-				lastBaseLocation.approximatelyEquals(getBaseLocation(), 0.001f)) {
+		if (lastTargetLocation.approximatelyEquals(newTarget, 0.001f) && lastBaseLocation.approximatelyEquals(getBaseLocation(), 0.001f)) {
 			return currentSolveDistance;
 		}
 
@@ -1207,51 +1206,42 @@ public class FabrikChain3D implements FabrikChain<FabrikBone3D, Vec3f, FabrikJoi
 		 * location combination and NOT for the current setup.
 		 */
 
-		// Declare a list of bones to use to store our best solution
-		List<FabrikBone3D> bestSolution = Collections.emptyList();
+		FabrikBone3D[] bestSolution = new FabrikBone3D[ikChain.size()];
 
-		// We start with the best solve distance that can be easily beaten
 		float bestSolveDistance = Float.MAX_VALUE;
-
-		// We'll also keep track of the solve distance from the last pass
 		float lastPassSolveDistance = Float.MAX_VALUE;
 
-		// Allow up to our iteration limit attempts at solving the chain
 		float solveDistance;
-		for (int loop = 0; loop < maxIterationAttempts; ++loop) {
-			// Solve the chain for this target
+		for (int iteration = 0; iteration < maxIterationAttempts; iteration++) {
 			solveDistance = solveIK(newTarget);
 
-			// Did we solve it for distance? If so, update our best distance and best solution, and also
-			// update our last pass solve distance. Note: We will ALWAYS beat our last solve distance on the first run.
 			if (solveDistance < bestSolveDistance) {
 				bestSolveDistance = solveDistance;
-				bestSolution = cloneIkChain();
 
-				// If we are happy that this solution meets our distance requirements then we can exit the loop now
+				//clone chain
+				for (int i = 0; i < ikChain.size(); i++) {
+					FabrikBone3D bone = ikChain.get(i);
+					bestSolution[i] = new FabrikBone3D(bone);
+				}
+
 				if (solveDistance <= solveDistanceThreshold) {
 					break;
 				}
 			}
-			else // Did not solve to our satisfaction? Okay...
-			{
+			else {
 				// Did we grind to a halt? If so break out of loop to set the best distance and solution that we have
 				if (Math.abs(solveDistance - lastPassSolveDistance) < minIterationChange) {
-					//System.out.println("Ground to halt on iteration: " + loop);
+					//System.out.println("Ground to halt on iteration: " + i);
 					break;
 				}
 			}
 
-			// Update the last pass solve distance
 			lastPassSolveDistance = solveDistance;
+		}
 
-		} // End of loop
-
-		// Update our solve distance and chain configuration to the best solution found
 		currentSolveDistance = bestSolveDistance;
-		ikChain = bestSolution;
+		ikChain = new ArrayList<>(Arrays.asList(bestSolution));
 
-		// Update our base and target locations
 		lastBaseLocation.set(getBaseLocation());
 		lastTargetLocation.set(newTarget);
 
