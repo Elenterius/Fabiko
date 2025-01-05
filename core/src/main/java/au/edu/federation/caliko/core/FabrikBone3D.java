@@ -108,10 +108,7 @@ public class FabrikBone3D implements FabrikBone<Vec3f, FabrikJoint3D>, Serializa
 	 */
 	private final Colour4f colour = new Colour4f();
 
-	/**
-	 * Default constructor
-	 */
-	FabrikBone3D() {
+	private FabrikBone3D() {
 	}
 
 	/**
