@@ -1424,7 +1424,7 @@ public class FabrikChain3D implements FabrikChain<FabrikBone3D, Vec3f, FabrikJoi
 
 					boolean isConstrained =
 							!MathUtil.approximatelyEquals(cwConstraintAngle, FabrikJoint3D.MAX_CONSTRAINT_ANGLE_DEGREES, 0.001f)
-									&& !MathUtil.approximatelyEquals(acwConstraintAngle, FabrikJoint3D.MAX_CONSTRAINT_ANGLE_DEGREES, 0.001f);
+									|| !MathUtil.approximatelyEquals(acwConstraintAngle, FabrikJoint3D.MAX_CONSTRAINT_ANGLE_DEGREES, 0.001f);
 
 					if (isConstrained) {
 						Vec3f hingeReferenceAxis = boneJoint.getHingeReferenceAxis();
@@ -1461,8 +1461,8 @@ public class FabrikChain3D implements FabrikChain<FabrikBone3D, Vec3f, FabrikJoi
 					float cwConstraintAngle = boneJoint.getHingeClockwiseConstraintDegs();
 					float acwConstraintAngle = boneJoint.getHingeAnticlockwiseConstraintDegs();
 
-					boolean isConstrained = !MathUtil.approximatelyEquals(cwConstraintAngle, FabrikJoint3D.MAX_CONSTRAINT_ANGLE_DEGREES, 0.001f) &&
-							!MathUtil.approximatelyEquals(acwConstraintAngle, FabrikJoint3D.MAX_CONSTRAINT_ANGLE_DEGREES, 0.001f);
+					boolean isConstrained = !MathUtil.approximatelyEquals(cwConstraintAngle, FabrikJoint3D.MAX_CONSTRAINT_ANGLE_DEGREES, 0.001f)
+							|| !MathUtil.approximatelyEquals(acwConstraintAngle, FabrikJoint3D.MAX_CONSTRAINT_ANGLE_DEGREES, 0.001f);
 
 					if (isConstrained) {
 						// reference axis in local space
