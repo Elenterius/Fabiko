@@ -1,0 +1,25 @@
+# Wiki edits on GitHub are automatically updated in the repo and attributed appropriately
+# copied from https://github.com/igorbrigadir/wiki-docs-submodule
+
+name: docs
+on: gollum  # runs when someone creates or updates a wiki page
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4.2.2
+        with:
+          submodules: recursive
+      - name: Push wiki changes
+        run: |
+          cd docs
+          git reset --hard origin/master
+          git pull origin master
+          GIT_USER=`git show --format='%aN' --quiet`
+          GIT_EMAIL=`git show --format='%aE' --quiet`
+          GIT_COMMIT=`git log -1  --pretty='%s'`
+          cd ..
+          git config --local user.name $GIT_USER
+          git config --local user.email $GIT_EMAIL
+          git add .
+          git diff-index --quiet HEAD || git commit -m "$GIT_COMMIT" && git push
