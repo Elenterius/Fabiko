@@ -1,85 +1,95 @@
-[![](https://jitpack.io/v/FedUni/caliko.svg)](https://jitpack.io/#FedUni/caliko)
+# Fabiko
 
-# Caliko
-The Caliko library is an implementation of the FABRIK inverse kinematics (IK) algorithm in the Java programming language, 
-and is released under the MIT software license. See LICENSE.txt for further details.
+A Java inverse kinematics library implementing the FABRIK algorithm.
 
-The FABRIK algorithm is explained in the following research paper:
-Aristidou, A., & Lasenby, J. (2011). FABRIK: a fast, iterative solver for the inverse kinematics problem. Graphical Models, 73(5), 243-260.
+[![](https://jitpack.io/v/Elenterius/Fabiko.svg)](https://jitpack.io/#Elenterius/Fabiko)
 
-You can watch a short video outlining the setup and functionality of the Caliko library here:
-[https://www.youtube.com/watch?v=wEtp4P2ucYk](https://www.youtube.com/watch?v=wEtp4P2ucYk)
+The Fabiko library is a custom fork of the [Caliko](https://github.com/FedUni/caliko) library.
 
-If referencing this project in your research, APA style referencing for the accompaniying research paper is:
-Lansley, A., Vamplew, P., Smith, P., & Foale, C. (2016). Caliko: An inverse kinematics software library implementation of the FABRIK algorithm. Journal of Open Research Software, 4(1).
+The user guide can be found on the repository [wiki](https://github.com/Elenterius/Fabiko/wiki).
+
+## Features
+
+- FABRIK algorithm for 2D and 3D
+- various joint constraints (Local Hinge, Global Hinge, Rotor)
+- ability to connect multiple IK chains together in a hierarchy
+- visualisation of IK chains
+
+### Improvements over [Caliko](https://github.com/FedUni/caliko)
+
+- migrated build system from maven to gradle
+- updated & improved JUnit tests
+- migrated performance tests to jmh
+- reduced object allocation
+
+### BugFixes
+
+- FabrikChain3d:
+  - fix backward pass not constraining local & global hinges of non-base bones
+  - fix crash caused by forward pass of 1 bone chains with local hinges
+
+### TODOs
+
+- GitHub action workflow for building releases automatically from conventional commits
+- Refactor entire library to use [JOML](https://github.com/JOML-CI/JOML) for algebra operations instead of Caliko's
+  custom solution
+  - use Quaternions!
+- Add parabolic constraint types?
+- Streamline Model class object copying?
+
+## License
+
+The library is licensed under the MIT software license and the source code is freely available for use and
+modification.
+
+## Credits
+
+Caliko, a free open-source software (FOSS) implementation of the
+FABRIK (Forward And Backward Reaching Inverse Kinematics) algorithm created by Aristidou and Lasenby.
+
+## Literature
+
+Further details on the FABRIK algorithm itself can be found in the following paper:
+`Aristidou, A., & Lasenby, J. (2011). FABRIK: a fast, iterative solver for the inverse kinematics problem. Graphical Models, 73(5), 243-260.`
 
 ## Structure
 
-The library is a Maven multi-module project with the following modules:
+The library is a multi-module gradle project with the following modules:
 
-The **caliko** module contains the core IK portion of the library and is capable of running without any visualisation or external dependencies. 
+The **core** module contains the core IK portion of the library and has a dependency
+on [JOML](https://github.com/JOML-CI/JOML)
 
-The **caliko-visualisation** module contains the optional visualisation component of the library which provides the ability to draw various IK structures/chains/bones and depends on the core caliko functionality as well as the LWJGL 3.2.2 library.
+The **visualisation** module contains the optional visualisation component of the library which provides the ability to
+draw various IK structures/chains/bones and depends on the core Fabiko functionality as well as the LWJGL 3.3.5 library.
 
-The **caliko-demo** module contains a demonstration of the library utilising both 2D and 3D IK chains in various configurations. It requires the caliko, caliko-visualisation and LWJGL 3.2.2 libraries.
+The **demo** module contains a demonstration of the library utilising both 2D and 3D IK chains in various
+configurations. It requires the fabiko-core, fabiko-visualisation and LWJGL 3.3.5 libraries.
 
-## Build and Setup ##
+## Build and Setup
 
 To build yourself:
 
-`git clone https://github.com/FedUni/caliko`
+`git clone https://github.com/Elenterius/Fabiko`
 
 `gradlew build`
 
-Alternatively, download a release from: 
-[https://github.com/FedUni/caliko/releases](https://github.com/FedUni/caliko/releases)
+## Usage
 
-## Documentation ##
+To include the library in your own project use the [jitpack maven repository](https://jitpack.io/#Elenterius/Fabiko/) or
+download a [release](https://github.com/Elenterius/Fabiko/releases) from GitHub.
 
-Downloaded releases come packaged with a user guide and JavaDoc API documentation in the **docs** folder.
-
-Alternatively, if you'd just like to take a peek at the user guide, it can be found here: [Caliko User Guide.pdf](https://github.com/FedUni/caliko/blob/master/caliko-distribution/src/site/docs/caliko-user-guide.pdf)
-
-## Usage ##
-
-To use the library in your own Maven project, declare the following dependencies:
-
-1) If you only need the IK algorithm and do not need any visualisation:
-
-```xml
-    <dependency>
-      <groupId>au.edu.federation.caliko</groupId>
-      <artifactId>caliko</artifactId>
-      <version>1.3.8</version>
-    </dependency> 
+```gradle
+dependencyResolutionManagement {
+    repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
+    repositories {
+        mavenCentral()
+        maven { url 'https://jitpack.io' }
+    }
+}
 ```
 
-2) If you need the IK algorithm and the visualisation:
-
-```xml
-    <dependency>
-      <groupId>au.edu.federation.caliko.visualisation</groupId>
-      <artifactId>caliko-visualisation</artifactId>
-      <version>1.3.8</version>
-    </dependency> 
+```gradle
+dependencies {
+    implementation 'com.github.Elenterius:Fabiko:Tag'
+}
 ```
-
-## Demo controls ##
-
-- Left mouse button sets target in 2D mode and enables mouse-look in 3D mode.
-- Up/Down cursors - Toggle 2D/3D mode.
-- Left/Right cursors - Prev/Next demo.
-- Space - Pause/Resume target movement (3D).
-- L - Toggle display lines.
-- M - Toggle display models (3D).
-- X - Toggle display axes (3D).
-- F - Toggle fixed base mode.
-- P - Toggle perspective / orthographic projection (3D)
-- R - Toggle rotating base locations (3D)
-- Esc - Quit.
-
-## TODO ##
-
-- Refactor entire library to use quaternions.
-- Add parabolic constraint types.
-- Streamline Model class object copying.

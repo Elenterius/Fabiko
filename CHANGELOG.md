@@ -1,12 +1,20 @@
 1.3.8 (2020/07/17)
-- Fixed the Mat3f.createRotationMatrix() method to correctly handle the singularity on the positive Y-axis (thanks, meaten!)
-- Also added a (commented out) Pixar version which works, but generates slightly different orthogonal 3x3 matrices (see method for details)
+---
+
+- Fixed the Mat3f.createRotationMatrix() method to correctly handle the singularity on the positive Y-axis (thanks,
+  meaten!)
+- Also added a (commented out) Pixar version which works, but generates slightly different orthogonal 3x3 matrices (see
+  method for details)
 
 1.3.7 (2020/04/02)
+---
+
 - Updated documentation to discuss potential Mac demo crash & potential mitigation steps
 - Updated documentation display of project file structure
 
 1.3.6 (2019/06/27)
+---
+
 - Updated Java version from 8 to 11 (we could use 12, but 11 is LTS so let's go with that).
 - Updated LWJGL3 version from 3.0.0b to 3.2.2 and made necessary changes to maven POMs & Caliko demo.
 - Updated maven plugin versions used & JUnit plugin, hence...
@@ -16,19 +24,28 @@
 - Updates / fixes / clarifications to user documentation.
 
 1.3.5 (2018/10/28)
+---
+
 - Added functions to get the global pitch & yaw of vectors or bones to the respective Vec3f and FabrikBone3D classes.
 - Modified Mat3f createRotationMatrix method to use a technique that results in less roll / 'spin' of the bones.
 - Updated user docs to mention said pitch & yaw values.
 
 1.2
-- [MAJOR] Added embedded targets for 2D/3D chains so that chains in the same structure do not have to all use/be-solved-for the same target location.
-  By enabling embedded target mode for a chain, when it's time to solve it the embedded target is used rather than any provided target. See
+---
+
+- MAJOR: Added embedded targets for 2D/3D chains so that chains in the same structure do not have to all
+  use/be-solved-for the same target location.
+  By enabling embedded target mode for a chain, when it's time to solve it the embedded target is used rather than any
+  provided target. See
   the user documentation and 2D demo 7 and 3D demo 12 for worked examples.
-- All calls to "updateTarget" are now "solveForTarget", and there are additional "setEmbeddedTargetMode" and "updateEmbeddedTarget" methods for chains.
-- Made FabrikBone2D default constructor public [FabrikBone2D]
-- Fix for crash when solving chain with a single bone (2D and 3D) [FabrikChain3D]
+- All calls to "updateTarget" are now "solveForTarget", and there are additional "setEmbeddedTargetMode" and "
+  updateEmbeddedTarget" methods for chains.
+- FabrikBone2D: Made default constructor public
+- FabrikChain3D: Fix for crash when solving chain with a single bone (2D and 3D)
 
 1.1.2
+---
+
 - Moved utils package from au.edu.federation.caliko.utils to au.edu.federation.utils as the classes within are generic
 - Modified source to import new Vec/Mat classes
 - Added performance metrics test (source code in perf-test folder)
