@@ -10,41 +10,43 @@ The user guide can be found on the repository [wiki](https://github.com/Elenteri
 
 ## Features
 
-- FABRIK algorithm for 2D and 3D
-- various joint constraints (Local Hinge, Global Hinge, Rotor)
+- FABRIK algorithm for 3D
+- various joint constraints (Local Rotor, Global Rotor, Local Hinge, Global Hinge)
 - ability to connect multiple IK chains together in a hierarchy
-- visualisation of IK chains
+- visualization of IK chains
+
+> !important
+> This library does **not** implement the FABRIK algorithm for 2D.
 
 ### Improvements over [Caliko](https://github.com/FedUni/caliko)
 
 - migrated build system from maven to gradle
+- refactored entire library to use [JOML](https://github.com/JOML-CI/JOML) for algebra operations instead of Caliko's
+  own custom algebra operators
+- reduced object allocations
 - updated & improved JUnit tests
 - migrated performance tests to jmh
-- reduced object allocation
+- fix backward pass failing to constrain local & global hinges of non-base bones (doesn't seem to make any difference)
 
-### BugFixes
+### Cons
 
-- FabrikChain3d:
-  - fix backward pass not constraining local & global hinges of non-base bones
-  - fix crash caused by forward pass of 1 bone chains with local hinges
+- no support for 2D FABRIK
+- requires JOML
 
 ### TODOs
 
-- GitHub action workflow for building releases automatically from conventional commits
-- Refactor entire library to use [JOML](https://github.com/JOML-CI/JOML) for algebra operations instead of Caliko's
-  custom solution
-  - use Quaternions!
-- Add parabolic constraint types?
-- Streamline Model class object copying?
+- [ ] GitHub action workflow for building releases automatically from conventional commits
+- [ ] prismatic joint/constraint
+- refactor FABRIK algorithm to properly use Quaternions or rework it to
+  use [Dual-Quaternions](https://cs.gmu.edu/~jmlien/teaching/cs451/uploads/Main/dual-quaternion.pdf)??
 
 ## License
 
-The library is licensed under the MIT software license and the source code is freely available for use and
-modification.
+The library is licensed under the MIT software license.
 
 ## Credits
 
-Caliko, a free open-source software (FOSS) implementation of the
+[Caliko](https://github.com/FedUni/caliko), a free open-source software (FOSS) implementation of the
 FABRIK (Forward And Backward Reaching Inverse Kinematics) algorithm created by Aristidou and Lasenby.
 
 ## Literature
@@ -79,17 +81,13 @@ To include the library in your own project use the [jitpack maven repository](ht
 download a [release](https://github.com/Elenterius/Fabiko/releases) from GitHub.
 
 ```gradle
-dependencyResolutionManagement {
-    repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
-    repositories {
-        mavenCentral()
-        maven { url 'https://jitpack.io' }
-    }
+repositories {
+    maven { url 'https://jitpack.io' }
 }
 ```
 
 ```gradle
 dependencies {
-    implementation 'com.github.Elenterius:Fabiko:Tag'
+    implementation 'com.github.Elenterius:Fabiko:TAG'
 }
 ```

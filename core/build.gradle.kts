@@ -12,6 +12,12 @@ base {
     archivesName = "${rootProject.name}-core"
 }
 
+repositories {
+    flatDir {
+        dirs("../libs")
+    }
+}
+
 dependencies {
     api(libs.jspecify.annotations)
     api(libs.joml)
@@ -21,6 +27,10 @@ dependencies {
     testRuntimeOnly(libs.junit.platform)
 
     testImplementation(libs.gson)
+
+    // add caliko for testing and benchmark comparisons
+    testImplementation(":caliko-1.3.8")
+    jmhImplementation(":caliko-1.3.8")
 }
 
 tasks.named<Test>("test") {
@@ -32,8 +42,7 @@ val timestamp = System.currentTimeMillis()
 
 jmh {
 //    profilers.add("stack")
-    includes.add("com.github.elenterius.caliko.FabrikChain3DSolverBenchmarks.*")
-//    includes.add("com.github.elenterius.caliko.CloneIKChainBenchmarks.*")
+    includes.add("benchmarks.caliko.CalikoSolverBenchmarks.solveUnconstrainedChain")
 
     //we pick json for displaying the results with JMH Visualizer
     resultFormat = "json" //text, csv, scsv, json, latex

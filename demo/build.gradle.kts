@@ -17,7 +17,7 @@ tasks.withType<PublishToMavenRepository>().configureEach { enabled = false }
 tasks.withType<PublishToMavenLocal>().configureEach { enabled = false }
 
 application {
-    mainClass = "au.edu.federation.caliko.demo.Application"
+    mainClass = "com.github.elenterius.fabiko.demo.Application"
     applicationName = "Fabiko-Demo"
 }
 
@@ -117,6 +117,15 @@ distributions {
 }
 
 tasks.startScripts {
+//    defaultJvmOpts = listOf("-XX:+IgnoreUnrecognizedVMOptions", "-XstartOnFirstThread")
+
+//TODO: add macOS support for lwjgl to unix start script
+//    -------------------------------------------------------------
+//    if "$darwin"; then
+//    DEFAULT_JVM_OPTS="-XstartOnFirstThread ${DEFAULT_JVM_OPTS}"
+//    fi
+//    -------------------------------------------------------------
+
     unixStartScriptGenerator = CustomUnixStartScriptGenerator()
     windowsStartScriptGenerator = CustomWindowsStartScriptGenerator()
 }
