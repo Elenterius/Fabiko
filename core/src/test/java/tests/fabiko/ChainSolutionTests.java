@@ -1,32 +1,25 @@
-package au.edu.federation.caliko;
+package tests.fabiko;
 
 import au.edu.federation.caliko.core.FabrikBone3D;
 import au.edu.federation.caliko.core.FabrikChain3D;
 import au.edu.federation.caliko.math.Vec3f;
-import au.edu.federation.caliko.utils.SerializationUtil;
 import au.edu.federation.caliko.utils.Utils;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
+import tests.fabiko.util.ChainSolution;
+import tests.fabiko.util.TestAssets;
 
 import java.io.File;
-import java.io.InputStream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-/**
- * @author jsalvo / alansley
- */
-public class SerializationTests {
+public class ChainSolutionTests {
 
 	@TempDir
 	public File tempDir;
 
-	/**
-	 * Unit-test that we can successfully serialize and deserialize a chain
-	 */
 	@Test
-	public void testSerialization() throws Exception {
+	public void testJSONSerialization() throws Exception {
 		Vec3f RIGHT = new Vec3f(1f, 0f, 0f);
 		float boneLength = 10f;
 		int bonesToAdd = 100;
@@ -41,27 +34,17 @@ public class SerializationTests {
 
 		solveChain(chain);
 
-		File file = new File(tempDir, "SerializationTest.bin");
-		SerializationUtil.serializeChain(chain, file);
+		ChainSolution solution = ChainSolution.from(chain);
 
-		FabrikChain3D deserializedChain = SerializationUtil.deserializeChain(file, FabrikChain3D.class);
+		File file = new File(tempDir, "serialization_test.json");
+		TestAssets.serializeJSON(solution, file);
 
-		assertEquals(chain, deserializedChain);
-	}
+		ChainSolution deserializedSolution = TestAssets.deserializeJSON(file, ChainSolution.class);
 
-	/**
-	 * Unit-test to ensure we can deserialize a chain
-	 */
-	@Test
-	public void deserializeFabrikChain3DFromBinaryFile() throws Exception {
-		InputStream inputStream = SerializationUtil.class.getResourceAsStream(FabrikChain3DTests.TEST_ASSETS_PATH_TEMPLATE.formatted(1));
+		float differenceError = ChainSolution.differenceError(solution, deserializedSolution);
+		System.out.println("Total Difference Error: " + differenceError);
 
-		if (inputStream == null) {
-			System.out.println("input stream IS NULL =///");
-		}
-
-		FabrikChain3D deserializedChain = SerializationUtil.deserializeChain(inputStream, FabrikChain3D.class);
-		assertNotNull(deserializedChain);
+		assertEquals(solution, deserializedSolution);
 	}
 
 	private void solveChain(FabrikChain3D chain) throws Exception {

@@ -1,4 +1,4 @@
-package au.edu.federation.caliko;
+package tests.fabiko;
 
 import au.edu.federation.caliko.math.Vec3f;
 import org.junit.jupiter.api.Assertions;

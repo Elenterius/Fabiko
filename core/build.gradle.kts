@@ -19,6 +19,8 @@ dependencies {
     testImplementation(platform(libs.junit.bom))
     testImplementation(libs.junit.engine)
     testRuntimeOnly(libs.junit.platform)
+
+    testImplementation(libs.gson)
 }
 
 tasks.named<Test>("test") {

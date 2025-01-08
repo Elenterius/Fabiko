@@ -1,4 +1,4 @@
-package com.github.elenterius.caliko;
+package benchmarks.fabiko;
 
 import au.edu.federation.caliko.math.Mat3f;
 import au.edu.federation.caliko.math.Vec3f;

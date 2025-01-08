@@ -1,4 +1,4 @@
-package com.github.elenterius.caliko;
+package benchmarks.fabiko;
 
 import au.edu.federation.caliko.core.FabrikBone3D;
 import au.edu.federation.caliko.core.FabrikChain3D;

@@ -1,10 +1,10 @@
-package au.edu.federation.caliko;
-
-import static org.junit.jupiter.api.Assertions.*;
+package tests.fabiko;
 
 import au.edu.federation.caliko.math.Mat3f;
 import au.edu.federation.caliko.math.Vec3f;
 import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class RotationMatrixTests {
 
