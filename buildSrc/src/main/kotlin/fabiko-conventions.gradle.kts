@@ -21,17 +21,12 @@ java {
     toolchain {
         languageVersion.set(JavaLanguageVersion.of(21))
     }
+    withSourcesJar()
+    withJavadocJar()
 }
 
 repositories {
-    mavenLocal()
     mavenCentral()
-}
-
-publishing {
-    publications.create<MavenPublication>("maven") {
-        from(components["java"])
-    }
 }
 
 tasks.withType<JavaCompile> {
@@ -40,6 +35,7 @@ tasks.withType<JavaCompile> {
 
 tasks.withType<Javadoc> {
     options.encoding = "UTF-8"
+    (options as StandardJavadocDocletOptions).addBooleanOption("html5", true)
 }
 
 tasks.jar {
@@ -49,11 +45,10 @@ tasks.jar {
             "Implementation-Version" to project.version
         )
     }
+}
 
-    doLast {
-        project.copy {
-            from(archiveFile)
-            into(rootProject.layout.buildDirectory.dir("libs"))
-        }
+publishing {
+    publications.create<MavenPublication>("maven") {
+        from(components["java"])
     }
 }
