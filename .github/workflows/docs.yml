@@ -6,6 +6,8 @@ on: gollum  # runs when someone creates or updates a wiki page
 jobs:
   build:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
     steps:
       - uses: actions/checkout@v4.2.2
         with:
