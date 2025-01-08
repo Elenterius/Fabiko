@@ -6,8 +6,8 @@ plugins {
 }
 
 base {
-    group = "au.edu.federation.caliko"
-    version = "1.3.8"
+    group = "com.github.elenterius.fabiko"
+    version = "0.0.1"
 }
 
 idea {

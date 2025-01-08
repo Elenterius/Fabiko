@@ -3,19 +3,18 @@ import org.gradle.api.internal.plugins.WindowsStartScriptGenerator
 import java.io.Writer
 
 plugins {
-    id("caliko-conventions")
+    id("fabiko-conventions")
     application
 }
 
 base {
-    group = "au.edu.federation.caliko.demo"
     description = "${rootProject.name}-demo"
     archivesName = "${rootProject.name}-demo"
 }
 
 application {
     mainClass = "au.edu.federation.caliko.demo.Application"
-    applicationName = "Caliko-Demo"
+    applicationName = "Fabiko-Demo"
 }
 
 enum class LWJGLPlatforms(classifier: String, val isUnix: Boolean) {

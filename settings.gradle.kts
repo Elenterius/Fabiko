@@ -1,7 +1,7 @@
 
 pluginManagement {
     // Include 'plugins build' to define convention plugins.
-//    includeBuild("build-logic")
+    // includeBuild("build-logic")
 }
 
 plugins {
@@ -9,5 +9,5 @@ plugins {
     id("org.gradle.toolchains.foojay-resolver-convention") version "0.8.0"
 }
 
-rootProject.name = "caliko"
+rootProject.name = "fabiko"
 include(":core", ":visualisation", ":demo")

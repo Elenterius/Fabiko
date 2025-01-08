@@ -1,10 +1,9 @@
 plugins {
-    id("caliko-conventions")
+    id("fabiko-conventions")
     `java-library`
 }
 
 base {
-    group = "au.edu.federation.caliko.visualisation"
     description = "${rootProject.name}-visualisation"
     archivesName = "${rootProject.name}-visualisation"
 }

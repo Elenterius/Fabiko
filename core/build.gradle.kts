@@ -1,7 +1,7 @@
 // this module contains the core IK portion of the library
 
 plugins {
-    id("caliko-conventions")
+    id("fabiko-conventions")
     `java-library`
     alias(libs.plugins.jmh)
     alias(libs.plugins.jmhreport)
