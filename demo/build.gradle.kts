@@ -12,6 +12,10 @@ base {
     archivesName = "${rootProject.name}-demo"
 }
 
+// disable the ability to publish the demo module to any maven (i.e. jitpack)
+tasks.withType<PublishToMavenRepository>().configureEach { enabled = false }
+tasks.withType<PublishToMavenLocal>().configureEach { enabled = false }
+
 application {
     mainClass = "au.edu.federation.caliko.demo.Application"
     applicationName = "Fabiko-Demo"
