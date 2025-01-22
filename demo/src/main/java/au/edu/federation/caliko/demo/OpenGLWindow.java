@@ -75,7 +75,11 @@ public class OpenGLWindow
     	
     	// Setup the error callback to output to System.err
     	glfwSetErrorCallback(errorCallback = GLFWErrorCallback.createPrint(System.err));
- 
+
+	    if (glfwPlatformSupported(GLFW_PLATFORM_WAYLAND)) {
+		    glfwInitHint(GLFW_PLATFORM, GLFW_PLATFORM_X11);
+	    }
+
         // Initialize GLFW. Most GLFW functions will not work before doing this.
         if ( !glfwInit() ) { throw new IllegalStateException("Unable to initialize GLFW"); }
  
