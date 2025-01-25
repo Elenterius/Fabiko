@@ -4,7 +4,7 @@ A Java inverse kinematics library implementing the FABRIK algorithm.
 
 [![](https://jitpack.io/v/Elenterius/Fabiko.svg)](https://jitpack.io/#Elenterius/Fabiko)
 
-The Fabiko library is a custom fork of the [Caliko](https://github.com/FedUni/caliko) library.
+The Fabiko library is a hard fork of the [Caliko](https://github.com/FedUni/caliko) library.
 
 The user guide can be found on the repository [wiki](https://github.com/Elenterius/Fabiko/wiki).
 
@@ -48,7 +48,7 @@ The library is licensed under the MIT software license.
 
 - [Caliko](https://github.com/FedUni/caliko), a free open-source software (FOSS) implementation of the
 FABRIK (Forward And Backward Reaching Inverse Kinematics) algorithm created by Aristidou and Lasenby.
-- [JOML](https://github.com/JOML-CI/JOML) a math library for linear algebra operations needed by 3D Applications.
+- [JOML](https://github.com/JOML-CI/JOML), a math library for linear algebra operations needed by 3D Applications.
 
 ## Literature
 
