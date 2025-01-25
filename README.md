@@ -15,7 +15,7 @@ The user guide can be found on the repository [wiki](https://github.com/Elenteri
 - ability to connect multiple IK chains together in a hierarchy
 - visualization of IK chains
 
-> !important
+> [!important]
 > This library does **not** implement the FABRIK algorithm for 2D.
 
 ### Improvements over [Caliko](https://github.com/FedUni/caliko)
@@ -35,10 +35,10 @@ The user guide can be found on the repository [wiki](https://github.com/Elenteri
 
 ### TODOs
 
-- [ ] GitHub action workflow for building releases automatically from conventional commits
-- [ ] prismatic joint/constraint
-- refactor FABRIK algorithm to properly use Quaternions or rework it to
-  use [Dual-Quaternions](https://cs.gmu.edu/~jmlien/teaching/cs451/uploads/Main/dual-quaternion.pdf)??
+- [ ] add GitHub action workflow for building releases automatically from conventional commits
+- [ ] add prismatic joint/constraint
+- refactor FABRIK algorithm to properly use Quaternions or redesign it to
+  use [Dual-Quaternions](https://cs.gmu.edu/~jmlien/teaching/cs451/uploads/Main/dual-quaternion.pdf)?
 
 ## License
 
@@ -46,8 +46,9 @@ The library is licensed under the MIT software license.
 
 ## Credits
 
-[Caliko](https://github.com/FedUni/caliko), a free open-source software (FOSS) implementation of the
+- [Caliko](https://github.com/FedUni/caliko), a free open-source software (FOSS) implementation of the
 FABRIK (Forward And Backward Reaching Inverse Kinematics) algorithm created by Aristidou and Lasenby.
+- [JOML](https://github.com/JOML-CI/JOML) a math library for linear algebra operations needed by 3D Applications.
 
 ## Literature
 
