@@ -199,42 +199,29 @@ public class OpenGLWindow {
 				switch (key) {
 					case GLFW_KEY_RIGHT -> showNextDemo();
 					case GLFW_KEY_LEFT -> showPreviousDemo();
+
 					case GLFW_KEY_UP, GLFW_KEY_DOWN -> doNothing();
+
 					case GLFW_KEY_F -> toggleFixedBaseMode();
 					case GLFW_KEY_R -> toggleRotatingBases();
 
 					case GLFW_KEY_C -> toggleDrawConstraints();
 					case GLFW_KEY_L -> toggleDrawLines();
 					case GLFW_KEY_M -> toggleDrawModels();
-					case GLFW_KEY_P -> switchBetweenOrthographicAndPerspectiveView();
 					case GLFW_KEY_X -> toggleDrawAxes();
 
-					case GLFW_KEY_W, GLFW_KEY_S, GLFW_KEY_A, GLFW_KEY_D -> handleCameraControls(key, action);
+					case GLFW_KEY_P -> switchBetweenOrthographicAndPerspectiveView();
+
+					case GLFW_KEY_W, GLFW_KEY_S, GLFW_KEY_A, GLFW_KEY_D, GLFW_KEY_SPACE, GLFW_KEY_LEFT_SHIFT -> handleCameraControls(key, action);
 
 					case GLFW_KEY_ESCAPE -> glfwSetWindowShouldClose(window, true);
 
-					// Dynamic add/remove bones for first demo
-					//            		case GLFW_KEY_COMMA:
-					//            			if (Application.demoNumber == 1 && Application.structure.getChain(0).getNumBones() > 1)
-					//            			{
-					//            				Application.structure.getChain(0).removeBone(0);
-					//            			}
-					//            			break;
-					//            		case GLFW_KEY_PERIOD:
-					//            			if (Application.demoNumber == 1)
-					//            			{
-					//            				Application.structure.getChain(0).addConsecutiveBone(Application.X_AXIS, Application.defaultBoneLength);
-					//            			}
-					//            			break;
-
-					case GLFW_KEY_SPACE -> togglePause();
+					case GLFW_KEY_ENTER -> togglePause();
 				}
-
 			}
 			else if (action == GLFW_REPEAT || action == GLFW_RELEASE) {
-				// Camera must also handle repeat or release actions
 				switch (key) {
-					case GLFW_KEY_W, GLFW_KEY_S, GLFW_KEY_A, GLFW_KEY_D -> handleCameraControls(key, action);
+					case GLFW_KEY_W, GLFW_KEY_S, GLFW_KEY_A, GLFW_KEY_D, GLFW_KEY_SPACE, GLFW_KEY_LEFT_SHIFT -> handleCameraControls(key, action);
 				}
 			}
 		}));
@@ -259,7 +246,7 @@ public class OpenGLWindow {
 
 				switch (action) {
 					case GLFW_PRESS ->
-							glfwSetInputMode(this.windowId, GLFW_CURSOR, GLFW_CURSOR_DISABLED); // Make the mouse cursor hidden and put it into a 'virtual' mode where its values are not limited
+							glfwSetInputMode(windowId, GLFW_CURSOR, GLFW_CURSOR_DISABLED); // Make the mouse cursor hidden and put it into a 'virtual' mode where its values are not limited
 					case GLFW_RELEASE -> {
 						// Restore the mouse cursor to normal and reset the camera last cursor position to be the middle of the window
 						glfwSetInputMode(windowId, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
@@ -334,6 +321,10 @@ public class OpenGLWindow {
 		if (flag) {
 			useOrthographicProjection = false;
 			projectionMatrix.setPerspective(verticalFoVRadians, aspectRatio, zNear, zFar);
+
+			if (Application.sceneHandler != null) {
+				Application.sceneHandler.printCameraInfo();
+			}
 		}
 		else {
 			useOrthographicProjection = true;

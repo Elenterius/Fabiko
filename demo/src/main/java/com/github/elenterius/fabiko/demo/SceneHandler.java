@@ -33,6 +33,8 @@ import org.joml.Vector3f;
 
 import java.util.Random;
 
+import static org.lwjgl.glfw.GLFW.*;
+
 /// @author Al Lansley
 /// @author Elenterius
 public class SceneHandler {
@@ -43,13 +45,13 @@ public class SceneHandler {
 	static float constraintLineWidth = 2f;
 	static float baseRotationAmount = Math.toRadians(0.3f);
 
-	static Camera camera = new Camera(new Vector3f(0f, 0f, -150f), new Vector3f(0f, 0f, 0f), Application.windowWidth, Application.windowHeight);
+	static Camera camera = new Camera(new Vector3f(325f, -150f, -40f), new Vector3f(23.5f, 90.5f, 0f), Application.windowWidth, Application.windowHeight);
 
 	static float extent = 1000f;
 	static float gridLevel = 100f;
 	static int subdivisions = 20;
 	static GridDrawHelper lowerGrid = new GridDrawHelper(extent, extent, -gridLevel, subdivisions);
-	static GridDrawHelper upperGrid = new GridDrawHelper(extent, extent, gridLevel, subdivisions);
+	//	static GridDrawHelper upperGrid = new GridDrawHelper(extent, extent, gridLevel, subdivisions);
 
 	static AxisDrawHelper axisDrawHelper = new AxisDrawHelper(3f, 1f);
 	static ConstraintDrawHelper constraintDrawHelper = new ConstraintDrawHelper();
@@ -71,7 +73,7 @@ public class SceneHandler {
 	/// Set up a demo consisting of an arrangement of 3D IK chains with a given configuration.
 	public void setup(int unsafeSceneIndex) {
 		int n = SceneFactory.getNumberOfScenes();
-		int safeIndex = unsafeSceneIndex >= 0 ? unsafeSceneIndex % n : (unsafeSceneIndex % n) + (n - 1);
+		int safeIndex = unsafeSceneIndex >= 0 ? unsafeSceneIndex % n : (unsafeSceneIndex % n) + (n);
 
 		demoScene = SceneFactory.crate(safeIndex);
 		demoScene.setup();
@@ -91,7 +93,19 @@ public class SceneHandler {
 	}
 
 	public void handleCameraMovement(int key, int action) {
-		camera.handleKeyPress(key, action);
+		switch (key) {
+			case GLFW_KEY_W -> camera.setMoveForward(action == GLFW_PRESS || action == GLFW_REPEAT);
+			case GLFW_KEY_S -> camera.setMoveBackward(action == GLFW_PRESS || action == GLFW_REPEAT);
+			case GLFW_KEY_A -> camera.setMoveLeft(action == GLFW_PRESS || action == GLFW_REPEAT);
+			case GLFW_KEY_D -> camera.setMoveRight(action == GLFW_PRESS || action == GLFW_REPEAT);
+			case GLFW_KEY_SPACE -> camera.setMoveUp(action == GLFW_PRESS || action == GLFW_REPEAT);
+			case GLFW_KEY_LEFT_SHIFT -> camera.setMoveDown(action == GLFW_PRESS || action == GLFW_REPEAT);
+		}
+
+	}
+
+	public void printCameraInfo() {
+		System.out.println(camera);
 	}
 
 	public void draw() {
@@ -101,7 +115,7 @@ public class SceneHandler {
 		Matrix4fc modelViewProjection = Application.window.getIdentityModelViewProjectionMatrix();
 
 		lowerGrid.draw(modelViewProjection);
-		upperGrid.draw(modelViewProjection);
+		//		upperGrid.draw(modelViewProjection);
 
 		// If we're not paused then step the target and solve the structure for the new target location
 		if (!Application.paused) {

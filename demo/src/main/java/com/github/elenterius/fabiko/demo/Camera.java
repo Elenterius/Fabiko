@@ -27,8 +27,6 @@ import org.joml.Matrix4f;
 import org.joml.Matrix4fc;
 import org.joml.Vector3f;
 
-import static org.lwjgl.glfw.GLFW.*;
-
 /// Refactored copy from Caliko Library.
 ///
 /// Original Author: Al Lansley
@@ -38,8 +36,7 @@ public class Camera {
 
 	private final Matrix4f viewMatrix = new Matrix4f();
 
-	/// How quickly the camera moves.
-	private float movementSpeedFactor = 80f;
+	private float moveSpeed = 80f;
 
 	/// How sensitive mouse movements affect looking up and down.
 	private double pitchSensitivity = 0.01d;
@@ -49,24 +46,23 @@ public class Camera {
 
 	// Current location and orientation of the camera
 	private final Vector3f location = new Vector3f();
-	private final Vector3f rotationAngleRadians = new Vector3f();
+	private final Vector3f rotation = new Vector3f();
 
-	// Movement flags
-	private boolean mHoldingForward = false;
-	private boolean mHoldingBackward = false;
-	private boolean mHoldingLeftStrafe = false;
-	private boolean mHoldingRightStrafe = false;
+	private boolean moveForward = false;
+	private boolean moveBackward = false;
+	private boolean moveLeft = false;
+	private boolean moveRight = false;
+	private boolean moveUp = false;
+	private boolean moveDown = false;
 
-	// The middle of the screen in window coordinates
 	private double windowCenterX;
 	private double windowCenterY;
 
-	// Location of mouse cursor as of last update
 	private double prevMouseX, prevMouseY;
 
 	public Camera(Vector3f location, Vector3f rotationDegrees, int windowWidth, int windowHeight) {
 		this.location.set(location);
-		rotationAngleRadians.set(
+		rotation.set(
 				Math.toRadians(rotationDegrees.x),
 				Math.toRadians(rotationDegrees.y),
 				Math.toRadians(rotationDegrees.z)
@@ -80,12 +76,12 @@ public class Camera {
 		viewMatrix.identity();
 
 		// rotate to the orientation of the camera
-		viewMatrix.rotateX(rotationAngleRadians.x);
-		viewMatrix.rotateY(rotationAngleRadians.y);
+		viewMatrix.rotateX(rotation.x);
+		viewMatrix.rotateY(rotation.y);
 
 		// Only rotate around Z if we have any Z-axis rotation - in FPS camera controls we do not.
-		if (rotationAngleRadians.z > 0f) {
-			viewMatrix.rotateZ(rotationAngleRadians.z);
+		if (rotation.z > 0f) {
+			viewMatrix.rotateZ(rotation.z);
 		}
 
 		viewMatrix.translate(location);
@@ -105,24 +101,36 @@ public class Camera {
 		prevMouseY = windowCenterY;
 	}
 
-	/// Set the movement flags depending on which keys are being pressed or released
-	public void handleKeyPress(int key, int action) {
-		switch (key) {
-			case GLFW_KEY_W -> mHoldingForward = action == GLFW_PRESS || action == GLFW_REPEAT;
-			case GLFW_KEY_S -> mHoldingBackward = action == GLFW_PRESS || action == GLFW_REPEAT;
-			case GLFW_KEY_A -> mHoldingLeftStrafe = action == GLFW_PRESS || action == GLFW_REPEAT;
-			case GLFW_KEY_D -> mHoldingRightStrafe = action == GLFW_PRESS || action == GLFW_REPEAT;
-		}
+	public void setMoveForward(boolean flag) {
+		moveForward = flag;
 	}
 
-	/**
-	 * Method to deal with mouse position changes.
-	 * <p>
-	 * The pitch (up and down) and yaw (left and right) sensitivity of the camera can be modified via the setSensitivity method.
-	 *
-	 * @param mouseX The x location of the mouse cursor.
-	 * @param mouseY The y location of the mouse cursor.
-	 */
+	public void setMoveBackward(boolean flag) {
+		moveBackward = flag;
+	}
+
+	public void setMoveLeft(boolean flag) {
+		moveLeft = flag;
+	}
+
+	public void setMoveRight(boolean flag) {
+		moveRight = flag;
+	}
+
+	public void setMoveUp(boolean flag) {
+		moveUp = flag;
+	}
+
+	public void setMoveDown(boolean flag) {
+		moveDown = flag;
+	}
+
+	/// Method to deal with mouse position changes.
+	///
+	/// The pitch (up and down) and yaw (left and right) sensitivity of the camera can be modified via the setSensitivity method.
+	///
+	/// @param mouseX The x location of the mouse cursor.
+	/// @param mouseY The y location of the mouse cursor.
 	public void handleMouseMove(double mouseX, double mouseY) {
 		// Calculate our horizontal and vertical mouse movement
 		// Note: Swap the mouseX/Y and lastMouseX/Y to invert the direction of movement.
@@ -136,24 +144,24 @@ public class Camera {
 
 		// Apply the mouse movement to our rotation Vec3. The vertical (look up and down) movement is applied on
 		// the X axis, and the horizontal (look left and right) movement is applied on the Y Axis
-		rotationAngleRadians.x += (float) verticalMouseMovement;
-		rotationAngleRadians.y += (float) horizontalMouseMovement;
+		rotation.x += (float) verticalMouseMovement;
+		rotation.y += (float) horizontalMouseMovement;
 
 		// Limit looking up and down to vertically up and down
-		if (rotationAngleRadians.x < -Math.PI_OVER_2_f) {
-			rotationAngleRadians.x = -Math.PI_OVER_2_f;
+		if (rotation.x < -Math.PI_OVER_2_f) {
+			rotation.x = -Math.PI_OVER_2_f;
 		}
-		if (rotationAngleRadians.x > Math.PI_OVER_2_f) {
-			rotationAngleRadians.x = Math.PI_OVER_2_f;
+		if (rotation.x > Math.PI_OVER_2_f) {
+			rotation.x = Math.PI_OVER_2_f;
 		}
 
 		// Looking left and right - keep angles in the range 0.0 to pi
 		// 0 degrees is looking directly down the negative Z axis "North", 90 degrees is "East", 180 degrees is "South", 270 degrees is "West"
-		if (rotationAngleRadians.y < 0f) {
-			rotationAngleRadians.y += Math.PI_TIMES_2_f;
+		if (rotation.y < 0f) {
+			rotation.y += Math.PI_TIMES_2_f;
 		}
-		if (rotationAngleRadians.y > Math.PI_TIMES_2_f) {
-			rotationAngleRadians.y -= Math.PI_TIMES_2_f;
+		if (rotation.y > Math.PI_TIMES_2_f) {
+			rotation.y -= Math.PI_TIMES_2_f;
 		}
 	}
 
@@ -168,38 +176,48 @@ public class Camera {
 		movement.zero();
 
 		// Get the Sine and Cosine of our x and y axes
-		float sinXRot = Math.sin(rotationAngleRadians.x);
-		float cosXRot = Math.cos(rotationAngleRadians.x);
-
-		float sinYRot = Math.sin(rotationAngleRadians.y);
-		float cosYRot = Math.cos(rotationAngleRadians.y);
+		float sinXRot = Math.sin(rotation.x);
+		float cosXRot = Math.cos(rotation.x);
+		float sinYRot = Math.sin(rotation.y);
+		float cosYRot = Math.cos(rotation.y);
 
 		final float pitchLimitFactor = cosXRot; // This cancels out moving on the Z axis when we're looking up or down
 
-		// Move appropriately depending on which key(s) are currently being held
-		if (mHoldingForward) {
+		if (moveForward && !moveBackward) {
 			movement.add(-sinYRot * pitchLimitFactor, sinXRot, cosYRot * pitchLimitFactor);
 		}
-		if (mHoldingBackward) {
+		if (moveBackward && !moveForward) {
 			movement.add(sinYRot * pitchLimitFactor, -sinXRot, -cosYRot * pitchLimitFactor);
 		}
-		if (mHoldingLeftStrafe) {
+
+		if (moveLeft && !moveRight) {
 			movement.add(cosYRot, 0f, sinYRot);
 		}
-		if (mHoldingRightStrafe) {
+		if (moveRight && !moveLeft) {
 			movement.sub(cosYRot, 0f, sinYRot);
 		}
 
-		// If we have any movement at all, then normalise our movement vector
+		if (moveUp && !moveDown) {
+			movement.sub(0f, 1f, 0f);
+		}
+		if (moveDown && !moveUp) {
+			movement.add(0, 1f, 0);
+		}
+
 		if (movement.length() > 0f) {
 			movement.normalize();
 		}
 
-		// Apply our framerate-independent factor to our movement vector so that we move at the same speed
-		// regardless of our framerate (assuming a correct frame duration is provided to this method).
-		movement.mul(movementSpeedFactor * deltaTime);
+		movement.mul(moveSpeed * deltaTime);
 
 		location.add(movement);
 	}
 
+	@Override
+	public String toString() {
+		return "Camera{" +
+				"position=" + location +
+				", rotation=" + rotation.mul(180f / Math.PI_f, new Vector3f()) +
+				'}';
+	}
 }

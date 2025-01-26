@@ -1,5 +1,6 @@
 package com.github.elenterius.fabiko.demo;
 
+import org.jspecify.annotations.Nullable;
 import org.lwjgl.glfw.GLFW;
 import org.lwjgl.opengl.GL11;
 
@@ -30,6 +31,7 @@ public class Application {
 
 	static OpenGLWindow window = new OpenGLWindow(Application.windowWidth, Application.windowHeight);
 
+	@Nullable
 	static SceneHandler sceneHandler = null;
 
 	public static void main(final String[] args) {
